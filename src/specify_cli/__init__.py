@@ -432,7 +432,8 @@ def init_git_repo(project_path: Path, quiet: bool = False) -> bool:
 def download_template_from_github(ai_assistant: str, download_dir: Path, *, script_type: str = "sh", verbose: bool = True, show_progress: bool = True, client: httpx.Client = None, debug: bool = False, github_token: str = None, repo_owner: str = None, repo_name: str = None) -> Tuple[Path, dict]:
     # Use provided repository parameters, fall back to environment variables, then defaults
     if repo_owner is None:
-        repo_owner = os.getenv("SPEC_KIT_REPO_OWNER", "github")
+        # Always check environment variables first
+        repo_owner = os.getenv("SPEC_KIT_REPO_OWNER", "Sunwindsr")
     if repo_name is None:
         repo_name = os.getenv("SPEC_KIT_REPO_NAME", "spec-kit")
     if client is None:
