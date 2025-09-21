@@ -36,15 +36,50 @@ Spec-Driven Development **flips the script** on traditional software development
 
 ## ⚡ Get started
 
-### 1. Install Specify
+### 1. Install Specify CLI
 
-Initialize your project depending on the coding agent you're using:
+First, install the Spec Kit CLI using uvx:
 
 ```bash
-uvx --from git+https://github.com/Sunwindsr/spec-kit.git specify init <PROJECT_NAME>
+# Install the specify CLI
+uvx --from git+https://github.com/Sunwindsr/spec-kit.git specify --help
+
+# Or install for direct usage (without uvx prefix each time)
+pip install git+https://github.com/Sunwindsr/spec-kit.git
 ```
 
-### 2. Establish project principles
+The `specify` command is now available as a CLI tool that you can use to initialize and manage Spec Kit projects.
+
+### 2. Initialize your project
+
+Choose the appropriate initialization method based on your needs:
+
+#### **Option A: Create a new project (Recommended)**
+
+Create a fresh project directory with Spec Kit templates:
+
+```bash
+# Create a new project directory
+specify init my-awesome-project --ai claude
+
+# Or initialize in current directory
+cd my-project-folder
+specify init --here --ai claude
+```
+
+#### **Option B: Add Spec Kit to existing project**
+
+Add Spec Kit capabilities to your current project:
+
+```bash
+# Navigate to your existing project
+cd my-existing-project
+
+# Initialize Spec Kit in current directory
+specify init --here --ai claude --ignore-agent-tools
+```
+
+### 3. Establish project principles
 
 Use the **`/constitution`** command to create your project's governing principles and development guidelines that will guide all subsequent development.
 
