@@ -121,14 +121,14 @@ Use **`/implement`** to execute all tasks and build your feature according to th
 
 ### 7. Refactoring existing systems (Optional)
 
-For refactoring existing codebases, use the refactoring commands with specific paths:
+For refactoring existing codebases, use the refactoring commands:
 
 ```bash
-# Analyze and refactor a specific directory
+# Analyze and refactor a specific directory (creates spec file)
 /specify-refactoring /home/sd_dev/projects/business-management/frontend/ClientApp/src/app/Entrances/Frontend/ViewsEntrance/BizModules/ViewAppFilesBiz
 
-# Create refactoring plan for a specific file
-/plan-refactoring /path/to/your/target-file.js
+# Create refactoring plan (automatically finds spec file, no parameters needed)
+/plan-refactoring
 
 # Generate refactoring tasks with rollback procedures
 /tasks-refactoring
