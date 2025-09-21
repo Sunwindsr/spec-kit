@@ -1,8 +1,8 @@
 ---
 description: Create or update the refactoring specification from existing code analysis.
 scripts:
-  sh: scripts/bash/create-new-feature-refactoring.sh --json "{ARGS}"
-  ps: scripts/powershell/create-new-feature-refactoring.ps1 -Json "{ARGS}"
+  sh: scripts/bash/create-new-feature-refactoring.sh --json --path "{ARGS}"
+  ps: scripts/powershell/create-new-feature-refactoring.ps1 -Json -Path "{ARGS}"
 ---
 
 The text the user typed after `/specify-refactoring` in the triggering message **is** the target system description. Assume you always have it available in this conversation even if `{ARGS}` appears literally below. Do not ask the user to repeat it unless they provided an empty command.

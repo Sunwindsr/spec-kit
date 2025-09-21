@@ -3,15 +3,26 @@
 [CmdletBinding()]
 param(
     [switch]$Json,
+    [switch]$Path,
     [Parameter(ValueFromRemainingArguments = $true)]
-    [string[]]$SystemDescription
+    [string[]]$Target
 )
 $ErrorActionPreference = 'Stop'
 
-if (-not $SystemDescription -or $SystemDescription.Count -eq 0) {
-    Write-Error "Usage: ./create-new-feature-refactoring.ps1 [-Json] <system description>"; exit 1
+if (-not $Target -or $Target.Count -eq 0) {
+    Write-Error "Usage: ./create-new-feature-refactoring.ps1 [-Json] [-Path] <target>"; exit 1
 }
-$systemDesc = ($SystemDescription -join ' ').Trim()
+$target = ($Target -join ' ').Trim()
+
+if ($Path) {
+    # Validate path exists
+    if (-not (Test-Path $target)) {
+        Write-Error "Error: Path '$target' does not exist"; exit 1
+    }
+    $systemDesc = "Refactoring target path: $target"
+} else {
+    $systemDesc = $target
+}
 
 $repoRoot = git rev-parse --show-toplevel
 $specsDir = Join-Path $repoRoot 'specs'

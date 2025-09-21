@@ -3,19 +3,32 @@
 set -e
 
 JSON_MODE=false
+PATH_MODE=false
 ARGS=()
 for arg in "$@"; do
     case "$arg" in
         --json) JSON_MODE=true ;;
-        --help|-h) echo "Usage: $0 [--json] <system_description>"; exit 0 ;;
+        --path) PATH_MODE=true ;;
+        --help|-h) echo "Usage: $0 [--json] [--path] <target>"; exit 0 ;;
         *) ARGS+=("$arg") ;;
     esac
 done
 
-SYSTEM_DESCRIPTION="${ARGS[*]}"
-if [ -z "$SYSTEM_DESCRIPTION" ]; then
-    echo "Usage: $0 [--json] <system_description>" >&2
+TARGET="${ARGS[*]}"
+if [ -z "$TARGET" ]; then
+    echo "Usage: $0 [--json] [--path] <target>" >&2
     exit 1
+fi
+
+if [ "$PATH_MODE" = true ]; then
+    # Validate path exists
+    if [ ! -d "$TARGET" ] && [ ! -f "$TARGET" ]; then
+        echo "Error: Path '$TARGET' does not exist" >&2
+        exit 1
+    fi
+    SYSTEM_DESCRIPTION="Refactoring target path: $TARGET"
+else
+    SYSTEM_DESCRIPTION="$TARGET"
 fi
 
 # Resolve repository root. Prefer git information when available, but fall back

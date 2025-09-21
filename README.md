@@ -119,6 +119,24 @@ Use **`/implement`** to execute all tasks and build your feature according to th
 /implement
 ```
 
+### 7. Refactoring existing systems (Optional)
+
+For refactoring existing codebases, use the refactoring commands with specific paths:
+
+```bash
+# Analyze and refactor a specific directory
+/specify-refactoring /home/sd_dev/projects/business-management/frontend/ClientApp/src/app/Entrances/Frontend/ViewsEntrance/BizModules/ViewAppFilesBiz
+
+# Create refactoring plan for a specific file
+/plan-refactoring /path/to/your/target-file.js
+
+# Generate refactoring tasks with rollback procedures
+/tasks-refactoring
+
+# Execute refactoring with behavior preservation
+/implement-refactoring
+```
+
 For detailed step-by-step instructions, see our [comprehensive guide](./spec-driven.md).
 
 ## 📽️ Video Overview
