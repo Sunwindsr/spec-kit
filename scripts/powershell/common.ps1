@@ -63,3 +63,19 @@ function Test-DirHasFiles {
         return $false
     }
 }
+
+function Test-PlanExists {
+    param([string]$Path)
+    if (-not (Test-Path -Path $Path -PathType Leaf)) {
+        Write-Error "ERROR: plan.md not found. Run /plan first."
+        exit 1
+    }
+}
+
+function Test-TasksExists {
+    param([string]$Path)
+    if (-not (Test-Path -Path $Path -PathType Leaf)) {
+        Write-Error "ERROR: tasks.md not found. Run /tasks first."
+        exit 1
+    }
+}
