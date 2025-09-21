@@ -8,7 +8,7 @@
     <strong>An effort to allow organizations to focus on product scenarios rather than writing undifferentiated code with the help of Spec-Driven Development.</strong>
 </p>
 
-[![Release](https://github.com/github/spec-kit/actions/workflows/release.yml/badge.svg)](https://github.com/github/spec-kit/actions/workflows/release.yml)
+[![Release](https://github.com/Sunwindsr/spec-kit/actions/workflows/release.yml/badge.svg)](https://github.com/Sunwindsr/spec-kit/actions/workflows/release.yml)
 
 ---
 
@@ -41,7 +41,7 @@ Spec-Driven Development **flips the script** on traditional software development
 Initialize your project depending on the coding agent you're using:
 
 ```bash
-uvx --from git+https://github.com/github/spec-kit.git specify init <PROJECT_NAME>
+uvx --from git+https://github.com/Sunwindsr/spec-kit.git specify init <PROJECT_NAME>
 ```
 
 ### 2. Establish project principles
@@ -167,7 +167,6 @@ After running `specify init`, your AI coding agent will have access to these sla
 | `/plan-refactoring` | Create refactoring implementation plans with migration strategies      |
 | `/tasks-refactoring` | Generate refactoring-specific task lists with rollback procedures     |
 | `/implement-refactoring` | Execute refactoring with behavior preservation and validation        |
-| `/init-refactoring` | Initialize new refactoring projects with custom repository           |
 
 ## 📚 Core philosophy
 
