@@ -945,10 +945,12 @@ def init(
             # Parse repository from --from parameter
             repo_owner = None
             repo_name = None
+            if debug:
+                console.print(f"[cyan]Debug:[/cyan] from_repo parameter: {from_repo}")
             if from_repo:
                 import re
                 # Parse git+https://github.com/owner/repo.git format
-                repo_match = re.match(r'git\+https://github\.com/([^/]+)/([^\.]+)(?:\.git)?', from_repo)
+                repo_match = re.match(r'git\+https://github\.com/([^/]+)/([^/\.]+)(?:\.git)?', from_repo)
                 if repo_match:
                     repo_owner, repo_name = repo_match.groups()
                     if debug:
