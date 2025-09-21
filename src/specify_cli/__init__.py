@@ -429,10 +429,12 @@ def init_git_repo(project_path: Path, quiet: bool = False) -> bool:
         os.chdir(original_cwd)
 
 
-def download_template_from_github(ai_assistant: str, download_dir: Path, *, script_type: str = "sh", verbose: bool = True, show_progress: bool = True, client: httpx.Client = None, debug: bool = False, github_token: str = None) -> Tuple[Path, dict]:
-    # Check if we should use custom repository for refactoring templates
-    repo_owner = os.getenv("SPEC_KIT_REPO_OWNER", "github")
-    repo_name = os.getenv("SPEC_KIT_REPO_NAME", "spec-kit")
+def download_template_from_github(ai_assistant: str, download_dir: Path, *, script_type: str = "sh", verbose: bool = True, show_progress: bool = True, client: httpx.Client = None, debug: bool = False, github_token: str = None, repo_owner: str = None, repo_name: str = None) -> Tuple[Path, dict]:
+    # Use provided repository parameters, fall back to environment variables, then defaults
+    if repo_owner is None:
+        repo_owner = os.getenv("SPEC_KIT_REPO_OWNER", "github")
+    if repo_name is None:
+        repo_name = os.getenv("SPEC_KIT_REPO_NAME", "spec-kit")
     if client is None:
         client = httpx.Client(verify=ssl_context)
     
@@ -542,7 +544,7 @@ def download_template_from_github(ai_assistant: str, download_dir: Path, *, scri
     return zip_path, metadata
 
 
-def download_and_extract_template(project_path: Path, ai_assistant: str, script_type: str, is_current_dir: bool = False, *, verbose: bool = True, tracker: StepTracker | None = None, client: httpx.Client = None, debug: bool = False, github_token: str = None) -> Path:
+def download_and_extract_template(project_path: Path, ai_assistant: str, script_type: str, is_current_dir: bool = False, *, verbose: bool = True, tracker: StepTracker | None = None, client: httpx.Client = None, debug: bool = False, github_token: str = None, repo_owner: str = None, repo_name: str = None) -> Path:
     """Download the latest release and extract it to create a new project.
     Returns project_path. Uses tracker if provided (with keys: fetch, download, extract, cleanup)
     """
@@ -560,7 +562,9 @@ def download_and_extract_template(project_path: Path, ai_assistant: str, script_
             show_progress=(tracker is None),
             client=client,
             debug=debug,
-            github_token=github_token
+            github_token=github_token,
+            repo_owner=repo_owner,
+            repo_name=repo_name
         )
         if tracker:
             tracker.complete("fetch", f"release {meta['release']} ({meta['size']:,} bytes)")
@@ -755,6 +759,7 @@ def init(
     skip_tls: bool = typer.Option(False, "--skip-tls", help="Skip SSL/TLS verification (not recommended)"),
     debug: bool = typer.Option(False, "--debug", help="Show verbose diagnostic output for network and extraction failures"),
     github_token: str = typer.Option(None, "--github-token", help="GitHub token to use for API requests (or set GH_TOKEN or GITHUB_TOKEN environment variable)"),
+    from_repo: str = typer.Option(None, "--from", help="Repository to use for templates (e.g., git+https://github.com/owner/repo.git)"),
 ):
     """
     Initialize a new Specify project from the latest template.
@@ -762,7 +767,7 @@ def init(
     This command will:
     1. Check that required tools are installed (git is optional)
     2. Let you choose your AI assistant (Claude Code, Gemini CLI, GitHub Copilot, Cursor, Qwen Code, opencode, Codex CLI, or Windsurf)
-    3. Download the appropriate template from GitHub
+    3. Download the appropriate template from GitHub or custom repository
     4. Extract the template to a new project directory or current directory
     5. Initialize a fresh git repository (if not --no-git and no existing repo)
     6. Optionally set up AI assistant commands
@@ -781,6 +786,7 @@ def init(
         specify init --here --ai claude
         specify init --here --ai codex
         specify init --here
+        specify init --here --from git+https://github.com/Sunwindsr/spec-kit.git --ai claude
     """
     # Show banner first
     show_banner()
@@ -932,12 +938,28 @@ def init(
     with Live(tracker.render(), console=console, refresh_per_second=8, transient=True) as live:
         tracker.attach_refresh(lambda: live.update(tracker.render()))
         try:
+            # Parse repository from --from parameter
+            repo_owner = None
+            repo_name = None
+            if from_repo:
+                import re
+                # Parse git+https://github.com/owner/repo.git format
+                repo_match = re.match(r'git\+https://github\.com/([^/]+)/([^\.]+)(?:\.git)?', from_repo)
+                if repo_match:
+                    repo_owner, repo_name = repo_match.groups()
+                    if debug:
+                        console.print(f"[cyan]Using custom repository:[/cyan] {repo_owner}/{repo_name}")
+                else:
+                    console.print(f"[red]Error:[/red] Invalid repository format: {from_repo}")
+                    console.print("[yellow]Expected format:[/yellow] git+https://github.com/owner/repo.git")
+                    raise typer.Exit(1)
+
             # Create a httpx client with verify based on skip_tls
             verify = not skip_tls
             local_ssl_context = ssl_context if verify else False
             local_client = httpx.Client(verify=local_ssl_context)
 
-            download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token)
+            download_and_extract_template(project_path, selected_ai, selected_script, here, verbose=False, tracker=tracker, client=local_client, debug=debug, github_token=github_token, repo_owner=repo_owner, repo_name=repo_name)
 
             # Ensure scripts are executable (POSIX)
             ensure_executable_scripts(project_path, tracker=tracker)
