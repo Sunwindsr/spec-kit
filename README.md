@@ -162,6 +162,12 @@ After running `specify init`, your AI coding agent will have access to these sla
 | `/plan`         | Create technical implementation plans with your chosen tech stack     |
 | `/tasks`        | Generate actionable task lists for implementation                     |
 | `/implement`    | Execute all tasks to build the feature according to the plan         |
+| `/constitution-refactoring` | Manage refactoring principles and behavior preservation guidelines    |
+| `/specify-refactoring` | Create refactoring specifications for existing systems               |
+| `/plan-refactoring` | Create refactoring implementation plans with migration strategies      |
+| `/tasks-refactoring` | Generate refactoring-specific task lists with rollback procedures     |
+| `/implement-refactoring` | Execute refactoring with behavior preservation and validation        |
+| `/init-refactoring` | Initialize new refactoring projects with custom repository           |
 
 ## 📚 Core philosophy
 
@@ -179,6 +185,7 @@ Spec-Driven Development is a structured process that emphasizes:
 | **0-to-1 Development** ("Greenfield") | Generate from scratch | <ul><li>Start with high-level requirements</li><li>Generate specifications</li><li>Plan implementation steps</li><li>Build production-ready applications</li></ul> |
 | **Creative Exploration** | Parallel implementations | <ul><li>Explore diverse solutions</li><li>Support multiple technology stacks & architectures</li><li>Experiment with UX patterns</li></ul> |
 | **Iterative Enhancement** ("Brownfield") | Brownfield modernization | <ul><li>Add features iteratively</li><li>Modernize legacy systems</li><li>Adapt processes</li></ul> |
+| **System Refactoring** | Behavior preservation | <ul><li>Analyze existing codebases</li><li>Create refactoring specifications</li><li>Execute safe migrations with 100% behavior preservation</li><li>Maintain interface stability during transformation</li></ul> |
 
 ## 🎯 Experimental goals
 
