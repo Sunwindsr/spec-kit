@@ -35,3 +35,5 @@ EOF
 
 check_file() { [[ -f "$1" ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
 check_dir() { [[ -d "$1" && -n $(ls -A "$1" 2>/dev/null) ]] && echo "  ✓ $2" || echo "  ✗ $2"; }
+check_plan_exists() { [[ -f "$1" ]] || { echo "ERROR: plan.md not found. Run /plan first." >&2; exit 1; }; }
+check_tasks_exist() { [[ -f "$1" ]] || { echo "ERROR: tasks.md not found. Run /tasks first." >&2; exit 1; }; }
