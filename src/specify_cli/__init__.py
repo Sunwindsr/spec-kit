@@ -443,10 +443,6 @@ def download_template_from_github(ai_assistant: str, download_dir: Path, *, scri
         console.print("[cyan]Fetching latest release information...[/cyan]")
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
     
-    if debug:
-        console.print(f"[cyan]Debug:[/cyan] Using repository: {repo_owner}/{repo_name}")
-        console.print(f"[cyan]Debug:[/cyan] API URL: {api_url}")
-    
     try:
         response = client.get(
             api_url,
@@ -457,8 +453,6 @@ def download_template_from_github(ai_assistant: str, download_dir: Path, *, scri
         status = response.status_code
         if status != 200:
             msg = f"GitHub API returned {status} for {api_url}"
-            if debug:
-                msg += f"\nResponse headers: {response.headers}\nBody (truncated 500): {response.text[:500]}"
             raise RuntimeError(msg)
         try:
             release_data = response.json()
@@ -686,8 +680,6 @@ def download_and_extract_template(project_path: Path, ai_assistant: str, script_
         else:
             if verbose:
                 console.print(f"[red]Error extracting template:[/red] {e}")
-                if debug:
-                    console.print(Panel(str(e), title="Extraction Error", border_style="red"))
         # Clean up project directory if created and not current directory
         if not is_current_dir and project_path.exists():
             shutil.rmtree(project_path)
@@ -911,6 +903,7 @@ def init(
         else:
             selected_script = default_script
     
+    
     console.print(f"[cyan]Selected AI assistant:[/cyan] {selected_ai}")
     console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
     
@@ -946,16 +939,12 @@ def init(
             # Parse repository from --from parameter
             repo_owner = None
             repo_name = None
-            if debug:
-                console.print(f"[cyan]Debug:[/cyan] from_repo parameter: {from_repo}")
             if from_repo:
                 import re
                 # Parse git+https://github.com/owner/repo.git format
                 repo_match = re.match(r'git\+https://github\.com/([^/]+)/([^/\.]+)(?:\.git)?', from_repo)
                 if repo_match:
                     repo_owner, repo_name = repo_match.groups()
-                    if debug:
-                        console.print(f"[cyan]Using custom repository:[/cyan] {repo_owner}/{repo_name}")
                 else:
                     console.print(f"[red]Error:[/red] Invalid repository format: {from_repo}")
                     console.print("[yellow]Expected format:[/yellow] git+https://github.com/owner/repo.git")
@@ -990,15 +979,6 @@ def init(
         except Exception as e:
             tracker.error("final", str(e))
             console.print(Panel(f"Initialization failed: {e}", title="Failure", border_style="red"))
-            if debug:
-                _env_pairs = [
-                    ("Python", sys.version.split()[0]),
-                    ("Platform", sys.platform),
-                    ("CWD", str(Path.cwd())),
-                ]
-                _label_width = max(len(k) for k, _ in _env_pairs)
-                env_lines = [f"{k.ljust(_label_width)} → [bright_black]{v}[/bright_black]" for k, v in _env_pairs]
-                console.print(Panel("\n".join(env_lines), title="Debug Environment", border_style="magenta"))
             if not here and project_path.exists():
                 shutil.rmtree(project_path)
             raise typer.Exit(1)
