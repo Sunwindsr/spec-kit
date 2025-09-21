@@ -442,6 +442,10 @@ def download_template_from_github(ai_assistant: str, download_dir: Path, *, scri
         console.print("[cyan]Fetching latest release information...[/cyan]")
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
     
+    if debug:
+        console.print(f"[cyan]Debug:[/cyan] Using repository: {repo_owner}/{repo_name}")
+        console.print(f"[cyan]Debug:[/cyan] API URL: {api_url}")
+    
     try:
         response = client.get(
             api_url,
