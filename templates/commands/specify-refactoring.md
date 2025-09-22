@@ -21,8 +21,13 @@ Given that target system description, do this:
 
 3. Load `templates/spec-refactoring-template.md` to understand required sections.
 4. Analyze the existing codebase to understand current behavior and interfaces.
-5. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the code analysis while preserving section order and headings.
-6. Report completion with branch name, spec file path, and readiness for the next phase.
+5. **IMPORTANT**: Extract and document user stories and business value from the existing code:
+   - Identify user types who interact with the system
+   - Document the key user journeys and business value
+   - Create EARS format requirements for business-critical behaviors
+   - Use REQ-001, REQ-002, etc. for business requirements (not just RF-001 for refactoring)
+6. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the code analysis while preserving section order and headings.
+7. Report completion with branch name, spec file path, and readiness for the next phase.
 
 Note: The script creates and checks out the new branch and initializes the spec file before writing.
 

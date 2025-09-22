@@ -12,7 +12,12 @@ Given that feature description, do this:
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
   **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 2. Load `templates/spec-template.md` to understand required sections.
-3. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
-4. Report completion with branch name, spec file path, and readiness for the next phase.
+3. **IMPORTANT**: Generate structured EARS format requirements and user stories:
+   - Extract user types, actions, and business value from the feature description
+   - Create user stories using "As a [user type], I want to [action], so that [benefit]" format
+   - Generate EARS requirements using When-Then, In Context, Event-Response, and Always templates
+   - Use REQ-001, REQ-002, etc. for business requirements and FR-001, FR-002, etc. for functional requirements
+4. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
+5. Report completion with branch name, spec file path, and readiness for the next phase.
 
 Note: The script creates and checks out the new branch and initializes the spec file before writing.

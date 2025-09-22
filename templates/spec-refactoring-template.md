@@ -61,6 +61,15 @@ When creating this spec from code analysis:
 ### System Overview
 [Describe the current system architecture, key components, and functionality]
 
+### Existing User Stories & Business Value
+**Primary User Stories**:
+- **As a** [user type], **I want to** [action], **so that** [benefit]
+- **As a** [user type], **I want to** [action], **so that** [benefit]
+
+**Current Business Value**:
+- [Value proposition 1]: [Description]
+- [Value proposition 2]: [Description]
+
 ### Existing Interfaces
 **Public APIs**:
 - [API endpoint/function name]: [Description and signature]
@@ -86,7 +95,15 @@ When creating this spec from code analysis:
 
 ## Refactoring Objectives *(mandatory)*
 
-### Primary Goals
+### Business Requirements (EARS Format)
+**EARS Requirements** - These describe WHAT the refactoring must achieve from a business perspective:
+
+- **REQ-001**: When [user action or event], the system shall [maintain existing response] to preserve [business value]
+- **REQ-002**: In the context of [specific scenario], when [condition occurs], the system shall [preserve existing behavior] to ensure [business outcome]
+- **REQ-003**: When [integration point] is accessed, the system shall [maintain current interface] to support [business process]
+- **REQ-004**: The system shall always [preserve critical business function] during and after refactoring
+
+**Technical Refactoring Requirements**:
 - **RF-001**: System MUST maintain 100% existing behavior
 - **RF-002**: All public interfaces MUST remain stable and backward compatible
 - **RF-003**: System MUST improve [specific aspect, e.g., "maintainability"]

@@ -54,20 +54,38 @@ When creating this spec from a user prompt:
 
 ## User Scenarios & Testing *(mandatory)*
 
-### Primary User Story
-[Describe the main user journey in plain language]
+### Primary User Stories
+**Main User Journey**:
+- **As a** [user type], **I want to** [action], **so that** [benefit]
+- **As a** [user type], **I want to** [action], **so that** [benefit]
 
-### Acceptance Scenarios
+### Acceptance Scenarios (Gherkin Format)
 1. **Given** [initial state], **When** [action], **Then** [expected outcome]
 2. **Given** [initial state], **When** [action], **Then** [expected outcome]
 
-### Edge Cases
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+### Edge Cases & Error Scenarios
+- **Given** [error condition], **When** [action], **Then** [expected error response]
+- **Given** [boundary condition], **When** [action], **Then** [expected outcome]
 
 ## Requirements *(mandatory)*
 
-### Functional Requirements
+### EARS Requirements (Business Value Focus)
+**EARS Format Requirements** - Use these structured templates for business requirements:
+
+**Unconditional (When-Then)**:
+- **REQ-001**: When [user action or event], the system shall [response] to achieve [business value]
+- **REQ-002**: When [condition occurs], the system shall [behavior] for [user benefit]
+
+**Bounded (In Context)**:
+- **REQ-003**: In the context of [specific scenario], when [trigger event], the system shall [response] to ensure [outcome]
+
+**Event-Response**:
+- **REQ-004**: When [specific event] happens, the system shall [immediate response] to handle [situation]
+
+**Constraint (Always)**:
+- **REQ-005**: The system shall always [maintain/ensure/constrain] [critical aspect] for [business reason]
+
+### Functional Requirements (Technical Implementation)
 - **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
 - **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
