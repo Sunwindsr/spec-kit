@@ -9,10 +9,10 @@ check_feature_branch "$CURRENT_BRANCH" || exit 1
 check_plan_exists "$IMPL_PLAN" || exit 1
 mkdir -p "$FEATURE_DIR"
 TEMPLATE="$REPO_ROOT/templates/tasks-refactoring-template.md"
-[[ -f "$TEMPLATE" ]] && cp "$TEMPLATE" "$TASKS_FILE"
+[[ -f "$TEMPLATE" ]] && cp "$TEMPLATE" "$TASKS"
 if $JSON_MODE; then
   printf '{"FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS_FILE":"%s","SPECS_DIR":"%s","BRANCH":"%s","REFACTORING_MODE":"true"}\n' \
-    "$FEATURE_SPEC" "$IMPL_PLAN" "$TASKS_FILE" "$FEATURE_DIR" "$CURRENT_BRANCH"
+    "$FEATURE_SPEC" "$IMPL_PLAN" "$TASKS" "$FEATURE_DIR" "$CURRENT_BRANCH"
 else
-  echo "FEATURE_SPEC: $FEATURE_SPEC"; echo "IMPL_PLAN: $IMPL_PLAN"; echo "TASKS_FILE: $TASKS_FILE"; echo "SPECS_DIR: $FEATURE_DIR"; echo "BRANCH: $CURRENT_BRANCH"; echo "REFACTORING_MODE: true"
+  echo "FEATURE_SPEC: $FEATURE_SPEC"; echo "IMPL_PLAN: $IMPL_PLAN"; echo "TASKS_FILE: $TASKS"; echo "SPECS_DIR: $FEATURE_DIR"; echo "BRANCH: $CURRENT_BRANCH"; echo "REFACTORING_MODE: true"
 fi

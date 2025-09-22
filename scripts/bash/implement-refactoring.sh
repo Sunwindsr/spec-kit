@@ -6,11 +6,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 eval $(get_feature_paths)
 check_feature_branch "$CURRENT_BRANCH" || exit 1
-check_tasks_exist "$TASKS_FILE" || exit 1
+check_tasks_exist "$TASKS" || exit 1
 mkdir -p "$FEATURE_DIR"
 if $JSON_MODE; then
   printf '{"FEATURE_SPEC":"%s","IMPL_PLAN":"%s","TASKS_FILE":"%s","SPECS_DIR":"%s","BRANCH":"%s","REFACTORING_MODE":"true","IMPLEMENTATION_READY":"true"}\n' \
-    "$FEATURE_SPEC" "$IMPL_PLAN" "$TASKS_FILE" "$FEATURE_DIR" "$CURRENT_BRANCH"
+    "$FEATURE_SPEC" "$IMPL_PLAN" "$TASKS" "$FEATURE_DIR" "$CURRENT_BRANCH"
 else
-  echo "FEATURE_SPEC: $FEATURE_SPEC"; echo "IMPL_PLAN: $IMPL_PLAN"; echo "TASKS_FILE: $TASKS_FILE"; echo "SPECS_DIR: $FEATURE_DIR"; echo "BRANCH: $CURRENT_BRANCH"; echo "REFACTORING_MODE: true"; echo "IMPLEMENTATION_READY: true"
+  echo "FEATURE_SPEC: $FEATURE_SPEC"; echo "IMPL_PLAN: $IMPL_PLAN"; echo "TASKS_FILE: $TASKS"; echo "SPECS_DIR: $FEATURE_DIR"; echo "BRANCH: $CURRENT_BRANCH"; echo "REFACTORING_MODE: true"; echo "IMPLEMENTATION_READY: true"
 fi
