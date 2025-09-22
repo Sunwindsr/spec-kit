@@ -1,7 +1,7 @@
 ---
 description: Create or update the refactoring specification from existing code analysis.
 scripts:
-  sh: scripts/bash/create-new-feature-refactoring.sh --json --path --feature-name "<extracted-feature-name>" "{ARGS}"
+  sh: scripts/bash/create-new-feature-refactoring.sh --json --path --feature-name "<extracted-feature-name>" --target "{ARGS}"
   ps: scripts/powershell/create-new-feature-refactoring.ps1 -Json -Path -FeatureName "<extracted-feature-name>" "{ARGS}"
 ---
 

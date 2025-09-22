@@ -5,6 +5,7 @@ set -e
 JSON_MODE=false
 PATH_MODE=false
 FEATURE_NAME=""
+TARGET=""
 ARGS=()
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -14,19 +15,25 @@ while [[ $# -gt 0 ]]; do
             FEATURE_NAME="$2"
             shift 2
             ;;
-        --help|-h) echo "Usage: $0 [--json] [--path] [--feature-name <name>] <target>"; exit 0 ;;
+        --target)
+            TARGET="$2"
+            shift 2
+            ;;
+        --help|-h) echo "Usage: $0 [--json] [--path] [--feature-name <name>] [--target <path>] [<target>]"; exit 0 ;;
         *) ARGS+=("$1"); shift ;;
     esac
 done
 
-# Handle case where target might be passed as multiple arguments (common with AI tools)
-if [ ${#ARGS[@]} -eq 0 ]; then
-    echo "Usage: $0 [--json] [--path] [--feature-name <name>] <target>" >&2
-    exit 1
+# If target not specified via --target, use remaining arguments
+if [ -z "$TARGET" ]; then
+    if [ ${#ARGS[@]} -eq 0 ]; then
+        echo "Usage: $0 [--json] [--path] [--feature-name <name>] [--target <path>] [<target>]" >&2
+        exit 1
+    fi
+    # Join all remaining arguments as the target path
+    TARGET="${ARGS[*]}"
 fi
 
-# Join all remaining arguments as the target path
-TARGET="${ARGS[*]}"
 echo "[specify-refactoring] Target: $TARGET" >&2
 
 if [ "$PATH_MODE" = true ]; then
