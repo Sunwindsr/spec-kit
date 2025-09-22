@@ -4,13 +4,14 @@
 param(
     [switch]$Json,
     [switch]$Path,
+    [string]$FeatureName,
     [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$Target
 )
 $ErrorActionPreference = 'Stop'
 
 if (-not $Target -or $Target.Count -eq 0) {
-    Write-Error "Usage: ./create-new-feature-refactoring.ps1 [-Json] [-Path] <target>"; exit 1
+    Write-Error "Usage: ./create-new-feature-refactoring.ps1 [-Json] [-Path] [-FeatureName <name>] <target>"; exit 1
 }
 $target = ($Target -join ' ').Trim()
 
@@ -41,9 +42,18 @@ $next = $highest + 1
 $featureNum = ('{0:000}' -f $next)
 
 # Create refactoring-specific branch name
-$systemName = $systemDesc.ToLower() -replace '[^a-z0-9]', '-' -replace '-{2,}', '-' -replace '^-', '' -replace '-$', ''
-$words = ($systemName -split '-') | Where-Object { $_ } | Select-Object -First 3
-$branchName = "$featureNum-refactoring-$([string]::Join('-', $words))"
+if ($FeatureName) {
+    # Use AI-extracted feature name
+    $cleanFeatureName = $FeatureName.ToLower() -replace '[^a-z0-9]', '-' -replace '-{2,}', '-' -replace '^-', '' -replace '-$', ''
+    $branchName = "$featureNum-refactoring-$cleanFeatureName"
+    Write-Warning "[specify-refactoring] Using AI-extracted feature name: $FeatureName"
+} else {
+    # Fallback to auto-generation from description
+    $systemName = $systemDesc.ToLower() -replace '[^a-z0-9]', '-' -replace '-{2,}', '-' -replace '^-', '' -replace '-$', ''
+    $words = ($systemName -split '-') | Where-Object { $_ } | Select-Object -First 3
+    $branchName = "$featureNum-refactoring-$([string]::Join('-', $words))"
+    Write-Warning "[specify-refactoring] Using auto-generated feature name from description"
+}
 
 git checkout -b $branchName | Out-Null
 
@@ -59,7 +69,8 @@ if ($Json) {
         BRANCH_NAME = $branchName; 
         SPEC_FILE = $specFile; 
         FEATURE_NUM = $featureNum;
-        SYSTEM_DESCRIPTION = $systemDesc 
+        SYSTEM_DESCRIPTION = $systemDesc;
+        FEATURE_NAME = $FeatureName
     }
     $obj | ConvertTo-Json -Compress
 } else {
@@ -67,4 +78,5 @@ if ($Json) {
     Write-Output "SPEC_FILE: $specFile"
     Write-Output "FEATURE_NUM: $featureNum"
     Write-Output "SYSTEM_DESCRIPTION: $systemDesc"
+    Write-Output "FEATURE_NAME: $FeatureName"
 }

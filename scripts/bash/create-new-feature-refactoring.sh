@@ -4,19 +4,24 @@ set -e
 
 JSON_MODE=false
 PATH_MODE=false
+FEATURE_NAME=""
 ARGS=()
-for arg in "$@"; do
-    case "$arg" in
-        --json) JSON_MODE=true ;;
-        --path) PATH_MODE=true ;;
-        --help|-h) echo "Usage: $0 [--json] [--path] <target>"; exit 0 ;;
-        *) ARGS+=("$arg") ;;
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --json) JSON_MODE=true; shift ;;
+        --path) PATH_MODE=true; shift ;;
+        --feature-name) 
+            FEATURE_NAME="$2"
+            shift 2
+            ;;
+        --help|-h) echo "Usage: $0 [--json] [--path] [--feature-name <name>] <target>"; exit 0 ;;
+        *) ARGS+=("$1"); shift ;;
     esac
 done
 
 TARGET="${ARGS[*]}"
 if [ -z "$TARGET" ]; then
-    echo "Usage: $0 [--json] [--path] <target>" >&2
+    echo "Usage: $0 [--json] [--path] [--feature-name <name>] <target>" >&2
     exit 1
 fi
 
@@ -64,9 +69,18 @@ NEXT=$((HIGHEST + 1))
 FEATURE_NUM=$(printf "%03d" "$NEXT")
 
 # Create refactoring-specific branch name
-SYSTEM_NAME=$(echo "$SYSTEM_DESCRIPTION" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
-WORDS=$(echo "$SYSTEM_NAME" | tr '-' '\n' | grep -v '^$' | head -3 | tr '\n' '-' | sed 's/-$//')
-BRANCH_NAME="${FEATURE_NUM}-refactoring-${WORDS}"
+if [ -n "$FEATURE_NAME" ]; then
+    # Use AI-extracted feature name
+    CLEAN_FEATURE_NAME=$(echo "$FEATURE_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
+    BRANCH_NAME="${FEATURE_NUM}-refactoring-${CLEAN_FEATURE_NAME}"
+    echo "[specify-refactoring] Using AI-extracted feature name: $FEATURE_NAME" >&2
+else
+    # Fallback to auto-generation from description
+    SYSTEM_NAME=$(echo "$SYSTEM_DESCRIPTION" | tr '[:upper:]' '[:lower]' | sed 's/[^a-z0-9]/-/g' | sed 's/-\+/-/g' | sed 's/^-//' | sed 's/-$//')
+    WORDS=$(echo "$SYSTEM_NAME" | tr '-' '\n' | grep -v '^$' | head -3 | tr '\n' '-' | sed 's/-$//')
+    BRANCH_NAME="${FEATURE_NUM}-refactoring-${WORDS}"
+    echo "[specify-refactoring] Using auto-generated feature name from description" >&2
+fi
 
 if [ "$HAS_GIT" = true ]; then
     git checkout -b "$BRANCH_NAME"
@@ -82,10 +96,11 @@ SPEC_FILE="$FEATURE_DIR/spec.md"
 if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
 
 if $JSON_MODE; then
-    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","SYSTEM_DESCRIPTION":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM" "$SYSTEM_DESCRIPTION"
+    printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","SYSTEM_DESCRIPTION":"%s","FEATURE_NAME":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM" "$SYSTEM_DESCRIPTION" "$FEATURE_NAME"
 else
     echo "BRANCH_NAME: $BRANCH_NAME"
     echo "SPEC_FILE: $SPEC_FILE"
     echo "FEATURE_NUM: $FEATURE_NUM"
     echo "SYSTEM_DESCRIPTION: $SYSTEM_DESCRIPTION"
+    echo "FEATURE_NAME: $FEATURE_NAME"
 fi
