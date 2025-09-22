@@ -19,11 +19,15 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-TARGET="${ARGS[*]}"
-if [ -z "$TARGET" ]; then
+# Handle case where target might be passed as multiple arguments (common with AI tools)
+if [ ${#ARGS[@]} -eq 0 ]; then
     echo "Usage: $0 [--json] [--path] [--feature-name <name>] <target>" >&2
     exit 1
 fi
+
+# Join all remaining arguments as the target path
+TARGET="${ARGS[*]}"
+echo "[specify-refactoring] Target: $TARGET" >&2
 
 if [ "$PATH_MODE" = true ]; then
     # Validate path exists

@@ -127,15 +127,22 @@ For refactoring existing codebases, use the refactoring commands:
 # Analyze and refactor a specific directory (creates spec file)
 /specify-refactoring /home/sd_dev/projects/business-management/frontend/ClientApp/src/app/Entrances/Frontend/ViewsEntrance/BizModules/ViewAppFilesBiz
 
-# Create refactoring plan (automatically finds spec file, no parameters needed)
-/plan-refactoring
+# Create refactoring plan (requires tech stack specification)
+/plan-refactoring React + TypeScript + Vite + Zustand + React Router
 
-# Generate refactoring tasks with rollback procedures
+# Generate refactoring tasks with rollback procedures  
 /tasks-refactoring
 
 # Execute refactoring with behavior preservation
 /implement-refactoring
 ```
+
+**Key Refactoring Features**:
+- **User Story Preservation**: Automatically extracts and documents existing user stories and business value
+- **EARS Format Requirements**: Generates structured business requirements using When-Then, In Context, Event-Response, and Always templates
+- **RESTful API Documentation**: Comprehensive extraction and preservation of all API endpoints for 100% behavior compatibility
+- **Behavior Preservation**: Ensures zero functional changes during modernization
+- **Interface Stability**: Guarantees all public APIs, data models, and UI interactions remain unchanged
 
 For detailed step-by-step instructions, see our [comprehensive guide](./spec-driven.md).
 

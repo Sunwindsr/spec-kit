@@ -26,6 +26,8 @@ Given that target system description, do this:
    - Document the key user journeys and business value
    - Create EARS format requirements for business-critical behaviors
    - Use REQ-001, REQ-002, etc. for business requirements (not just RF-001 for refactoring)
+   - **CRITICAL**: Extract and document all RESTful API endpoints with exact HTTP methods and URL patterns
+   - Ensure API documentation is comprehensive for 100% behavior preservation
 6. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the code analysis while preserving section order and headings.
 7. Report completion with branch name, spec file path, and readiness for the next phase.
 

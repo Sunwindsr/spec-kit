@@ -31,7 +31,7 @@
 
 ## ⚡ Refactoring Guidelines
 - ✅ Focus on WHAT needs refactoring and WHY
-- ✅ Preserve 100% existing behavior (behavior不变)
+- ✅ Preserve 100% existing behavior (behavior preservation)
 - ✅ Maintain interface stability (APIs, UI, data models)
 - ❌ No new features or behavior changes
 - 👥 Written for system architects and developers
@@ -71,9 +71,21 @@ When creating this spec from code analysis:
 - [Value proposition 2]: [Description]
 
 ### Existing Interfaces
-**Public APIs**:
-- [API endpoint/function name]: [Description and signature]
-- [API endpoint/function name]: [Description and signature]
+**RESTful API Endpoints** (CRITICAL - Must be preserved exactly):
+- **GET** `/api/AppFiles/GetAppFileById?id={id}`: Retrieve file by ID
+- **GET** `/api/AppFiles/GetAllSharedAppFiles?appIdentityIdAsOwner={id}`: Get all files shared by organization
+- **POST** `/api/AppFiles/OnViewed`: Record file view event with file ID
+- **POST** `/api/AppFiles/OnShared`: Record file share event with file ID
+- **GET** `/api/AppFiles/GetComments?id={id}`: Retrieve file comments
+- **POST** `/api/AppFiles/AddComment`: Add comment to file with file ID and comment ID
+- **POST** `/api/AppFiles/Favorite`: Add file to favorites with file ID
+- **POST** `/api/AppFiles/UnFavorite`: Remove file from favorites with file ID and optional favorite ID
+- **POST** `/api/ViewTokens/ViewAViewToken`: Record token usage with token ID, new user flag, success flag
+- **GET** `/api/ViewTokens/GetViewTokenById?id={id}`: Retrieve token by ID
+
+**Repository Methods** (Internal APIs):
+- [Repository method name]: [Description and signature]
+- [Repository method name]: [Description and signature]
 
 **Data Models**:
 - [Model name]: [Fields and relationships]
