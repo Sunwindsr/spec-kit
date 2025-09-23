@@ -39,16 +39,16 @@ Given that target system description, do this:
      - Verify data models match actual API responses and component usage
      - **严禁基于假设创建数据模型** - 必须从源代码精确提取
 
-7. **PHASE 0: CONTRACT-FIRST EXTRACTION** (MANDATORY - 刚性前提条件):
+7. **PHASE 0: API CONTRACT EXTRACTION** (MANDATORY - 刚性前提条件):
    ```bash
-   # Contract-First: 接口、数据模型先行 - 这是重构的专门阶段和刚性前提
-   python3 scripts/extract-code-definitions.py --source [SOURCE_PROJECT_PATH] --output phase0-contracts.md
+   # API Contract First: 后端API契约提取 - 这是直接替换重构的专门阶段
+   python3 scripts/extract-api-contracts.py --source [SOURCE_PROJECT_PATH] --output api-contracts.md
    ```
-   - **Contract Validation**: 验证提取的contracts完整性和准确性
-   - **Contract Immutability**: 提取的contracts成为不可变更的基准，后续所有阶段必须严格遵循
-   - **Use ONLY Phase 0 Contracts**: 后续所有组件实现只能使用Phase 0提取的contracts，严禁自行定义
-   - **Validation Failure**: 如果contract提取失败，整个重构过程立即终止
-   - **CONSTITUTION VIOLATION**: 违反Contract-First原则将导致立即回滚到Phase 0重新开始
+   - **API Validation**: 验证提取的API端点和数据模型完整性和准确性
+   - **Direct Replacement Focus**: 新前端直接调用相同API，无需适配层或兼容层
+   - **Use ONLY Extracted APIs**: 新前端实现必须严格使用提取的API契约和数据模型
+   - **Validation Failure**: 如果API契约提取失败，整个重构过程立即终止
+   - **CONSTITUTION VIOLATION**: 违反直接替换原则将导致重构失败
 
 8. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived **ONLY** from the code extraction results while preserving section order and headings.
 9. Report completion with branch name, spec file path, and readiness for the next phase.

@@ -77,7 +77,7 @@ scripts:
 **Interface Stability (II)**: Public interfaces MUST remain unchanged - signatures, parameters, contracts  
 **Data Contract Integrity (III)**: Database structures and serialization formats MUST be preserved  
 **Concurrency Consistency (IV)**: No new concurrency units - retry, timeout, backoff strategies unchanged  
-**Structural Changes Only (V)**: Only file/module movement, splitting, adapters, annotations permitted  
+**Structural Changes Only (V)**: Only file/module movement, splitting, type annotations, documentation permitted  
 
 ### **IMPORTANT: Frontend UI/UX Modernization Principle**
 **Functional Logic vs UI/UX Distinction**:
@@ -128,7 +128,7 @@ specify refactoring behavior-preserve --baseline [ORIGINAL] --refactored [NEW]
 ```bash
 # Strict phase sequence enforcement
 specify refactoring baseline --component [COMPONENT]           # Phase 0: Prerequisite
-specify refactoring compatibility --component [COMPONENT]       # Phase 1: Prerequisite  
+specify refactoring api-contract --component [COMPONENT]       # Phase 0: API Contract Extraction  
 specify refactoring component-replace --component [COMPONENT]  # Phase 2: Sequential
 specify refactoring parallel-validation --component [COMPONENT] # Phase 3: Validation
 ```
@@ -147,7 +147,7 @@ specify refactoring parallel-validation --component [COMPONENT] # Phase 3: Valid
 - **Reality Check Fail**: Immediate halt - Fix mock data/placeholders before continuing
 - **Behavior Preservation Fail**: Design review required - Revisit Phase 1 approach
 - **Phase Sequence Violation**: Automatic rollback - Follow prescribed order
-- **Data Integrity Fail**: Schema migration review - Ensure 100% compatibility
+- **Data Integrity Fail**: Schema migration review - Ensure 100% direct replacement
 
 *See full constitution at `/memory/constitution-refactoring.md`*
 
@@ -158,9 +158,10 @@ specify refactoring parallel-validation --component [COMPONENT] # Phase 3: Valid
 specs/[###-refactoring]/
 ├── plan.md              # This file (/plan-refactoring command output)
 ├── research.md          # Phase 0 output (/plan-refactoring command)
-├── data-model.md        # Phase 1 output (/plan-refactoring command)
+├── data-models.md       # Phase 1A output - Data models and interfaces
+├── app-flows.md         # Phase 1B output - UX interaction logic and user requirements
+├── apis.md              # Phase 1C output - API contracts and endpoints
 ├── quickstart.md        # Phase 1 output (/plan-refactoring command)
-├── contracts/           # Phase 1 output (/plan-refactoring command)
 └── tasks.md             # Phase 2 output (/tasks-refactoring command)
 ```
 
@@ -178,9 +179,7 @@ src/
 ├── services/
 │   ├── legacy-service.js         # Original service
 │   └── refactored-service.js     # New implementation
-└── adapters/                     # Migration adapters
-    ├── component-adapter.js      # Bridges old/new components
-    └── service-adapter.js       # Bridges old/new services
+└── api-contracts/                # Extracted API contracts
 ```
 
 **Structure Decision**: [PRESERVE existing structure, ADD new components alongside old ones]
@@ -233,22 +232,31 @@ src/
    - **Data Contract Integrity**: Schema validation specifications
    - **Validation Output**: Compatibility report with specific preservation requirements
 
-2. **Create interface preservation contracts** → `/contracts/`:
-   - Document all existing interfaces that must remain stable
-   - Create compatibility layers for old/new implementations
-   - Define migration adapters and bridges
-   - **Include automated validation requirements** in contracts
+2. **Create core refactoring documentation trio**:
+   
+   **A. Extract data models** → `data-models.md`:
+   - Extract all TypeScript interfaces and data models from source code
+   - Document data relationships and type constraints
+   - Define data integrity preservation requirements
+   - **Automated extraction**: `python3 scripts/extract-api-contracts.py --source [SOURCE] --output data-models.md`
 
-3. **Update data models** → `data-model.md`:
-   - Document all existing data models and relationships
-   - Define migration strategies for data model changes
-   - Ensure data integrity during migration
-   - **Add automated validation rules** for schema preservation
+   **B. Document application flows** → `app-flows.md`:
+   - Map all UX interaction logic and user workflows
+   - Document business logic flows and state management
+   - Define user requirement mappings from FRD
+   - **Include user acceptance criteria** for each flow
 
-4. **Create refactoring test strategy** → `quickstart.md`:
+   **C. Extract API contracts** → `apis.md`:
+   - Extract all HTTP endpoints and API contracts from source code
+   - Document request/response formats and error handling
+   - Define API compatibility requirements for direct replacement
+   - **Automated extraction**: `python3 scripts/extract-api-contracts.py --source [SOURCE] --output apis.md`
+
+3. **Create refactoring test strategy** → `quickstart.md`:
    - Define comprehensive behavior preservation tests
    - Create baseline tests for current implementation
    - Define validation criteria for refactored implementation
+   - **Include automated validation commands** in test strategy
    - **Include automated validation commands** in test strategy
 
 5. **Execute Progressive Refactoring Baseline**:
@@ -277,7 +285,7 @@ src/
 **Task Generation Strategy**:
 - Load `.specify/templates/tasks-refactoring-template.md` as base
 - Generate tasks focusing on behavior preservation:
-  - Each interface → compatibility task [P]
+  - Each interface → API contract validation task [P0]
   - Each component → refactoring task with validation [P]
   - Each business flow → end-to-end testing task
   - Each risk → mitigation task
@@ -285,7 +293,7 @@ src/
 
 **Ordering Strategy**:
 - Behavior documentation before any changes
-- Interface compatibility before component refactoring
+- API contract validation before component refactoring
 - Testing throughout implementation
 - Risk mitigation tasks before high-risk changes
 - Mark [P] for parallel execution (independent components)
@@ -307,7 +315,7 @@ src/
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
 | [e.g., Parallel components] | [need for zero downtime] | [big-bang approach too risky] |
-| [e.g., Complex adapters] | [interface compatibility requirement] | [direct replacement would break integrations] |
+| [e.g., Complex data models] | [API contract requirement] | [must extract from source code] |
 
 ## Progress Tracking
 *This checklist is updated during execution flow*

@@ -21,7 +21,7 @@ scripts:
    → Map each component to refactoring tasks with automated validation
 4. Generate tasks by refactoring phase with automated validation:
    → Phase 1: Behavior Documentation (baseline tests + reality validation)
-   → Phase 2: Interface Analysis (compatibility layers + behavior preservation)
+   → Phase 2: Interface Analysis (API contract verification + behavior preservation)
    → Phase 3: Incremental Implementation (component refactoring + phase validation)
    → Phase 4: Validation & Testing (behavior preservation + comprehensive automation)
    → Phase 5: Migration & Rollback (deployment procedures + automated rollback)
@@ -74,8 +74,8 @@ scripts:
 | 任务ID | 任务描述 | 用户验收标准 | 前置条件 | 输入数据/参数 | 重构操作 | 验证步骤 | 回滚程序 | 优先级 | 依赖关系 | 当前状态 |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | `RT-[COMP]-DOC-001` | `[创建现有组件的基线测试]` | `[用户可以正常使用所有功能，测试覆盖率达到90%+]` | `[系统稳定运行 + Reality Validation PASS]` | `[组件规格和接口文档]` | `[编写全面的端到端测试]` | `[specify refactoring validate-baseline]` | `[specify refactoring rollback-baseline]` | `P0` | `无` | `待实现` |
-| `RT-[COMP]-INT-001` | `[创建接口兼容层]` | `[所有API调用行为一致，用户无感知切换]` | `[基线测试完成 + Behavior Preservation PASS]` | `[现有接口定义]` | `[创建新旧实现之间的适配器]` | `[specify refactoring validate-compatibility]` | `[specify refactoring rollback-compatibility]` | `P0` | `RT-[COMP]-DOC-001` | `待实现` |
-| `RT-[COMP]-REF-001` | `[重构核心组件实现]` | `[用户完成核心操作流程，功能100%保持]` | `[兼容层完成 + Progressive Phase Validation]` | `[新设计规格]` | `[实现新版本组件]` | `[specify refactoring validate-refactoring]` | `[specify refactoring rollback-implementation]` | `P1` | `RT-[COMP]-INT-001` | `待实现` |
+| `RT-[COMP]-INT-001` | `[验证API契约一致性]` | `[所有API调用行为完全一致，直接替换无感知]` | `[基线测试完成 + API Contract Verification PASS]` | `[提取的API契约]` | `[验证新实现与API契约100%匹配]` | `[specify refactoring validate-api-contract]` | `[specify refactoring rollback-implementation]` | `P0` | `RT-[COMP]-DOC-001` | `待实现` |
+| `RT-[COMP]-REF-001` | `[重构核心组件实现]` | `[用户完成核心操作流程，功能100%保持]` | `[API契约验证完成 + Implementation Validation]` | `[新设计规格]` | `[实现新版本组件，直接调用相同API]` | `[specify refactoring validate-refactoring]` | `[specify refactoring rollback-implementation]` | `P1` | `RT-[COMP]-INT-001` | `待实现` |
 | `RT-[COMP]-VAL-001` | `[性能和负载测试]` | `[系统性能不低于基线，用户体验流畅]` | `[重构完成 + All Validations PASS]` | `[性能基准]` | `[执行性能测试]` | `[specify refactoring validate-performance]` | `[specify refactoring rollback-deployment]` | `P1` | `RT-[COMP]-REF-001` | `待实现` |
 
 ---
@@ -90,11 +90,11 @@ scripts:
 **Validation Gate**: All Phase 1 tasks must pass `specify refactoring reality-check`
 
 ### Phase 2: Interface Analysis (P0/P1)
-*Create compatibility layers with automated interface preservation*
-- [ ] `RT-[COMP]-INT-[###]`: [Public API compatibility layer with diff validation]
-- [ ] `RT-[COMP]-INT-[###]`: [Data model adapter with schema integrity checks]
-- [ ] `RT-[COMP]-INT-[###]`: [UI component compatibility wrapper with behavior testing]
-**Validation Gate**: All Phase 2 tasks must pass `specify refactoring behavior-preserve`
+*Verify API contracts and ensure direct replacement compatibility*
+- [ ] `RT-[COMP]-INT-[###]`: [API endpoint verification with exact signature matching]
+- [ ] `RT-[COMP]-INT-[###]`: [Data model validation with source code extraction]
+- [ ] `RT-[COMP]-INT-[###]`: [Component interface verification for direct replacement]
+**Validation Gate**: All Phase 2 tasks must pass `specify refactoring validate-api-contract`
 
 ### Phase 3: Incremental Implementation (P1/P2)
 *Safe, incremental component refactoring with automated validation*
@@ -110,11 +110,11 @@ scripts:
 - [ ] `RT-[COMP]-VAL-[###]`: [Performance and load testing with automated benchmarking]
 **Validation Gate**: All Phase 4 tasks must pass `specify refactoring validate-comprehensive`
 
-### Phase 5: Migration & Rollback (P0)
-*Automated safe deployment and rollback procedures*
-- [ ] `RT-[COMP]-MIG-[###]`: [Canary deployment procedure with automated health checks]
-- [ ] `RT-[COMP]-MIG-[###]`: [Production rollout plan with validation gates]
-- [ ] `RT-[COMP]-MIG-[###]`: [Emergency rollback procedure with automated restore points]
+### Phase 5: Direct Replacement Deployment (P0)
+*Direct frontend replacement with validation*
+- [ ] `RT-[COMP]-MIG-[###]`: [Final deployment verification with API compatibility check]
+- [ ] `RT-[COMP]-MIG-[###]`: [Production rollout with complete replacement validation]
+- [ ] `RT-[COMP]-MIG-[###]`: [Emergency rollback to original frontend procedure]
 **Validation Gate**: All Phase 5 tasks must pass `specify refactoring validate-deployment`
 
 ---
@@ -127,18 +127,18 @@ For each component in the refactoring plan:
   1. Create baseline documentation task (Phase 1)
      - Must include `specify refactoring reality-check` command
      - Must achieve ≥80% integration authenticity
-  2. Create interface compatibility task (Phase 2)
-     - Must include `specify refactoring behavior-preserve` command
-     - Must validate 100% interface stability
+  2. Create API contract verification task (Phase 2)
+     - Must include `specify refactoring validate-api-contract` command
+     - Must validate 100% API compatibility for direct replacement
   3. Create component refactoring task (Phase 3)
      - Must include `specify refactoring validate-phase` command
-     - Must have automated rollback capability
+     - Must implement direct API calls without adapters
   4. Create validation task (Phase 4)
      - Must include comprehensive automated testing
-     - Must verify behavior preservation
-  5. Create migration task (Phase 5)
+     - Must verify behavior preservation and API consistency
+  5. Create direct replacement deployment task (Phase 5)
      - Must include deployment validation commands
-     - Must have automated rollback procedures
+     - Must have emergency rollback to original frontend
 
 **Automated Task Validation**:
 - Each task generation triggers validation via `specify refactoring validate-tasks`
@@ -207,7 +207,7 @@ specify refactoring validate-phase --task [TASK_ID] --phase [PHASE_NUMBER]
 | 任务ID | 任务描述 | 前置条件 | 输入数据/参数 | 重构操作 | 验证步骤 | 回滚程序 | 优先级 | 依赖关系 | 当前状态 |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
 | `RT-AUTH-DOC-001` | `[创建认证服务的基线测试]` | `[认证服务稳定运行]` | `[API文档和测试用例]` | `[编写完整的认证流程测试]` | `[所有测试通过并建立基线]` | `[保留测试代码]` | `P0` | `无` | `待实现` |
-| `RT-AUTH-INT-001` | `[创建认证API兼容层]` | `[基线测试完成]` | `[现有API接口定义]` | `[实现新旧的认证API适配器]` | `[验证所有现有调用正常]` | `[移除适配器，恢复原API]` | `P0` | `RT-AUTH-DOC-001` | `待实现` |
+| `RT-AUTH-INT-001` | `[验证认证API契约一致性]` | `[基线测试完成]` | `[现有API接口定义]` | `[验证新实现与API契约100%匹配]` | `[specify refactoring validate-api-contract]` | `[specify refactoring rollback-implementation]` | `P0` | `RT-AUTH-DOC-001` | `待实现` |
 
 ---
 

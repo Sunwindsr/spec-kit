@@ -36,13 +36,13 @@ Performance optimizations, algorithm replacements, default value adjustments, lo
 - **Automated Validation**: Specifications will be automatically validated against extracted definitions
 - **Severe Penalties**: Any violation results in immediate specification rejection and restart
 
-### VI-E. Contract-First Refactoring Principle (NON-NEGOTIABLE)
-**接口、数据模型先行** - Contract-First是重构模式的刚性前提条件：
-- **Phase 0: Contract Extraction**: 重构必须从接口和数据模型提取开始，这是专门的强制性阶段
-- **Contract Immutability**: 提取的contracts成为不可变更的基准，所有后续实现必须严格遵循
-- **Component Implementation Constraints**: 后续组件实现阶段严禁自行定义接口或数据模型，只能使用Phase 0提取的contracts
-- **Contract Validation Gates**: 每个组件实现必须通过contract compliance验证才能进入下一阶段
-- **Contract Violation Penalties**: 任何组件自定义contracts将导致立即回滚到Phase 0重新开始
+### VI-E. Direct Replacement Refactoring Principle (NON-NEGOTIABLE)
+**直接替换重构原则** - 前端技术栈完全替换模式：
+- **API Contract First**: 重构必须从后端API契约提取开始，这是专门强制性阶段
+- **Complete Replacement Strategy**: 新前端直接替换旧前端，不是增量迁移，无需适配层
+- **API Compatibility**: 新前端必须调用完全相同的后端API，保持请求/响应格式一致
+- **Behavior Equivalence**: 新前端必须实现100%相同的功能行为和用户交互流程
+- **Data Model Integrity**: 所有数据模型和字段定义必须完全保持原样，严禁自定义修改
 
 ### VI-A. Frontend-Specific Allowances
 For frontend/UI refactoring, the following changes are PERMITTED and ENCOURAGED:

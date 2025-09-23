@@ -314,6 +314,93 @@ def progressive(
     # TODO: 实现渐进式重构逻辑
     console.print("[yellow]Progressive refactoring feature coming soon...[/yellow]")
 
+@app.command()
+def api_contract(
+    source_path: str = typer.Argument(..., help="Source code path to extract API contracts from"),
+    output_file: Optional[str] = typer.Option(None, "--output", "-o", help="Output file for API contract report"),
+    json_output: Optional[str] = typer.Option(None, "--json", help="Also save JSON data to this file"),
+    fail_on_extraction_error: bool = typer.Option(True, "--fail-on-error", help="Fail if API contract extraction fails")
+):
+    """
+    Extract and validate API contracts for direct replacement refactoring.
+    
+    This command will:
+    1. Extract all API endpoints from the source code
+    2. Extract TypeScript interfaces and data models
+    3. Extract Angular component properties (@Input/@Output)
+    4. Generate comprehensive API contract documentation
+    5. Validate direct replacement requirements
+    
+    This is MANDATORY for Phase 0 of direct replacement refactoring.
+    
+    Example:
+        specify refactoring api-contract ./angular-project --output api-contracts.md
+        specify refactoring api-contract ./angular-project --output api-contracts.md --json data.json
+    """
+    source_path = Path(source_path)
+    
+    if not source_path.exists():
+        console.print(f"[red]Error: Source path '{source_path}' does not exist[/red]")
+        raise typer.Exit(1)
+    
+    console.print(f"[cyan]🔍 提取API契约: {source_path}[/cyan]")
+    
+    # Import and run the extraction script
+    script_path = Path(__file__).parent.parent.parent / "scripts" / "extract-api-contracts.py"
+    
+    if not script_path.exists():
+        console.print(f"[red]Error: Extraction script not found: {script_path}[/red]")
+        raise typer.Exit(1)
+    
+    try:
+        import subprocess
+        import sys
+        
+        # Build command
+        cmd = [sys.executable, str(script_path), "--source", str(source_path)]
+        
+        if output_file:
+            cmd.extend(["--output", output_file])
+        
+        if json_output:
+            cmd.extend(["--json", json_output])
+        
+        # Run extraction
+        result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+        
+        if result.returncode != 0:
+            console.print(f"[red]Error: API contract extraction failed[/red]")
+            console.print(f"[red]{result.stderr}[/red]")
+            if fail_on_extraction_error:
+                raise typer.Exit(1)
+            return
+        
+        # Show results
+        console.print("[green]✅ API契约提取完成[/green]")
+        
+        if output_file:
+            console.print(f"[cyan]📄 契约报告: {output_file}[/cyan]")
+        
+        if json_output:
+            console.print(f"[cyan]📊 JSON数据: {json_output}[/cyan]")
+        
+        # Show summary from output
+        if result.stdout:
+            lines = result.stdout.split('\n')
+            for line in lines:
+                if '📊 提取统计:' in line:
+                    console.print(f"[cyan]{line}[/cyan]")
+        
+        console.print("\n[green]✅ Phase 0: API Contract Extraction - 完成[/green]")
+        console.print("[cyan]💡 建议配合使用app-flows.md文档来完成完整的重构契约[/cyan]")
+        console.print("[cyan]💡 完整重构文档组合: data-models.md + app-flows.md + apis.md[/cyan]")
+        
+    except Exception as e:
+        console.print(f"[red]Error during API contract extraction: {str(e)}[/red]")
+        if fail_on_extraction_error:
+            raise typer.Exit(1)
+
+
 # reality_check and behavior_preserve functionality is now integrated into the validate command
 # Use: specify refactoring validate --check-reality --check-behavior --baseline [path]
 
