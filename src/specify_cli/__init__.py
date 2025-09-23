@@ -44,6 +44,9 @@ from rich.table import Table
 from rich.tree import Tree
 from typer.core import TyperGroup
 
+# Import refactoring validation commands
+from .commands import refactoring
+
 # For cross-platform keyboard input
 import readchar
 import ssl
@@ -1048,6 +1051,10 @@ def check():
         console.print("[dim]Tip: Install git for repository management[/dim]")
     if not (claude_ok or gemini_ok or cursor_ok or qwen_ok or windsurf_ok or opencode_ok or codex_ok):
         console.print("[dim]Tip: Install an AI assistant for the best experience[/dim]")
+
+
+# Add refactoring validation commands to the main app
+app.add_typer(refactoring.app, name="refactoring", help="Refactoring validation and quality assurance commands")
 
 
 def main():

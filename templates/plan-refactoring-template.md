@@ -21,13 +21,14 @@ scripts:
 3. Fill Current System Analysis section
    → Document existing behavior patterns
    → Map all public interfaces and contracts
-4. Fill Refactoring Constitution Check section
-   → Verify compliance with refactoring principles
-   → Validate behavior preservation requirements
-5. Evaluate Constitution Check section below
-   → If violations exist: Document in Complexity Tracking
-   → If no justification possible: ERROR "Refactoring approach too risky"
-   → Update Progress Tracking: Initial Constitution Check
+4. Execute Automated Constitution Compliance
+   → Run `specify refactoring reality-check` for mock data detection
+   → Validate behavior preservation requirements automatically
+   → Verify progressive refactoring prerequisites
+5. Evaluate Automated Compliance results
+   → If validation fails: Immediate halt with specific error guidance
+   → If warnings exist: Document mitigation strategies
+   → Update Progress Tracking: Automated Validation Check
 6. Execute Phase 0 → research.md
    → Analyze current implementation and refactoring options
    → If NEEDS CLARIFICATION remain: ERROR "Resolve unknowns"
@@ -72,20 +73,26 @@ scripts:
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
 ### Core Principles Verification
-**Behavior Preservation (I)**: All refactoring MUST preserve 100% existing behavior - no exceptions  
+**Behavior Preservation (I)**: All refactoring MUST preserve 100% functional behavior - no exceptions  
 **Interface Stability (II)**: Public interfaces MUST remain unchanged - signatures, parameters, contracts  
 **Data Contract Integrity (III)**: Database structures and serialization formats MUST be preserved  
 **Concurrency Consistency (IV)**: No new concurrency units - retry, timeout, backoff strategies unchanged  
 **Structural Changes Only (V)**: Only file/module movement, splitting, adapters, annotations permitted  
 
+### **IMPORTANT: Frontend UI/UX Modernization Principle**
+**Functional Logic vs UI/UX Distinction**:
+- **✅ PRESERVE 100%**: Business logic, data flow, user workflows, functional behavior
+- **🚀 ENCOURAGED TO OPTIMIZE**: UI layout, styling, interactions, UX patterns, responsiveness
+- **🎯 GOAL**: Leverage new technology stack to improve user experience while maintaining functional integrity  
+
 ### Prohibited Changes Verification
 **Prohibited Changes (VI)**: Backend performance optimizations, algorithm replacements, default values, log messages, sorting logic, randomness, I/O changes strictly forbidden
 
 **Frontend-Specific Verification (VI-A/B)**:
-- [ ] Frontend: Component modernization aligns with technology stack benefits
-- [ ] Frontend: UI layout and user workflow preserved (functional behavior)
-- [ ] Frontend: Business logic and data flow remain consistent
-- [ ] Frontend: Style improvements enhance rather than disrupt user experience  
+- [ ] Frontend: **Functional behavior preserved** (business logic, data flow, user workflows)
+- [ ] Frontend: **UI/UX modernization encouraged** (layout, styling, interactions based on new tech stack)
+- [ ] Frontend: **Technology stack optimization** (utilize new framework capabilities for better UX)
+- [ ] Frontend: **User experience enhancement** (improve interactions, responsiveness, accessibility)  
 
 ### Methodology Compliance
 **Complete Migration (VII)**: Include all dependencies when extracting units - no coupling remnants  
@@ -93,19 +100,54 @@ scripts:
 **Single Responsibility (IX)**: Each commit addresses only one structural modification type  
 **Incremental Revertibility (X)**: Every change must be independently verifiable and revertible  
 
-### Constitution Compliance
-- [ ] Behavior Preservation (I): 100% functional equivalence guaranteed
-- [ ] Interface Stability (II): All public interfaces preserved exactly
-- [ ] Data Contract Integrity (III): No data model or serialization changes
-- [ ] Concurrency Consistency (IV): Timing and ordering behaviors unchanged
-- [ ] Structural Changes Only (V): Only allowed modification types used
-- [ ] Prohibited Changes (VI): No forbidden backend modifications attempted
-- [ ] Frontend Allowances (VI-A): Component modernization and UI enhancements utilized appropriately
-- [ ] Frontend Constraints (VI-B): Layout and functional behavior preserved
-- [ ] Complete Migration (VII): All dependencies properly migrated
-- [ ] Immediate Updates (VIII): All references updated immediately
-- [ ] Single Responsibility (IX): Each commit has single structural focus
-- [ ] Incremental Revertibility (X): All changes are atomic and revertible
+### Automated Constitution Compliance
+**Automated Enforcement**: All compliance checks are executed via `specify refactoring validate` command
+
+**Reality Validation (Mandatory)**:
+```bash
+# Executed automatically before Phase 0
+specify refactoring reality-check --component [COMPONENT] --fail-on-mock
+```
+- **Mock Data Detection**: Automatic scanning prevents mock/fake data usage
+- **Business Logic Completeness**: Verifies no TODO/FIXME placeholders remain
+- **Integration Authenticity**: Ensures real API calls and data sources
+- **Validation Score**: Must achieve ≥80% integration authenticity
+
+**Behavior Preservation Verification (Mandatory)**:
+```bash
+# Executed automatically during Phase 1-2
+specify refactoring behavior-preserve --baseline [ORIGINAL] --refactored [NEW]
+```
+- **Interface Stability**: Automated diff analysis of public interfaces
+- **Functional Equivalence**: Comparative testing of original vs refactored
+- **Data Contract Integrity**: Schema validation and serialization testing
+- **Concurrency Consistency**: Timing and ordering behavior verification
+- **Frontend Functional Logic**: Business logic and user workflows preserved (UI/UX can be optimized)
+
+**Progressive Refactoring Enforcement (Mandatory)**:
+```bash
+# Strict phase sequence enforcement
+specify refactoring baseline --component [COMPONENT]           # Phase 0: Prerequisite
+specify refactoring compatibility --component [COMPONENT]       # Phase 1: Prerequisite  
+specify refactoring component-replace --component [COMPONENT]  # Phase 2: Sequential
+specify refactoring parallel-validation --component [COMPONENT] # Phase 3: Validation
+```
+- **Phase Gates**: Each phase automatically validates completion of previous phases
+- **Rollback Capability**: Every operation creates restore points
+- **Atomic Operations**: Each step is independently verifiable and revertible
+
+**Automated Compliance Status**:
+- ✅ **Reality Check**: [PASS/FAIL] - Mock data detection, business logic completeness
+- ✅ **Behavior Preservation**: [PASS/FAIL] - Interface stability, functional equivalence  
+- ✅ **Progressive Refactoring**: [PASS/FAIL] - Phase sequence, rollback capability
+- ✅ **Data Integrity**: [PASS/FAIL] - Schema preservation, serialization consistency
+- ✅ **Methodology Compliance**: [PASS/FAIL] - Single responsibility, atomic changes
+
+**Validation Failure Actions**:
+- **Reality Check Fail**: Immediate halt - Fix mock data/placeholders before continuing
+- **Behavior Preservation Fail**: Design review required - Revisit Phase 1 approach
+- **Phase Sequence Violation**: Automatic rollback - Follow prescribed order
+- **Data Integrity Fail**: Schema migration review - Ensure 100% compatibility
 
 *See full constitution at `/memory/constitution-refactoring.md`*
 
@@ -144,12 +186,22 @@ src/
 **Structure Decision**: [PRESERVE existing structure, ADD new components alongside old ones]
 
 ## Phase 0: Code Analysis & Research
-1. **Analyze current implementation**:
+1. **Execute Reality Validation**:
+   ```bash
+   # Automated validation before any analysis
+   specify refactoring reality-check --component [COMPONENT] --fail-on-mock
+   ```
+   - **Mock Data Detection**: Automatic scanning and prevention
+   - **Business Logic Completeness**: Verify no placeholders exist
+   - **Integration Authenticity**: Ensure real data sources and APIs
+   - **Validation Output**: Report with specific violation locations and fixes
+
+2. **Analyze current implementation**:
    - Map all business logic and data flows
    - Identify performance bottlenecks and technical debt
    - Document all dependencies and integration points
 
-2. **Research refactoring approaches**:
+3. **Research refactoring approaches**:
    ```bash
    For each component to refactor:
      Task: "Analyze {component} behavior and interfaces"
@@ -157,39 +209,67 @@ src/
      Task: "Research best practices for {challenge} refactoring"
    ```
 
-3. **Consolidate findings** in `research.md` using format:
+4. **Consolidate findings** in `research.md` using format:
    - Current implementation analysis
    - Refactoring approach selection
    - Risk assessment and mitigation strategies
    - Migration timeline and milestones
+   - **Validation Report**: Include automated reality check results
 
-**Output**: research.md with complete behavior mapping and refactoring strategy
+**Output**: research.md with complete behavior mapping, refactoring strategy, and validation compliance report
+
+**Prerequisite**: Reality Validation must PASS (≥80% integration authenticity, zero mock data violations)
 
 ## Phase 1: Refactoring Design
-*Prerequisites: research.md complete*
+*Prerequisites: research.md complete + Reality Validation PASS*
 
-1. **Create interface preservation contracts** → `/contracts/`:
+1. **Execute Behavior Preservation Verification**:
+   ```bash
+   # Automated verification during design phase
+   specify refactoring behavior-preserve --baseline [ORIGINAL] --refactored [NEW]
+   ```
+   - **Interface Stability**: Automated diff analysis of public APIs
+   - **Functional Equivalence**: Comparative testing requirements
+   - **Data Contract Integrity**: Schema validation specifications
+   - **Validation Output**: Compatibility report with specific preservation requirements
+
+2. **Create interface preservation contracts** → `/contracts/`:
    - Document all existing interfaces that must remain stable
    - Create compatibility layers for old/new implementations
    - Define migration adapters and bridges
+   - **Include automated validation requirements** in contracts
 
-2. **Update data models** → `data-model.md`:
+3. **Update data models** → `data-model.md`:
    - Document all existing data models and relationships
    - Define migration strategies for data model changes
    - Ensure data integrity during migration
+   - **Add automated validation rules** for schema preservation
 
-3. **Create refactoring test strategy** → `quickstart.md`:
+4. **Create refactoring test strategy** → `quickstart.md`:
    - Define comprehensive behavior preservation tests
    - Create baseline tests for current implementation
    - Define validation criteria for refactored implementation
+   - **Include automated validation commands** in test strategy
 
-4. **Update agent file incrementally** (O(1) operation):
+5. **Execute Progressive Refactoring Baseline**:
+   ```bash
+   # Establish baseline for progressive refactoring
+   specify refactoring baseline --component [COMPONENT]
+   ```
+   - **Component State Capture**: Current implementation state documentation
+   - **Reference Point Creation**: Baseline for comparison during refactoring
+   - **Rollback Point Establishment**: Restore point for safety
+
+6. **Update agent file incrementally** (O(1) operation):
    - Run `{SCRIPT}` for your AI assistant
    - Add refactoring-specific guidance and tools
    - Preserve existing configuration
    - Add behavior preservation requirements
+   - **Include automated validation command references**
 
-**Output**: Interface contracts, data model preservation docs, test strategy, agent updates
+**Output**: Interface contracts, data model preservation docs, test strategy, agent updates, baseline validation report
+
+**Validation Gate**: Behavior Preservation Verification must PASS (100% interface stability, functional equivalence requirements defined)
 
 ## Phase 2: Refactoring Task Planning Approach
 *This section describes what the /tasks-refactoring command will do - DO NOT execute during /plan-refactoring*
@@ -240,12 +320,14 @@ src/
 - [ ] Phase 4: Refactoring implementation complete
 - [ ] Phase 5: Validation and deployment complete
 
-**Gate Status**:
-- [ ] Initial Constitution Check: PASS
-- [ ] Post-Design Constitution Check: PASS
+**Automated Gate Status**:
+- [ ] Reality Validation: PASS (≥80% integration authenticity, no mock data)
+- [ ] Behavior Preservation Verification: PASS (interface stability confirmed)
+- [ ] Progressive Refactoring Readiness: PASS (phase sequence validated)
 - [ ] All interfaces documented and preserved
 - [ ] Behavior mapping complete
 - [ ] Risk mitigation documented
+- [ ] Automated compliance checks integrated
 
 ---
 
