@@ -67,10 +67,10 @@ fi
 # Step 2: Add refactoring components
 echo "Step 2: Adding refactoring-specific components..."
 
-# Copy refactoring command templates to .specify/templates/commands/
+# Copy refactoring command templates to .claude/commands/
 for cmd in constitution-refactoring specify-refactoring plan-refactoring tasks-refactoring implement-refactoring init-refactoring; do
     if [ -f "$REPO_ROOT/templates/commands/$cmd.md" ]; then
-        cp "$REPO_ROOT/templates/commands/$cmd.md" ".specify/templates/commands/"
+        cp "$REPO_ROOT/templates/commands/$cmd.md" ".claude/commands/"
         echo "✓ Copied $cmd.md"
     fi
 done

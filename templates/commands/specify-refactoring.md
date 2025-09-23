@@ -42,7 +42,7 @@ Given that target system description, do this:
 7. **PHASE 0: API CONTRACT EXTRACTION** (MANDATORY - 刚性前提条件):
    ```bash
    # API Contract First: 后端API契约提取 - 这是直接替换重构的专门阶段
-   python3 scripts/extract-api-contracts.py --source [SOURCE_PROJECT_PATH] --output api-contracts.md
+   python3 scripts/extract-api-contracts.py --source [SOURCE_PROJECT_PATH] --output specs/[BRANCH_NAME]/api-contracts.md
    ```
    - **API Validation**: 验证提取的API端点和数据模型完整性和准确性
    - **Direct Replacement Focus**: 新前端直接调用相同API，无需适配层或兼容层
@@ -50,8 +50,36 @@ Given that target system description, do this:
    - **Validation Failure**: 如果API契约提取失败，整个重构过程立即终止
    - **CONSTITUTION VIOLATION**: 违反直接替换原则将导致重构失败
 
-8. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived **ONLY** from the code extraction results while preserving section order and headings.
-9. Report completion with branch name, spec file path, and readiness for the next phase.
+8. **PHASE 1: DATA MODELS EXTRACTION** (数据模型提取):
+   ```bash
+   # 数据模型专用提取 - 获取详细的TypeScript接口和数据结构
+   python3 scripts/extract-api-contracts.py --source [SOURCE_PROJECT_PATH] --output specs/[BRANCH_NAME]/data-models.md --mode data-models
+   ```
+   - **Data Model Documentation**: 提取所有TypeScript接口定义、数据类型和关系
+   - **Entity Relationships**: 文档化实体间的关系和约束
+   - **API Response Models**: 确保与后端API响应格式完全匹配
+
+9. **PHASE 2: APPLICATION FLOWS ANALYSIS** (应用流程分析):
+   ```bash
+   # 应用流程分析 - 基于现有代码分析用户交互和业务流程
+   cp templates/app-flows-template.md specs/[BRANCH_NAME]/app-flows.md
+   ```
+   - **User Journey Mapping**: 基于现有组件分析用户交互流程
+   - **Business Logic Flows**: 文档化核心业务逻辑和数据处理流程
+   - **Component Interactions**: 分析组件间的通信和数据流
+
+10. **PHASE 3: TEST CASES GENERATION** (测试用例生成):
+   ```bash
+   # 测试用例生成 - 基于重构规范创建精确的测试用例
+   scripts/bash/create-new-test-cases.sh --json --feature-name "<extracted-feature-name>" --target "$ARGUMENTS"
+   ```
+   - **Behavior Preservation Tests**: 创建确保100%行为保持的测试用例
+   - **API Contract Validation**: 验证API契约的正确实现
+   - **Interface Stability Tests**: 确保所有接口保持稳定
+   - **Precision Requirements Definition**: 精确的需求定义，为后续验证做准备
+
+11. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived **ONLY** from the code extraction results while preserving section order and headings.
+12. Report completion with branch name, spec file path, and readiness for the next phase.
 
 Note: The script creates and checks out the new branch and initializes the spec file before writing.
 

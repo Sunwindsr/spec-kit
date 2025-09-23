@@ -111,13 +111,23 @@ SPEC_FILE="$FEATURE_DIR/spec.md"
 if [ -f "$TEMPLATE" ]; then 
     # Ensure UTF-8 encoding when copying template
     cp "$TEMPLATE" "$SPEC_FILE"
-    # Verify the file is UTF-8 encoded
+    # Force UTF-8 encoding verification and conversion
     if ! file "$SPEC_FILE" | grep -q "UTF-8"; then
         # If not UTF-8, recreate with proper encoding
         iconv -f utf-8 -t utf-8 "$TEMPLATE" > "$SPEC_FILE" 2>/dev/null || cp "$TEMPLATE" "$SPEC_FILE"
     fi
+    # Additional UTF-8 safety check - ensure file is properly encoded
+    if [ -f "$SPEC_FILE" ]; then
+        # Remove any potential BOM and ensure clean UTF-8
+        sed -i '1s/^\xEF\xBB\xBF//' "$SPEC_FILE" 2>/dev/null || true
+        # Verify file is readable as UTF-8
+        if ! iconv -f utf-8 -t utf-8 "$SPEC_FILE" >/dev/null 2>&1; then
+            echo "[specify-refactoring] Warning: File may have encoding issues" >&2
+        fi
+    fi
 else
-    touch "$SPEC_FILE"
+    # Create empty file with UTF-8 encoding
+    echo "" | iconv -f utf-8 -t utf-8 > "$SPEC_FILE" 2>/dev/null || touch "$SPEC_FILE"
 fi
 
 if $JSON_MODE; then

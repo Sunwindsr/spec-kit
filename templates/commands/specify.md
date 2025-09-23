@@ -17,7 +17,23 @@ Given that feature description, do this:
    - Create user stories using "As a [user type], I want to [action], so that [benefit]" format
    - Generate EARS requirements using When-Then, In Context, Event-Response, and Always templates
    - Use REQ-001, REQ-002, etc. for business requirements and FR-001, FR-002, etc. for functional requirements
-4. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
-5. Report completion with branch name, spec file path, and readiness for the next phase.
+
+4. **Create supporting documentation**:
+   ```bash
+   # 数据模型文档
+   cp templates/data-models-template.md specs/[BRANCH_NAME]/data-models.md
+   
+   # 应用流程文档  
+   cp templates/app-flows-template.md specs/[BRANCH_NAME]/app-flows.md
+   
+   # 测试用例文档
+   cp templates/test-cases-template.md specs/[BRANCH_NAME]/test-cases.md
+   ```
+   - **Data Models Documentation**: 为新功能创建数据模型结构文档
+   - **Application Flows Documentation**: 文档化用户交互和业务流程
+   - **Test Cases Documentation**: 创建精确的测试用例来验证需求实现
+
+5. Write the specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the feature description (arguments) while preserving section order and headings.
+6. Report completion with branch name, spec file path, and readiness for the next phase.
 
 Note: The script creates and checks out the new branch and initializes the spec file before writing.

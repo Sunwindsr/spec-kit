@@ -64,7 +64,7 @@ AGENTS_FILE="$REPO_ROOT/AGENTS.md"
 WINDSURF_FILE="$REPO_ROOT/.windsurf/rules/specify-rules.md"
 
 # Template file
-TEMPLATE_FILE="$REPO_ROOT/.specify/templates/agent-file-template.md"
+TEMPLATE_FILE="$REPO_ROOT/templates/agent-file-template.md"
 
 # Global variables for parsed plan data
 NEW_LANG=""
