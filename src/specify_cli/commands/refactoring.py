@@ -66,15 +66,15 @@ def validate(
             task = progress.add_task("扫描源文件...", total=None)
             validation_results = validation_system.validate_refactoring_project(project_path)
             progress.update(task, description=f"✅ 找到 {validation_results['total_files']} 个文件")
-            
-            # 生成报告
-            console.print("[cyan]📊 生成验证报告...[/cyan]")
-            report = validation_system.generate_report()
-            console.print("[green]✅ 验证完成[/green]")
-            
-        except Exception as e:
-            console.print(f"[red]❌ 验证失败: {str(e)}[/red]")
-            raise typer.Exit(1)
+        
+        # 生成报告
+        console.print("[cyan]📊 生成验证报告...[/cyan]")
+        report = validation_system.generate_report()
+        console.print("[green]✅ 验证完成[/green]")
+        
+    except Exception as e:
+        console.print(f"[red]❌ 验证失败: {str(e)}[/red]")
+        raise typer.Exit(1)
     
     # 显示验证结果
     result_table = Table(title="Validation Results", show_header=True, header_style="bold magenta")
