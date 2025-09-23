@@ -57,10 +57,11 @@ scripts:
 |:-----|:------------|:-----------|
 | **任务ID** | Unique identifier | Format: `RT-[COMPONENT]-[PHASE]-[NUMBER]` (e.g., `RT-AUTH-DOC-001`) |
 | **任务描述** | Refactoring activity | Include behavior preservation requirements and interface constraints |
+| **用户验收标准** | User acceptance criteria | 必须包含具体的用户场景和可衡量的成功标准 |
 | **前置条件** | Required system state | Include automated validation passes and baseline tests |
 | **输入数据/参数** | Specific refactoring inputs | Include existing component specs and interface contracts |
 | **重构操作** | Refactoring execution steps | Preserve behavior while improving implementation with automated validation |
-| **验证步骤** | Automated behavior preservation tests | Must include `specify refactoring validate` commands |
+| **验证步骤** | Automated behavior preservation tests | Must include `specify refactoring validate` commands + User acceptance tests |
 | **回滚程序** | Automated rollback procedures | Must include `specify refactoring rollback` commands |
 | **优先级** | Risk and impact level | `P0`/`P1`/`P2`/`P3` based on criticality |
 | **依赖关系** | Task dependencies | List prerequisite tasks and order constraints with validation gates |
@@ -70,12 +71,12 @@ scripts:
 
 ## Refactoring Tasks Table
 
-| 任务ID | 任务描述 | 前置条件 | 输入数据/参数 | 重构操作 | 验证步骤 | 回滚程序 | 优先级 | 依赖关系 | 当前状态 |
+| 任务ID | 任务描述 | 用户验收标准 | 前置条件 | 输入数据/参数 | 重构操作 | 验证步骤 | 回滚程序 | 优先级 | 依赖关系 | 当前状态 |
 |:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| `RT-[COMP]-DOC-001` | `[创建现有组件的基线测试]` | `[系统稳定运行 + Reality Validation PASS]` | `[组件规格和接口文档]` | `[编写全面的端到端测试]` | `[specify refactoring validate-baseline]` | `[specify refactoring rollback-baseline]` | `P0` | `无` | `待实现` |
-| `RT-[COMP]-INT-001` | `[创建接口兼容层]` | `[基线测试完成 + Behavior Preservation PASS]` | `[现有接口定义]` | `[创建新旧实现之间的适配器]` | `[specify refactoring validate-compatibility]` | `[specify refactoring rollback-compatibility]` | `P0` | `RT-[COMP]-DOC-001` | `待实现` |
-| `RT-[COMP]-REF-001` | `[重构核心组件实现]` | `[兼容层完成 + Progressive Phase Validation]` | `[新设计规格]` | `[实现新版本组件]` | `[specify refactoring validate-refactoring]` | `[specify refactoring rollback-implementation]` | `P1` | `RT-[COMP]-INT-001` | `待实现` |
-| `RT-[COMP]-VAL-001` | `[性能和负载测试]` | `[重构完成 + All Validations PASS]` | `[性能基准]` | `[执行性能测试]` | `[specify refactoring validate-performance]` | `[specify refactoring rollback-deployment]` | `P1` | `RT-[COMP]-REF-001` | `待实现` |
+| `RT-[COMP]-DOC-001` | `[创建现有组件的基线测试]` | `[用户可以正常使用所有功能，测试覆盖率达到90%+]` | `[系统稳定运行 + Reality Validation PASS]` | `[组件规格和接口文档]` | `[编写全面的端到端测试]` | `[specify refactoring validate-baseline]` | `[specify refactoring rollback-baseline]` | `P0` | `无` | `待实现` |
+| `RT-[COMP]-INT-001` | `[创建接口兼容层]` | `[所有API调用行为一致，用户无感知切换]` | `[基线测试完成 + Behavior Preservation PASS]` | `[现有接口定义]` | `[创建新旧实现之间的适配器]` | `[specify refactoring validate-compatibility]` | `[specify refactoring rollback-compatibility]` | `P0` | `RT-[COMP]-DOC-001` | `待实现` |
+| `RT-[COMP]-REF-001` | `[重构核心组件实现]` | `[用户完成核心操作流程，功能100%保持]` | `[兼容层完成 + Progressive Phase Validation]` | `[新设计规格]` | `[实现新版本组件]` | `[specify refactoring validate-refactoring]` | `[specify refactoring rollback-implementation]` | `P1` | `RT-[COMP]-INT-001` | `待实现` |
+| `RT-[COMP]-VAL-001` | `[性能和负载测试]` | `[系统性能不低于基线，用户体验流畅]` | `[重构完成 + All Validations PASS]` | `[性能基准]` | `[执行性能测试]` | `[specify refactoring validate-performance]` | `[specify refactoring rollback-deployment]` | `P1` | `RT-[COMP]-REF-001` | `待实现` |
 
 ---
 

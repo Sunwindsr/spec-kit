@@ -62,13 +62,37 @@ When creating this spec from code analysis:
 [Describe the current system architecture, key components, and functionality]
 
 ### Existing User Stories & Business Value
-**Primary User Stories**:
-- **As a** [user type], **I want to** [action], **so that** [benefit]
-- **As a** [user type], **I want to** [action], **so that** [benefit]
+**User Pain Points & Context**:
+> **重要**: 必须从实际用户调研和使用数据中提取真实的用户痛点
+- [具体的用户问题描述和发生场景]
+- [用户当前的解决方案及其局限性]
+- [业务影响和用户满意度数据]
 
-**Current Business Value**:
-- [Value proposition 1]: [Description]
-- [Value proposition 2]: [Description]
+**Primary User Stories** (EARS Format with Real Context):
+- **As a** [specific user role with real context], **I want to** [specific action], **so that** [tangible benefit]
+  - **Real Scenario**: [具体的使用场景和环境]
+  - **Current Pain**: [当前解决方案的痛点]
+  - **Success Metrics**: [如何衡量成功]
+
+**Current Business Value** (with Metrics):
+- [Value proposition 1]: [Description with measurable impact]
+- [Value proposition 2]: [Description with measurable impact]
+
+### User Acceptance Test Scenarios
+> **必须包含具体的用户验收测试用例，确保重构后用户体验一致性**
+
+**Critical User Journey Tests**:
+1. **[User Journey Name]**:
+   - **Given** [具体的前置条件]
+   - **When** [用户执行的具体操作序列]
+   - **Then** [期望的结果和用户体验]
+   - **Success Criteria** [可衡量的成功标准]
+
+2. **[User Journey Name]**:
+   - **Given** [具体的前置条件]
+   - **When** [用户执行的具体操作序列]
+   - **Then** [期望的结果和用户体验]
+   - **Success Criteria** [可衡量的成功标准]
 
 ### Existing Interfaces
 **RESTful API Endpoints** (CRITICAL - Must be preserved exactly):
@@ -106,6 +130,37 @@ export interface [DataModelName] {
 - [Repository method name]: [Description and signature]
 - [Repository method name]: [Description and signature]
 
+
+**Component Architecture & Functionality**:
+> **必须详细描述每个组件的功能职责、关键逻辑和交互关系**
+
+**[ComponentName]** (Source: [path/to/component.ts:line])
+- **Function Description**: [详细的组件功能描述和业务职责]
+- **Key Business Logic**: [关键业务逻辑和算法说明]
+- **Complexity Level**: [High/Medium/Low] | **Lines**: [approximate]
+- **Dependencies**: [依赖的服务、组件和外部系统]
+
+**Layout & UX Structure** (ASCII Diagram):
+```
+[组件布局的ASCII图示]
+┌─────────────────────────────────────────┐
+│ [主要容器区域]                          │
+│ ┌─────────────┐ ┌─────────────────────┐ │
+│ │ [子组件A]   │ │ [子组件B]           │ │
+│ │             │ │                     │ │
+│ └─────────────┘ └─────────────────────┘ │
+└─────────────────────────────────────────┘
+```
+
+**User Interaction Flow**:
+1. **[用户操作1]** → [系统响应1] → [界面变化1]
+2. **[用户操作2]** → [系统响应2] → [界面变化2]
+3. **[用户操作3]** → [系统响应3] → [界面变化3]
+
+**Responsive Behavior**:
+- **Desktop**: [桌面端布局和交互描述]
+- **Tablet**: [平板端布局和交互描述]  
+- **Mobile**: [移动端布局和交互描述]
 
 **UI Components**:
 - [Component name]: [Functionality and interface]
