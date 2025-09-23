@@ -53,33 +53,43 @@ Given that target system description, do this:
 8. **PHASE 1: DATA MODELS EXTRACTION** (数据模型提取):
    ```bash
    # 数据模型专用提取 - 获取详细的TypeScript接口和数据结构
-   python3 scripts/extract-api-contracts.py --source [SOURCE_PROJECT_PATH] --output specs/[BRANCH_NAME]/data-models.md --mode data-models
+   cp templates/data-models-refactoring-template.md specs/[BRANCH_NAME]/data-models.md
    ```
-   - **Data Model Documentation**: 提取所有TypeScript接口定义、数据类型和关系
+   - **Data Model Documentation**: 分析源代码中的所有TypeScript接口定义、数据类型和关系
    - **Entity Relationships**: 文档化实体间的关系和约束
-   - **API Response Models**: 确保与后端API响应格式完全匹配
+   - **Source Code Attribution**: 每个数据模型必须标注源代码位置 `[file_path]:[line_number]`
+   - **Constitution VI-D Compliance**: 严禁自定义接口和数据模型，必须从源代码提取
 
 9. **PHASE 2: APPLICATION FLOWS ANALYSIS** (应用流程分析):
    ```bash
    # 应用流程分析 - 基于现有代码分析用户交互和业务流程
-   cp templates/app-flows-template.md specs/[BRANCH_NAME]/app-flows.md
+   cp templates/app-flows-refactoring-template.md specs/[BRANCH_NAME]/app-flows.md
    ```
    - **User Journey Mapping**: 基于现有组件分析用户交互流程
    - **Business Logic Flows**: 文档化核心业务逻辑和数据处理流程
    - **Component Interactions**: 分析组件间的通信和数据流
+   - **Route Configuration Analysis**: 特别关注前端路由配置分析 (Constitution VI-F)
+   - **Source Code Traceability**: 所有流程步骤必须标注源代码位置
 
 10. **PHASE 3: TEST CASES GENERATION** (测试用例生成):
    ```bash
    # 测试用例生成 - 基于重构规范创建精确的测试用例
-   scripts/bash/create-new-test-cases.sh --json --feature-name "<extracted-feature-name>" --target "$ARGUMENTS"
+   cp templates/test-cases-refactoring-template.md specs/[BRANCH_NAME]/test-cases.md
    ```
    - **Behavior Preservation Tests**: 创建确保100%行为保持的测试用例
    - **API Contract Validation**: 验证API契约的正确实现
    - **Interface Stability Tests**: 确保所有接口保持稳定
+   - **Frontend Route Preservation Tests**: 验证前端路由100%保持 (Constitution VI-F)
    - **Precision Requirements Definition**: 精确的需求定义，为后续验证做准备
 
-11. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived **ONLY** from the code extraction results while preserving section order and headings.
-12. Report completion with branch name, spec file path, and readiness for the next phase.
+11. **Fill all generated documents with concrete content**:
+    - **data-models.md**: Analyze source code to extract all TypeScript interfaces, data models, and relationships
+    - **app-flows.md**: Analyze components, user interactions, business logic flows, and route configurations  
+    - **test-cases.md**: Generate comprehensive test cases based on the refactoring requirements
+    - **All content must be derived from actual source code analysis, not assumptions**
+
+12. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived **ONLY** from the code extraction results while preserving section order and headings.
+13. Report completion with branch name, spec file path, and readiness for the next phase.
 
 Note: The script creates and checks out the new branch and initializes the spec file before writing.
 

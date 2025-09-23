@@ -52,13 +52,33 @@ For frontend/UI refactoring, the following changes are PERMITTED and ENCOURAGED:
 - **Interaction Improvements**: Better user experience, smoother animations, improved accessibility
 - **Technology Stack Benefits**: Leverage modern framework capabilities for better maintainability
 
-### VI-B. Frontend Constraints
+### VI-B. Frontend Constraints (NON-NEGOTIABLE)
 UI layout and user workflow MUST be preserved:
 - **Screen Layout**: Overall page structure and element positioning must be recognizably similar
 - **User Flow**: User interaction sequences and navigation paths must remain identical
 - **Functional Behavior**: Same user inputs must produce the same functional outputs
 - **Business Logic**: All business rules and validation logic must be preserved exactly
 - **Data Flow**: Data binding and state management behavior must remain consistent
+
+### VI-F. Frontend Route Preservation Principle (NON-NEGOTIABLE)
+**前端路由必须100%保留不变** - 路由配置和导航行为必须完全保持：
+- **Route Configuration**: 所有路由路径、参数、嵌套结构必须100%保持
+- **Navigation Logic**: 导航逻辑和路由跳转必须完全一致
+- **Route Guards**: 路由守卫和权限检查必须保持不变
+- **Query Parameters**: URL查询参数处理逻辑必须保持一致
+- **Route Data**: 路由数据传递机制必须完全保持
+- **Browser History**: 浏览器历史记录行为必须保持一致
+- **Deep Linking**: 深度链接功能必须完全保持
+- **Route Resolution**: 路由解析和匹配逻辑必须保持不变
+
+**严禁以下变更**:
+- 修改路由路径或结构
+- 改变路由参数配置
+- 删除或添加路由
+- 修改导航逻辑
+- 改变路由守卫逻辑
+- 修改查询参数处理
+- 改变路由数据传递方式
 
 ## Refactoring Methodology
 

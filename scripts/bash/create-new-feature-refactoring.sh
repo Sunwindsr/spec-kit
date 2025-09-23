@@ -133,26 +133,10 @@ fi
 # Auto-generate all supporting documentation templates
 echo "[specify-refactoring] Generating supporting documentation templates..."
 
-# Generate app-flows.md
-if [ -f "$REPO_ROOT/templates/app-flows-refactoring-template.md" ]; then
-    cp "$REPO_ROOT/templates/app-flows-refactoring-template.md" "$FEATURE_DIR/app-flows.md"
-    echo "[specify-refactoring] ✓ Generated app-flows.md"
-else
-    echo "[specify-refactoring] ⚠ app-flows-refactoring-template.md not found" >&2
-fi
-
-# Generate test-cases.md  
-if [ -f "$REPO_ROOT/templates/test-cases-refactoring-template.md" ]; then
-    cp "$REPO_ROOT/templates/test-cases-refactoring-template.md" "$FEATURE_DIR/test-cases.md"
-    echo "[specify-refactoring] ✓ Generated test-cases.md"
-else
-    echo "[specify-refactoring] ⚠ test-cases-refactoring-template.md not found" >&2
-fi
-
-# Generate api-contracts.md
+# Generate api-contracts.md (refactoring-specific)
 if [ -f "$REPO_ROOT/templates/api-contracts-refactoring-template.md" ]; then
     cp "$REPO_ROOT/templates/api-contracts-refactoring-template.md" "$FEATURE_DIR/api-contracts.md"
-    echo "[specify-refactoring] ✓ Generated api-contracts.md"
+    echo "[specify-refactoring] ✓ Generated api-contracts.md (refactoring template)"
 else
     echo "[specify-refactoring] ⚠ api-contracts-refactoring-template.md not found" >&2
 fi
@@ -160,7 +144,23 @@ fi
 # Generate data-models.md if not created by extraction script
 if [ ! -f "$FEATURE_DIR/data-models.md" ] && [ -f "$REPO_ROOT/templates/data-models-refactoring-template.md" ]; then
     cp "$REPO_ROOT/templates/data-models-refactoring-template.md" "$FEATURE_DIR/data-models.md"
-    echo "[specify-refactoring] ✓ Generated data-models.md"
+    echo "[specify-refactoring] ✓ Generated data-models.md (refactoring template)"
+fi
+
+# Generate app-flows.md (refactoring-specific)
+if [ -f "$REPO_ROOT/templates/app-flows-refactoring-template.md" ]; then
+    cp "$REPO_ROOT/templates/app-flows-refactoring-template.md" "$FEATURE_DIR/app-flows.md"
+    echo "[specify-refactoring] ✓ Generated app-flows.md (refactoring template)"
+else
+    echo "[specify-refactoring] ⚠ app-flows-refactoring-template.md not found" >&2
+fi
+
+# Generate test-cases.md (refactoring-specific)
+if [ -f "$REPO_ROOT/templates/test-cases-refactoring-template.md" ]; then
+    cp "$REPO_ROOT/templates/test-cases-refactoring-template.md" "$FEATURE_DIR/test-cases.md"
+    echo "[specify-refactoring] ✓ Generated test-cases.md (refactoring template)"
+else
+    echo "[specify-refactoring] ⚠ test-cases-refactoring-template.md not found" >&2
 fi
 
 echo "[specify-refactoring] Documentation generation complete"

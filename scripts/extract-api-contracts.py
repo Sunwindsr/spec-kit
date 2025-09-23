@@ -6,8 +6,9 @@ This script extracts API contracts and data models from existing frontend codeba
 to ensure direct replacement compatibility during refactoring.
 
 Usage:
-    python3 scripts/extract-api-contracts.py --source <source_path> --output <output_file>
+    python3 scripts/extract-api-contracts.py --source <source_path> [--output <output_file>]
     python3 scripts/extract-api-contracts.py --source /path/to/angular/project --output api-contracts.md
+    python3 scripts/extract-api-contracts.py --source /path/to/angular/project  # defaults to api-contracts.md
 
 Requirements:
     - Python 3.8+
@@ -764,7 +765,7 @@ def generate_stats_table(stats: dict) -> str:
 def main():
     parser = argparse.ArgumentParser(description='Extract API contracts from frontend codebase')
     parser.add_argument('--source', required=True, help='Source code path')
-    parser.add_argument('--output', required=True, help='Output markdown file path')
+    parser.add_argument('--output', help='Output markdown file path (default: api-contracts.md)')
     parser.add_argument('--json', help='Also save JSON data to this file')
     parser.add_argument('--mode', choices=['combined', 'data-models', 'apis', 'backend-apis', 'frontend-apis'], default='combined',
                        help='Extraction mode: combined, data-models-only, apis-only, backend-apis-only, or frontend-apis-only')
@@ -772,7 +773,12 @@ def main():
     args = parser.parse_args()
     
     source_path = Path(args.source)
-    output_path = Path(args.output)
+    
+    # Default output file name is api-contracts.md for consistency
+    if args.output:
+        output_path = Path(args.output)
+    else:
+        output_path = Path('api-contracts.md')
     
     if not source_path.exists():
         print(f"❌ 源路径不存在: {source_path}")
@@ -824,6 +830,11 @@ def main():
     print(f"   - API端点: {metadata['total_endpoints']}")
     print(f"   - 接口定义: {metadata['total_interfaces']}")
     print(f"   - 组件属性: {metadata['total_components']}")
+    
+    # 确保输出文件名符合规范
+    if output_path.name != 'api-contracts.md':
+        print(f"⚠️ 建议使用标准文件名: api-contracts.md")
+        print(f"   当前文件名: {output_path.name}")
     
     return 0
 

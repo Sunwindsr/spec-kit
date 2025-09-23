@@ -104,6 +104,37 @@ if ([condition]) {
 - [x] **Constitution II**: 接口稳定性，所有公开接口保持不变
 - [x] **Constitution VI-C**: 数据真实性，严禁使用假数据
 - [x] **Constitution VI-D**: 接口和模型完整性，严禁自定义定义
+- [x] **Constitution VI-F**: 前端路由100%保留，路由配置和导航行为必须完全保持
+
+**前端路由配置分析**:
+#### 路由配置: [RouteConfigName]
+**源位置**: [file_path]:[line_number]  
+**路由类型**: [模块路由/组件路由/嵌套路由]  
+**重构约束**: [Constitution VI-F - 100%保持]
+
+**现有路由定义**:
+```typescript
+// 源系统中的路由配置
+const routes: Routes = [
+  {
+    path: '[route_path]',
+    component: [ComponentName],
+    children: [child_routes]  // 如果有嵌套路由
+  }
+];
+```
+
+**路由关键特性**:
+- **路径模式**: [path_pattern] (必须100%保持)
+- **参数配置**: [param_config] (必须100%保持)
+- **路由守卫**: [route_guards] (必须100%保持)
+- **数据解析**: [resolve_data] (必须100%保持)
+- **查询参数**: [query_params] (必须100%保持)
+
+**导航逻辑**:
+- **程序化导航**: [navigation_code] (位置: [file_path]:[line_number])
+- **路由链接**: [router_links] (位置: [file_path]:[line_number])
+- **重定向规则**: [redirect_rules] (位置: [file_path]:[line_number])
 
 ### 2.2 界面状态转换
 

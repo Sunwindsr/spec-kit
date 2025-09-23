@@ -157,6 +157,17 @@ For each component being refactored, document the current behavior precisely:
 - [ ] `RTC-[COMP]-INT-[###]`: [UI component behavior]
 - [ ] `RTC-[COMP]-INT-[###]`: [External integration compatibility]
 
+### Frontend Route Preservation Tests (前端路由保持) - P0/P1
+*Verify frontend routing configuration remains 100% unchanged (Constitution VI-F)*
+- [ ] `RTC-[COMP]-ROU-[###]`: [Route path pattern preservation]
+- [ ] `RTC-[COMP]-ROU-[###]`: [Route parameter configuration]
+- [ ] `RTC-[COMP]-ROU-[###]`: [Route guards and protection]
+- [ ] `RTC-[COMP]-ROU-[###]`: [Navigation logic consistency]
+- [ ] `RTC-[COMP]-ROU-[###]`: [Query parameter handling]
+- [ ] `RTC-[COMP]-ROU-[###]`: [Route data resolution]
+- [ ] `RTC-[COMP]-ROU-[###]`: [Browser history behavior]
+- [ ] `RTC-[COMP]-ROU-[###]`: [Deep linking functionality]
+
 ### Performance Regression Tests (性能回归) - P1/P2
 *Ensure performance does not degrade below acceptable thresholds*
 - [ ] `RTC-[COMP]-PER-[###]`: [Response time verification]
