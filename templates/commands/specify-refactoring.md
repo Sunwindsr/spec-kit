@@ -42,7 +42,7 @@ Given that target system description, do this:
 7. **PHASE 0: CONTRACT-FIRST EXTRACTION** (MANDATORY - 刚性前提条件):
    ```bash
    # Contract-First: 接口、数据模型先行 - 这是重构的专门阶段和刚性前提
-   python scripts/extract-code-definitions.py --source [SOURCE_PROJECT_PATH] --output phase0-contracts.md
+   python3 scripts/extract-code-definitions.py --source [SOURCE_PROJECT_PATH] --output phase0-contracts.md
    ```
    - **Contract Validation**: 验证提取的contracts完整性和准确性
    - **Contract Immutability**: 提取的contracts成为不可变更的基准，后续所有阶段必须严格遵循
