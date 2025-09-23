@@ -16,20 +16,25 @@ Given that target system description, do this:
    - Generate a clean, kebab-case feature name (2-5 words)
    - Examples: "view-app-files-biz", "file-viewer-component", "payment-service", "data-access-layer"
 
-2. Run the script `{SCRIPT}` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
+2. **Automatic Refactoring Constitution Setup**: Create the refactoring constitution file if it doesn't exist:
+   - Copy `templates/constitution-refactoring-template.md` to `/memory/constitution-refactoring.md`
+   - Update the constitution date to today's date
+   - This ensures all refactoring activities follow the predefined 20 core principles
+
+3. Run the script `{SCRIPT}` from repo root and parse its JSON output for BRANCH_NAME and SPEC_FILE. All file paths must be absolute.
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
 
-3. Load `templates/spec-refactoring-template.md` to understand required sections.
-4. Analyze the existing codebase to understand current behavior and interfaces.
-5. **IMPORTANT**: Extract and document user stories and business value from the existing code:
+4. Load `templates/spec-refactoring-template.md` to understand required sections.
+5. Analyze the existing codebase to understand current behavior and interfaces.
+6. **IMPORTANT**: Extract and document user stories and business value from the existing code:
    - Identify user types who interact with the system
    - Document the key user journeys and business value
    - Create EARS format requirements for business-critical behaviors
    - Use REQ-001, REQ-002, etc. for business requirements (not just RF-001 for refactoring)
    - **CRITICAL**: Extract and document all RESTful API endpoints with exact HTTP methods and URL patterns
    - Ensure API documentation is comprehensive for 100% behavior preservation
-6. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the code analysis while preserving section order and headings.
-7. Report completion with branch name, spec file path, and readiness for the next phase.
+7. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the code analysis while preserving section order and headings.
+8. Report completion with branch name, spec file path, and readiness for the next phase.
 
 Note: The script creates and checks out the new branch and initializes the spec file before writing.
 
