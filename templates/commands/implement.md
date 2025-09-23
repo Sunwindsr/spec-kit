@@ -17,13 +17,19 @@ Given the current feature context, do this:
    - **IF EXISTS**: Read research.md for technical decisions and constraints
    - **IF EXISTS**: Read quickstart.md for integration scenarios
 
-3. Parse tasks.md structure and extract:
+3. **Mandatory Requirements Validation Check**:
+   - **CRITICAL**: Check for validation certificate (`validation-certificate.md`) in spec directory
+   - **VERIFICATION**: Validate certificate shows PASS status (≥85 points)
+   - **BLOCKING**: Implementation PROHIBITED without valid validation certificate
+   - **REQUIREMENT**: All requirements must be precise, complete, and unambiguous
+
+4. Parse tasks.md structure and extract:
    - **Task phases**: Setup, Tests, Core, Integration, Polish
    - **Task dependencies**: Sequential vs parallel execution rules
    - **Task details**: ID, description, file paths, parallel markers [P]
    - **Execution flow**: Order and dependency requirements
 
-4. Execute implementation following the task plan:
+5. Execute implementation following the task plan:
    - **Phase-by-phase execution**: Complete each phase before moving to the next
    - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together  
    - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks

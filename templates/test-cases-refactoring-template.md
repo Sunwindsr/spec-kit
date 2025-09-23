@@ -40,6 +40,80 @@ scripts:
 ## Summary
 [Extract from refactoring spec: key interfaces, components, and behavior preservation requirements]
 
+---
+
+## 🔍 Behavior Precision Definition *(critical for refactoring success)*
+
+### Current Behavior Analysis Strategy
+*Precisely document the current system's behavior before refactoring*
+
+**1. Interface Contract Definition**
+- **API Signatures**: Exact method names, parameters, return types, HTTP status codes
+- **Data Formats**: Exact JSON structures, field names, data types, validation rules
+- **Error Responses**: Specific error codes, messages, and formats for all failure scenarios
+- **Performance Characteristics**: Current response times, throughput, resource usage patterns
+
+**2. Business Logic Precision**
+- **Algorithms**: Step-by-step processing logic with exact decision points
+- **Business Rules**: All validation rules, constraints, and conditional logic
+- **State Management**: How state changes and transitions occur
+- **Side Effects**: Database operations, external calls, caching behavior
+
+**3. UI/UX Behavior Precision**
+- **User Interactions**: Exact sequence of user actions and system responses
+- **Visual Behavior**: How UI components behave, update, and respond to user input
+- **Data Flow**: How data moves between components and updates the interface
+- **Error Handling**: How errors are displayed and handled in the UI
+
+### Behavior Documentation Template
+
+For each component being refactored, document the current behavior precisely:
+
+| Behavior Aspect | Current Implementation | Refactoring Requirement |
+|:----------------|:----------------------|:------------------------|
+| **API Contract** | [Exact current API signature and behavior] | [Must maintain exact same interface] |
+| **Data Processing** | [Step-by-step current processing logic] | [Must produce identical results] |
+| **Error Handling** | [Current error responses and codes] | [Must match exactly] |
+| **Performance** | [Current performance metrics] | [Must not degrade beyond X%] |
+| **UI Behavior** | [Current user interaction patterns] | [Must feel identical to user] |
+
+### Example: Behavior Precision Documentation
+
+**Component**: UserFileViewer
+- **API Contract**: 
+  - GET /api/files/{id} → returns FileDTO with exact field structure
+  - POST /api/files/{id}/view → records view event, returns 200/404
+  - All requests include Authorization header with JWT token
+- **Data Processing**:
+  1. Validate JWT token and extract user ID
+  2. Check user has permission to access file
+  3. Increment file view count in database
+  4. Return file metadata with exact same field structure
+- **Error Handling**:
+  - Invalid token: HTTP 401 with {"error": "invalid_token"}
+  - File not found: HTTP 404 with {"error": "file_not_found"}
+  - No permission: HTTP 403 with {"error": "access_denied"}
+- **Performance**:
+  - Current response time: 120ms average (P95: 350ms)
+  - Current throughput: 200 requests/second
+  - Memory usage: 15MB per request
+- **UI Behavior**:
+  - Loading spinner shows for >200ms requests
+  - Files display in grid view with exact same layout
+  - Sort by name/date ascending, toggleable
+  - Pagination shows 20 items per page
+
+### Behavior Verification Checklist
+- [ ] All API endpoints are documented with exact signatures
+- [ ] All data models are documented with exact field structures
+- [ ] All business logic flows are documented step-by-step
+- [ ] All error conditions and responses are documented
+- [ ] Performance metrics are established as baselines
+- [ ] UI behavior patterns are documented with screenshots/videos
+- [ ] All external integrations are documented with exact contracts
+
+---
+
 ## Refactoring Test Cases Structure Template
 
 | Field | Description | Guidelines |

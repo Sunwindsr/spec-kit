@@ -11,8 +11,15 @@ Given that refactoring tasks file path, do this:
 
 1. Run the script `{SCRIPT}` from repo root and parse its JSON output for IMPLEMENTATION_CONFIG.
    **IMPORTANT** You must only ever run this script once. The JSON is provided in the terminal as output - always refer to it to get the actual content you're looking for.
-2. Load the refactoring tasks from the provided path.
-3. Execute refactoring implementation with strict behavior preservation:
+
+2. **Mandatory Requirements Validation Check**:
+   - **CRITICAL**: Check for validation certificate (`validation-certificate.md`) in spec directory
+   - **VERIFICATION**: Validate certificate shows PASS status (≥85 points)
+   - **BLOCKING**: Refactoring PROHIBITED without valid validation certificate
+   - **REQUIREMENT**: All behavior requirements must be precisely defined
+
+3. Load the refactoring tasks from the provided path.
+4. Execute refactoring implementation with strict behavior preservation:
    - **Phase 1: Baseline Establishment**: Create comprehensive test baseline
    - **Phase 2: Incremental Implementation**: Execute tasks with verification
    - **Phase 3: Continuous Validation**: Run behavior preservation tests
