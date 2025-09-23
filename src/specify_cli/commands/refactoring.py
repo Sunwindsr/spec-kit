@@ -12,8 +12,7 @@ from rich.live import Live
 from rich.tree import Tree
 from typing import Optional
 
-from ..validation import RefactoringValidationSystem
-from ..step_tracker import StepTracker
+from ..validation.refactoring_validation import RefactoringValidationSystem
 
 app = typer.Typer(
     name="refactoring",
@@ -59,34 +58,23 @@ def validate(
     # 创建验证系统
     validation_system = RefactoringValidationSystem()
     
-    # 创建进度追踪器
-    tracker = StepTracker("Refactoring Validation")
-    tracker.add("scan", "Scan source files")
-    tracker.add("validate-reality", "Validate data reality")
-    tracker.add("validate-logic", "Validate business logic")
-    tracker.add("generate-report", "Generate validation report")
+    console.print("[cyan]🔍 开始重构验证...[/cyan]")
     
-    with Live(tracker.render(), console=console, refresh_per_second=8, transient=True) as live:
-        tracker.attach_refresh(lambda: live.update(tracker.render()))
-        
-        try:
-            # 扫描源文件
-            tracker.start("scan")
+    try:
+        # 扫描源文件
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=console) as progress:
+            task = progress.add_task("扫描源文件...", total=None)
             validation_results = validation_system.validate_refactoring_project(project_path)
-            tracker.complete("scan", f"found {validation_results['total_files']} files")
+            progress.update(task, description=f"✅ 找到 {validation_results['total_files']} 个文件")
             
             # 生成报告
-            tracker.start("generate-report")
+            console.print("[cyan]📊 生成验证报告...[/cyan]")
             report = validation_system.generate_report()
-            tracker.complete("generate-report", "validation complete")
+            console.print("[green]✅ 验证完成[/green]")
             
         except Exception as e:
-            tracker.error("generate-report", str(e))
-            console.print(f"[red]Validation failed: {str(e)}[/red]")
+            console.print(f"[red]❌ 验证失败: {str(e)}[/red]")
             raise typer.Exit(1)
-    
-    # 显示最终结果
-    console.print(tracker.render())
     
     # 显示验证结果
     result_table = Table(title="Validation Results", show_header=True, header_style="bold magenta")
