@@ -67,6 +67,43 @@ TEMPLATE="$REPO_ROOT/templates/spec-template.md"
 SPEC_FILE="$FEATURE_DIR/spec.md"
 if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
 
+# Auto-generate all supporting documentation templates
+echo "[specify] Generating supporting documentation templates..."
+
+# Generate data-models.md
+if [ -f "$REPO_ROOT/templates/data-models-template.md" ]; then
+    cp "$REPO_ROOT/templates/data-models-template.md" "$FEATURE_DIR/data-models.md"
+    echo "[specify] ✓ Generated data-models.md"
+else
+    echo "[specify] ⚠ data-models-template.md not found" >&2
+fi
+
+# Generate app-flows.md
+if [ -f "$REPO_ROOT/templates/app-flows-template.md" ]; then
+    cp "$REPO_ROOT/templates/app-flows-template.md" "$FEATURE_DIR/app-flows.md"
+    echo "[specify] ✓ Generated app-flows.md"
+else
+    echo "[specify] ⚠ app-flows-template.md not found" >&2
+fi
+
+# Generate test-cases.md  
+if [ -f "$REPO_ROOT/templates/test-cases-template.md" ]; then
+    cp "$REPO_ROOT/templates/test-cases-template.md" "$FEATURE_DIR/test-cases.md"
+    echo "[specify] ✓ Generated test-cases.md"
+else
+    echo "[specify] ⚠ test-cases-template.md not found" >&2
+fi
+
+# Generate api-contracts.md
+if [ -f "$REPO_ROOT/templates/api-contracts-template.md" ]; then
+    cp "$REPO_ROOT/templates/api-contracts-template.md" "$FEATURE_DIR/api-contracts.md"
+    echo "[specify] ✓ Generated api-contracts.md"
+else
+    echo "[specify] ⚠ api-contracts-template.md not found" >&2
+fi
+
+echo "[specify] Documentation generation complete"
+
 if $JSON_MODE; then
     printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM"
 else
