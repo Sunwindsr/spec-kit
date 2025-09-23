@@ -83,13 +83,29 @@ When creating this spec from code analysis:
 - **POST** `/api/ViewTokens/ViewAViewToken`: Record token usage with token ID, new user flag, success flag
 - **GET** `/api/ViewTokens/GetViewTokenById?id={id}`: Retrieve token by ID
 
+**Data Models** (EXTRACTED FROM SOURCE CODE - MANDATORY):
+> **警告：以下数据模型必须从实际源代码精确提取，不得基于假设创建**
+
+**[DataModelName]** (Source: [path/to/file.ts:line]):
+```typescript
+// Exact interface/class definition from source code
+export interface [DataModelName] {
+  [fieldName]: [fieldType]; // From source with comments
+  [fieldName]: [fieldType]; // Include all properties, validation, defaults
+}
+```
+
+**Field Validation Rules**:
+- [Field name]: [Validation rule from source]
+- [Field name]: [Validation rule from source]
+
+**Data Relationships**:
+- [Relationship description based on actual usage]
+
 **Repository Methods** (Internal APIs):
 - [Repository method name]: [Description and signature]
 - [Repository method name]: [Description and signature]
 
-**Data Models**:
-- [Model name]: [Fields and relationships]
-- [Model name]: [Fields and relationships]
 
 **UI Components**:
 - [Component name]: [Functionality and interface]

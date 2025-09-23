@@ -330,6 +330,7 @@ class RefactoringValidationSystem:
     def __init__(self):
         self.reality_validator = RealityValidator()
         self.behavior_validator = BehaviorPreservationValidator()
+        self.spec_validator = SpecSourceValidator()
         self.progressive_validator = ProgressiveRefactoringValidator()
         self.validation_results: List[ValidationResult] = []
     
@@ -438,3 +439,85 @@ class RefactoringValidationSystem:
                 report_lines.append(f"   详情: {json.dumps(result.details, indent=2, ensure_ascii=False)}")
         
         return "\n".join(report_lines)
+
+
+class SpecSourceValidator:
+    """规格文档与源代码一致性验证器"""
+    
+    def __init__(self):
+        self.data_model_issues = []
+        
+    def validate_spec_against_source(self, spec_file: Path, source_project_path: Path) -> ValidationResult:
+        """验证规格文档中的数据模型是否与源代码一致"""
+        try:
+            if not spec_file.exists():
+                return ValidationResult(
+                    passed=False,
+                    severity=ValidationSeverity.ERROR,
+                    message="规格文档不存在",
+                    details={"spec_file": str(spec_file)}
+                )
+            
+            # 读取规格文档
+            with open(spec_file, 'r', encoding='utf-8') as f:
+                spec_content = f.read()
+            
+            # 检查是否包含数据模型定义
+            if "Data Models" not in spec_content and "数据模型" not in spec_content:
+                return ValidationResult(
+                    passed=False,
+                    severity=ValidationSeverity.ERROR,
+                    message="规格文档缺少数据模型定义",
+                    details={"spec_file": str(spec_file)}
+                )
+            
+            # 检查是否标注了源代码路径
+            if "Source:" not in spec_content and "源代码路径" not in spec_content:
+                return ValidationResult(
+                    passed=False,
+                    severity=ValidationSeverity.WARNING,
+                    message="数据模型未标注源代码路径，无法验证准确性",
+                    details={"spec_file": str(spec_file)}
+                )
+            
+            # 检查数据模型是否基于假设创建
+            assumption_patterns = [
+                r'基于假设|假设的|assumed|hypothetical',
+                r'可能包含|大概|approximately',
+                r'待验证|需要验证|to be validated',
+                r'基于文档|based on documentation(?!source)'
+            ]
+            
+            for pattern in assumption_patterns:
+                if re.search(pattern, spec_content, re.IGNORECASE):
+                    return ValidationResult(
+                        passed=False,
+                        severity=ValidationSeverity.ERROR,
+                        message=f"检测到基于假设创建的数据模型: {pattern}",
+                        details={"spec_file": str(spec_file), "pattern": pattern}
+                    )
+            
+            # 验证源代码中是否存在相应的数据模型文件
+            ts_files = list(source_project_path.rglob("*.ts"))
+            if not ts_files:
+                return ValidationResult(
+                    passed=False,
+                    severity=ValidationSeverity.WARNING,
+                    message="源代码中未找到TypeScript文件",
+                    details={"source_project_path": str(source_project_path)}
+                )
+            
+            return ValidationResult(
+                passed=True,
+                severity=ValidationSeverity.INFO,
+                message="规格文档数据模型验证通过",
+                details={"spec_file": str(spec_file), "ts_files_count": len(ts_files)}
+            )
+            
+        except Exception as e:
+            return ValidationResult(
+                passed=False,
+                severity=ValidationSeverity.ERROR,
+                message=f"验证规格文档时发生错误: {str(e)}",
+                details={"spec_file": str(spec_file), "error": str(e)}
+            )

@@ -83,6 +83,25 @@ def validate(
             console.print("[yellow]⚠️ 重构宪法模板缺失[/yellow]")
             validation_results['constitution_compliance'] = "宪法检查不可用"
         
+        # 验证规格文档与源代码一致性
+        console.print("[cyan]🔍 验证规格文档数据模型准确性...[/cyan]")
+        spec_files = list(project_path.rglob("*.md"))
+        source_accuracy_issues = []
+        
+        for spec_file in spec_files:
+            if "spec-" in spec_file.name or "refactoring" in spec_file.name:
+                spec_result = validation_system.spec_validator.validate_spec_against_source(spec_file, project_path)
+                if not spec_result.passed:
+                    source_accuracy_issues.append(spec_result.message)
+                    if spec_result.severity.value == "error":
+                        validation_results['errors'].append(spec_result.message)
+        
+        validation_results['source_accuracy_issues'] = source_accuracy_issues
+        if source_accuracy_issues:
+            console.print(f"[yellow]⚠️ 发现 {len(source_accuracy_issues)} 个数据模型准确性问题[/yellow]")
+        else:
+            console.print("[green]✅ 规格文档数据模型验证通过[/green]")
+        
         # 生成报告
         console.print("[cyan]📊 生成验证报告...[/cyan]")
         report = validation_system.generate_report()

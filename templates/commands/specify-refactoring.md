@@ -32,6 +32,12 @@ Given that target system description, do this:
    - Create EARS format requirements for business-critical behaviors
    - Use REQ-001, REQ-002, etc. for business requirements (not just RF-001 for refactoring)
    - **CRITICAL**: Extract and document all RESTful API endpoints with exact HTTP methods and URL patterns
+   - **MANDATORY**: Extract and document exact data models from source code:
+     - Find all interface/class definitions (AppFileDTO, CommentDTO, FavoriteDTO, etc.)
+     - Document exact field names, types, and relationships from actual TypeScript files
+     - Include all properties, validation rules, and default values from source
+     - Verify data models match actual API responses and component usage
+     - **严禁基于假设创建数据模型** - 必须从源代码精确提取
    - Ensure API documentation is comprehensive for 100% behavior preservation
 7. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the code analysis while preserving section order and headings.
 8. Report completion with branch name, spec file path, and readiness for the next phase.
