@@ -2,6 +2,10 @@
 # Create a new refactoring feature with branch, directory structure, and template
 set -e
 
+# Ensure UTF-8 encoding
+export LANG=C.UTF-8
+export LC_ALL=C.UTF-8
+
 JSON_MODE=false
 PATH_MODE=false
 FEATURE_NAME=""
@@ -96,7 +100,7 @@ fi
 if [ "$HAS_GIT" = true ]; then
     git checkout -b "$BRANCH_NAME"
 else
-    >&2 echo "[specify-refactoring] Warning: Git repository not detected; skipped branch creation for $BRANCH_NAME"
+    echo "[specify-refactoring] Warning: Git repository not detected; skipped branch creation for $BRANCH_NAME" >&2
 fi
 
 FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
@@ -104,7 +108,17 @@ mkdir -p "$FEATURE_DIR"
 
 TEMPLATE="$REPO_ROOT/templates/spec-refactoring-template.md"
 SPEC_FILE="$FEATURE_DIR/spec.md"
-if [ -f "$TEMPLATE" ]; then cp "$TEMPLATE" "$SPEC_FILE"; else touch "$SPEC_FILE"; fi
+if [ -f "$TEMPLATE" ]; then 
+    # Ensure UTF-8 encoding when copying template
+    cp "$TEMPLATE" "$SPEC_FILE"
+    # Verify the file is UTF-8 encoded
+    if ! file "$SPEC_FILE" | grep -q "UTF-8"; then
+        # If not UTF-8, recreate with proper encoding
+        iconv -f utf-8 -t utf-8 "$TEMPLATE" > "$SPEC_FILE" 2>/dev/null || cp "$TEMPLATE" "$SPEC_FILE"
+    fi
+else
+    touch "$SPEC_FILE"
+fi
 
 if $JSON_MODE; then
     printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","SYSTEM_DESCRIPTION":"%s","FEATURE_NAME":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM" "$SYSTEM_DESCRIPTION" "$FEATURE_NAME"

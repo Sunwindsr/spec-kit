@@ -62,7 +62,13 @@ New-Item -ItemType Directory -Path $featureDir -Force | Out-Null
 
 $template = Join-Path $repoRoot 'templates/spec-refactoring-template.md'
 $specFile = Join-Path $featureDir 'spec.md'
-if (Test-Path $template) { Copy-Item $template $specFile -Force } else { New-Item -ItemType File -Path $specFile | Out-Null }
+if (Test-Path $template) { 
+    # Copy template with UTF-8 encoding
+    $content = Get-Content -Path $template -Raw -Encoding UTF8
+    Set-Content -Path $specFile -Value $content -Encoding UTF8
+} else { 
+    New-Item -ItemType File -Path $specFile | Out-Null 
+}
 
 if ($Json) {
     $obj = [PSCustomObject]@{ 
