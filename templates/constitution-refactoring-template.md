@@ -28,6 +28,14 @@ Performance optimizations, algorithm replacements, default value adjustments, lo
 - **Production-Ready Data**: Data sources must be production-grade, not development-only test data
 - **Data真实性验证**: 必须验证所有数据的真实性和来源可靠性
 
+### VI-D. Interface and Model Integrity Principle (NON-NEGOTIABLE)
+**严禁自定义接口和数据模型** - All interfaces and data models MUST be extracted from source code:
+- **Mandatory Code Extraction**: All interface and data model definitions must be extracted from existing source code
+- **Zero Custom Definitions**: Absolutely no custom interface/type/class definitions allowed in specifications
+- **Source Path Attribution**: Every interface/model MUST include exact source file path and line number
+- **Automated Validation**: Specifications will be automatically validated against extracted definitions
+- **Severe Penalties**: Any violation results in immediate specification rejection and restart
+
 ### VI-A. Frontend-Specific Allowances
 For frontend/UI refactoring, the following changes are PERMITTED and ENCOURAGED:
 - **Component Modernization**: Replace legacy HTML/components with modern framework components

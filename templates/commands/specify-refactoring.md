@@ -38,9 +38,20 @@ Given that target system description, do this:
      - Include all properties, validation rules, and default values from source
      - Verify data models match actual API responses and component usage
      - **严禁基于假设创建数据模型** - 必须从源代码精确提取
-   - Ensure API documentation is comprehensive for 100% behavior preservation
-7. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived from the code analysis while preserving section order and headings.
-8. Report completion with branch name, spec file path, and readiness for the next phase.
+
+7. **CODE ANALYSIS PHASE** - Execute mandatory code extraction:
+   ```bash
+   # Run these commands automatically before writing specification:
+   python scripts/extract-code-definitions.py --source [SOURCE_PROJECT_PATH] --output extracted-definitions.md
+   ```
+   - **Wait for extraction results** before proceeding
+   - **Use ONLY the extracted definitions** - no custom definitions allowed
+   - **Include extraction source file paths** for every interface/model
+   - **Validation failure**: If extraction fails, DO NOT proceed with specification
+   - **CONSTITUTION VIOLATION**: Any custom interface/model definitions will result in immediate rejection
+
+8. Write the refactoring specification to SPEC_FILE using the template structure, replacing placeholders with concrete details derived **ONLY** from the code extraction results while preserving section order and headings.
+9. Report completion with branch name, spec file path, and readiness for the next phase.
 
 Note: The script creates and checks out the new branch and initializes the spec file before writing.
 

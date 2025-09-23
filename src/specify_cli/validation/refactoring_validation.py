@@ -446,6 +446,14 @@ class SpecSourceValidator:
     
     def __init__(self):
         self.data_model_issues = []
+        self.custom_definition_patterns = [
+            r'interface\s+\w+\s*\{[^}]*\}',  # 自定义接口定义
+            r'type\s+\w+\s*=',  # 自定义类型定义
+            r'class\s+\w+\s*\{[^}]*\}',  # 自定义类定义
+            r'data\s*:\s*\{[^}]*\}',  # 内联数据对象定义
+            r'app\.service\(',  # 假设的服务调用
+            r'fakeData|mockData',  # 明确的假数据
+        ]
         
     def validate_spec_against_source(self, spec_file: Path, source_project_path: Path) -> ValidationResult:
         """验证规格文档中的数据模型是否与源代码一致"""
@@ -497,6 +505,32 @@ class SpecSourceValidator:
                         details={"spec_file": str(spec_file), "pattern": pattern}
                     )
             
+            # 检测自定义接口和数据模型定义
+            custom_definition_issues = []
+            for pattern in self.custom_definition_patterns:
+                matches = re.finditer(pattern, spec_content, re.IGNORECASE | re.MULTILINE | re.DOTALL)
+                for match in matches:
+                    definition_text = match.group()
+                    # 检查是否有源代码路径标注
+                    if "Source:" not in definition_text and "源代码路径:" not in definition_text:
+                        custom_definition_issues.append({
+                            "pattern": pattern,
+                            "definition": definition_text[:100] + "..." if len(definition_text) > 100 else definition_text,
+                            "line_number": self._get_line_number(spec_content, match.start())
+                        })
+            
+            if custom_definition_issues:
+                return ValidationResult(
+                    passed=False,
+                    severity=ValidationSeverity.ERROR,
+                    message=f"检测到{len(custom_definition_issues)}个自定义接口/数据模型定义，必须使用源代码提取",
+                    details={
+                        "spec_file": str(spec_file),
+                        "custom_definitions": custom_definition_issues,
+                        "requirement": "所有接口和数据模型必须从源代码提取并标注路径"
+                    }
+                )
+            
             # 验证源代码中是否存在相应的数据模型文件
             ts_files = list(source_project_path.rglob("*.ts"))
             if not ts_files:
@@ -521,3 +555,7 @@ class SpecSourceValidator:
                 message=f"验证规格文档时发生错误: {str(e)}",
                 details={"spec_file": str(spec_file), "error": str(e)}
             )
+    
+    def _get_line_number(self, content: str, position: int) -> int:
+        """获取指定位置在文本中的行号"""
+        return content[:position].count('\n') + 1
