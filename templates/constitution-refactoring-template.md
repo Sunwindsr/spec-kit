@@ -20,6 +20,14 @@ Allowed changes are strictly limited to: file/module movement, class/function sp
 ### VI. Prohibited Changes (ABSOLUTE) - Backend/Logic
 Performance optimizations, algorithm replacements, default value adjustments, log message changes, sorting/deduplication logic modifications, randomness/seed changes, and I/O location/format changes are strictly forbidden.
 
+### VI-C. Data Authenticity Principle (NON-NEGOTIABLE)
+**严禁使用假数据** - All data MUST be real and authentic:
+- **Zero Mock Data**: Absolutely no mockData, fakeData, dummyData, or similar fabricated data patterns
+- **Real API Integration**: Must integrate with actual APIs and real data sources
+- **Authentic Business Logic**: All business rules must operate on real data, not simulated or hardcoded values
+- **Production-Ready Data**: Data sources must be production-grade, not development-only test data
+- **Data真实性验证**: 必须验证所有数据的真实性和来源可靠性
+
 ### VI-A. Frontend-Specific Allowances
 For frontend/UI refactoring, the following changes are PERMITTED and ENCOURAGED:
 - **Component Modernization**: Replace legacy HTML/components with modern framework components
@@ -108,7 +116,7 @@ All refactoring work MUST be verified against constitution principles before mer
 ### Template Synchronization
 Constitution changes MUST be propagated to all refactoring templates and command files. Template consistency is mandatory for governance integrity.
 
-**Version**: 1.0.0 | **Ratified**: 2025-01-01 | **Last Amended**: 2025-01-01
+**Version**: 1.1.0 | **Ratified**: 2025-01-01 | **Last Amended**: 2025-09-23
 
 ---
 *Note: This constitution establishes immutable constraints for refactoring activities. All refactoring work MUST comply with these principles.*
