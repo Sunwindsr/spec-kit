@@ -16,17 +16,24 @@
 **源定义位置**: [file_path]:[line_number]  
 **变更频率**: [高/中/低]  
 **数据敏感度**: [高/中/低]  
-**重构影响**: [关键/一般/无影响]
+**重构影响**: [关键/一般/无影响]  
+**宪法符合性**: [VI-D. Interface and Model Integrity Principle]
 
 **源系统中的实际定义**:
 ```typescript
-// 源代码中的实际接口/类定义
+// 源代码中的实际接口/类定义 - 严禁自定义修改
+// Constitution VI-D: 严禁自定义接口和数据模型，必须从源代码提取
 interface [EntityName] {
   [field_name]: [field_type];  // [业务含义 + 约束条件]
   [field_name]: [field_type];  // [业务含义 + 约束条件]
   // ... 其他字段
 }
 ```
+
+**数据真实性要求**:
+- [x] **Constitution VI-C**: 严禁使用假数据，必须使用真实的API和数据源
+- [x] **Constitution VI-D**: 严禁自定义接口定义，必须从源代码提取
+- [x] **Constitution III**: 数据契约完整性必须保持
 
 **数据使用分析**:
 - **创建场景**: [在哪些业务流程中被创建]

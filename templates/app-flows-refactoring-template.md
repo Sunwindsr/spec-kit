@@ -15,7 +15,8 @@
 #### 流程: [流程名称]
 **源位置**: [file_path]:[line_number]  
 **业务重要性**: [高/中/低]  
-**重构影响**: [关键/一般/无影响]
+**重构影响**: [关键/一般/无影响]  
+**宪法符合性**: [I. Behavior Preservation + VI-E. Direct Replacement Refactoring]
 
 **现有流程步骤**:
 1. **步骤1**: [步骤描述] 
@@ -93,10 +94,16 @@ if ([condition]) {
 5. **界面反馈**: [反馈机制] (位置: [file_path]:[line_number])
 
 **关键约束**:
-- [x] **事件触发条件**: 必须保持完全一致
-- [x] **处理顺序**: 步骤顺序不能改变
-- [x] **数据验证**: 验证规则必须保持
-- [ ] **UI反馈**: 反馈方式可以优化
+- [x] **Constitution I**: 事件触发条件必须保持完全一致（Behavior Preservation）
+- [x] **Constitution I**: 处理顺序不能改变（Behavior Preservation）
+- [x] **Constitution I**: 数据验证必须保持（Behavior Preservation）
+- [ ] **Constitution VI-A**: UI反馈可以优化（Frontend-Specific Allowances）
+
+**重构合规性要求**:
+- [x] **Constitution VI-E**: 直接替换重构，新前端必须实现100%相同的行为
+- [x] **Constitution II**: 接口稳定性，所有公开接口保持不变
+- [x] **Constitution VI-C**: 数据真实性，严禁使用假数据
+- [x] **Constitution VI-D**: 接口和模型完整性，严禁自定义定义
 
 ### 2.2 界面状态转换
 

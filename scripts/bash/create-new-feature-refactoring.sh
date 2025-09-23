@@ -130,6 +130,41 @@ else
     echo "" | iconv -f utf-8 -t utf-8 > "$SPEC_FILE" 2>/dev/null || touch "$SPEC_FILE"
 fi
 
+# Auto-generate all supporting documentation templates
+echo "[specify-refactoring] Generating supporting documentation templates..."
+
+# Generate app-flows.md
+if [ -f "$REPO_ROOT/templates/app-flows-refactoring-template.md" ]; then
+    cp "$REPO_ROOT/templates/app-flows-refactoring-template.md" "$FEATURE_DIR/app-flows.md"
+    echo "[specify-refactoring] ✓ Generated app-flows.md"
+else
+    echo "[specify-refactoring] ⚠ app-flows-refactoring-template.md not found" >&2
+fi
+
+# Generate test-cases.md  
+if [ -f "$REPO_ROOT/templates/test-cases-refactoring-template.md" ]; then
+    cp "$REPO_ROOT/templates/test-cases-refactoring-template.md" "$FEATURE_DIR/test-cases.md"
+    echo "[specify-refactoring] ✓ Generated test-cases.md"
+else
+    echo "[specify-refactoring] ⚠ test-cases-refactoring-template.md not found" >&2
+fi
+
+# Generate api-contracts.md
+if [ -f "$REPO_ROOT/templates/api-contracts-refactoring-template.md" ]; then
+    cp "$REPO_ROOT/templates/api-contracts-refactoring-template.md" "$FEATURE_DIR/api-contracts.md"
+    echo "[specify-refactoring] ✓ Generated api-contracts.md"
+else
+    echo "[specify-refactoring] ⚠ api-contracts-refactoring-template.md not found" >&2
+fi
+
+# Generate data-models.md if not created by extraction script
+if [ ! -f "$FEATURE_DIR/data-models.md" ] && [ -f "$REPO_ROOT/templates/data-models-refactoring-template.md" ]; then
+    cp "$REPO_ROOT/templates/data-models-refactoring-template.md" "$FEATURE_DIR/data-models.md"
+    echo "[specify-refactoring] ✓ Generated data-models.md"
+fi
+
+echo "[specify-refactoring] Documentation generation complete"
+
 if $JSON_MODE; then
     printf '{"BRANCH_NAME":"%s","SPEC_FILE":"%s","FEATURE_NUM":"%s","SYSTEM_DESCRIPTION":"%s","FEATURE_NAME":"%s"}\n' "$BRANCH_NAME" "$SPEC_FILE" "$FEATURE_NUM" "$SYSTEM_DESCRIPTION" "$FEATURE_NAME"
 else

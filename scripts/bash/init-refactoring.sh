@@ -76,7 +76,7 @@ for cmd in constitution-refactoring specify-refactoring plan-refactoring tasks-r
 done
 
 # Copy refactoring document templates to .specify/templates/
-for template in spec-refactoring-template plan-refactoring-template tasks-refactoring-template test-cases-refactoring-template constitution-refactoring-template; do
+for template in spec-refactoring-template plan-refactoring-template tasks-refactoring-template test-cases-refactoring-template constitution-refactoring-template data-models-refactoring-template app-flows-refactoring-template api-contracts-refactoring-template; do
     if [ -f "$REPO_ROOT/templates/$template.md" ]; then
         cp "$REPO_ROOT/templates/$template.md" ".specify/templates/"
         echo "✓ Copied $template.md"
