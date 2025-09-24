@@ -257,6 +257,290 @@ For each migration requirement:
 
 ---
 
+## ServiceEnd专项测试 *(新增)*
+
+### ServiceEnd路由和环境测试
+**测试目标**: 验证ServiceEnd环境下的路由解析和环境配置  
+
+#### TC-SRV-001: ServiceEnd路由参数解析测试
+```typescript
+describe('ServiceEnd Route Parameters Test', () => {
+  it('should parse ServiceEnd route with all parameters', () => {
+    // Given
+    const testUrl = '/Views/AppFiles/Owner/1/true/7';
+    
+    // When
+    const match = TestBed.inject(Router).parseUrl(testUrl);
+    
+    // Then
+    expect(match.params).toEqual({
+      appIdentityIdAsOwner: '1',
+      isPublic: 'true',
+      serviceEndId: '7'
+    });
+  });
+
+  it('should parse ServiceEnd route without optional parameters', () => {
+    // Given
+    const testUrl = '/Views/AppFiles/Owner/1/7';
+    
+    // When
+    const match = TestBed.inject(Router).parseUrl(testUrl);
+    
+    // Then
+    expect(match.params).toEqual({
+      appIdentityIdAsOwner: '1',
+      serviceEndId: '7'
+    });
+  });
+});
+```
+
+### ServiceEnd组件集成测试
+
+#### TC-SRV-002: ServiceEnd与主组件集成测试
+```typescript
+describe('ServiceEnd Integration Test', () => {
+  it('should load ServiceEnd information when serviceEndId provided', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const serviceEndId = 7;
+    const mockServiceEnd: ServiceEndDL = {
+      id: serviceEndId,
+      name: '企业对外展示窗口',
+      endpointUrl: 'https://example.com/e/f/Views/AppFiles/Owner/1/7/1',
+      statusId: 1
+    };
+
+    spyOn(component.serviceEndsRepository, 'GetServiceEndById').and.returnValue(Promise.resolve(mockServiceEnd));
+
+    // When
+    component.serviceEndId = serviceEndId;
+    component.ngOnInit();
+    await fixture.whenStable();
+
+    // Then
+    expect(component.serviceEnd).toEqual(mockServiceEnd);
+    expect(component.serviceEnd.endpointUrl).toContain('Views/AppFiles/Owner');
+  });
+
+  it('should display ServiceEnd branding when accessed via ServiceEnd', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const mockServiceEnd: ServiceEndDL = {
+      id: 7,
+      name: '企业展示窗口',
+      endpointUrl: 'https://example.com/e/f/Views/AppFiles/Owner/1/7/1'
+    };
+
+    spyOn(component.serviceEndsRepository, 'GetServiceEndById').and.returnValue(Promise.resolve(mockServiceEnd));
+
+    // When
+    component.serviceEndId = 7;
+    component.ngOnInit();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    // Then
+    const brandingElement = fixture.debugElement.query(By.css('.service-end-branding'));
+    expect(brandingElement).toBeTruthy();
+    expect(brandingElement.nativeElement.textContent).toContain('企业展示窗口');
+  });
+});
+```
+
+### ServiceEnd API集成测试
+
+#### TC-SRV-003: ServiceEnd与文件分享集成测试
+```typescript
+describe('ServiceEnd File Sharing Test', () => {
+  it('should generate share links with ServiceEnd context', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const serviceEndId = 7;
+    const appIdentityId = 1;
+    const mockFile: AppFileDL = {
+      id: 'file-123',
+      name: 'test-file.pdf'
+    };
+
+    component.serviceEndId = serviceEndId;
+    component.appIdentityId = appIdentityId;
+
+    // When
+    const shareLink = await component.generateShareLink(mockFile);
+
+    // Then
+    expect(shareLink).toContain(`/Views/AppFiles/Owner/${appIdentityId}/${serviceEndId}`);
+    expect(shareLink).toContain(mockFile.id);
+  });
+
+  it('should filter files by ServiceEnd configuration', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const serviceEndId = 7;
+    const mockFiles: AppFileDL[] = [
+      { id: 'file-1', name: 'public-file.pdf', isPublic: true },
+      { id: 'file-2', name: 'internal-file.pdf', isPublic: false }
+    ];
+
+    component.serviceEndId = serviceEndId;
+    spyOn(component.appFilesRepository, 'GetAppFilesByQPs').and.returnValue(Promise.resolve(mockFiles));
+
+    // When
+    const result = await component.loadFiles();
+
+    // Then
+    expect(result).toEqual(mockFiles.filter(file => file.isPublic));
+  });
+});
+```
+
+### ServiceEnd性能测试
+
+#### TC-SRV-004: ServiceEnd加载性能测试
+```typescript
+describe('ServiceEnd Performance Test', () => {
+  it('should load ServiceEnd data within performance requirements', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const serviceEndId = 7;
+    const maxLoadTime = 3000; // 3 seconds
+
+    // When
+    const startTime = performance.now();
+    component.serviceEndId = serviceEndId;
+    component.ngOnInit();
+    await fixture.whenStable();
+    const endTime = performance.now();
+
+    // Then
+    const loadTime = endTime - startTime;
+    expect(loadTime).toBeLessThan(maxLoadTime);
+    expect(component.serviceEnd).toBeDefined();
+  });
+
+  it('should handle concurrent ServiceEnd access efficiently', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const concurrentUsers = 100;
+    const mockServiceEnd: ServiceEndDL = {
+      id: 7,
+      name: '企业展示窗口'
+    };
+
+    spyOn(component.serviceEndsRepository, 'GetServiceEndById').and.returnValue(Promise.resolve(mockServiceEnd));
+
+    // When
+    const loadPromises = Array(concurrentUsers).fill(0).map(() => {
+      component.serviceEndId = 7;
+      component.ngOnInit();
+      return fixture.whenStable();
+    });
+
+    await Promise.all(loadPromises);
+
+    // Then
+    expect(component.serviceEndsRepository.GetServiceEndById).toHaveBeenCalledTimes(concurrentUsers);
+  });
+});
+```
+
+### ServiceEnd安全测试
+
+#### TC-SRV-005: ServiceEnd访问控制测试
+```typescript
+describe('ServiceEnd Security Test', () => {
+  it('should validate ServiceEnd access permissions', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const serviceEndId = 7;
+    const privateServiceEnd: ServiceEndDL = {
+      id: serviceEndId,
+      name: 'Private ServiceEnd',
+      isPublic: false,
+      requiresAuthentication: true
+    };
+
+    spyOn(component.serviceEndsRepository, 'GetServiceEndById').and.returnValue(Promise.resolve(privateServiceEnd));
+    spyOn(component.authService, 'isAuthenticated').and.returnValue(false);
+
+    // When
+    const hasAccess = await component.checkServiceEndAccess(serviceEndId);
+
+    // Then
+    expect(hasAccess).toBe(false);
+    expect(component.showAccessDeniedError).toHaveBeenCalled();
+  });
+
+  it('should prevent unauthorized ServiceEnd access', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const invalidServiceEndUrl = 'https://malicious.com/e/f/Views/AppFiles/Owner/invalid/999';
+
+    // When
+    const result = await component.parseServiceEndUrl(invalidServiceEndUrl);
+
+    // Then
+    expect(result.isValid).toBe(false);
+    expect(component.error).toContain('invalid ServiceEnd URL');
+  });
+});
+```
+
+### ServiceEnd用户体验测试
+
+#### TC-SRV-006: ServiceEnd用户流程测试
+```typescript
+describe('ServiceEnd User Experience Test', () => {
+  it('should provide complete ServiceEnd access flow', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const serviceEndUrl = 'https://example.com/e/f/Views/AppFiles/Owner/1/7/1';
+    
+    // 1. 用户访问ServiceEnd URL
+    const routeMatch = component.parseServiceEndUrl(serviceEndUrl);
+    
+    // When
+    // 2. 组件初始化
+    component.appIdentityId = parseInt(routeMatch.appIdentityId);
+    component.serviceEndId = parseInt(routeMatch.serviceEndId);
+    component.ngOnInit();
+    await fixture.whenStable();
+    
+    // 3. 用户浏览文件
+    const files = await component.loadFiles();
+    
+    // Then
+    expect(routeMatch.appIdentityId).toBe('1');
+    expect(routeMatch.serviceEndId).toBe('7');
+    expect(files.length).toBeGreaterThan(0);
+    expect(component.isServiceEndAccess).toBe(true);
+  });
+
+  it('should track ServiceEnd-specific user behavior', async () => {
+    // Given
+    const component = TestBed.createComponent(ViewAppFilesOwnerComponent).componentInstance;
+    const serviceEndId = 7;
+    
+    component.serviceEndId = serviceEndId;
+    spyOn(component.analyticsService, 'trackServiceEndAccess');
+
+    // When
+    component.trackServiceEndUserBehavior('file_view', 'file-123');
+
+    // Then
+    expect(component.analyticsService.trackServiceEndAccess).toHaveBeenCalledWith({
+      serviceEndId: serviceEndId,
+      action: 'file_view',
+      fileId: 'file-123'
+    });
+  });
+});
+```
+
+---
+
 ## Execution Status
 *Updated during main() execution*
 
