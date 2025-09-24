@@ -200,6 +200,32 @@ specify refactoring validate-phase --task [TASK_ID] --phase [PHASE_NUMBER]
 
 ---
 
+## 需求任务执行映射 *(推荐)*
+
+### 用户需求到重构任务的映射
+
+| 用户需求ID | 需求描述 | 关联任务ID | 任务类型 | 实现优先级 | 验收标准 |
+|-----------|----------|------------|----------|------------|----------|
+| **US-001** | [来自spec.md的需求描述] | RT-SPEC-001, RT-INT-001 | Behavior Preservation | P0 | [验收标准] |
+| **US-002** | [来自spec.md的需求描述] | RT-API-001, RT-TEST-001 | Interface Stability | P1 | [验收标准] |
+
+### 任务需求溯源矩阵
+
+| 任务ID | 任务描述 | 支持的用户需求 | 任务类型 | 依赖任务 | 预期结果 |
+|--------|----------|----------------|----------|----------|----------|
+| `RT-SPEC-001` | [任务描述] | US-001 | Documentation | 无 | [预期结果] |
+| `RT-INT-001` | [任务描述] | US-001, US-002 | Integration | RT-SPEC-001 | [预期结果] |
+| `RT-API-001` | [任务描述] | US-002 | API Contract | 无 | [预期结果] |
+
+### 质量门禁和验收标准
+
+| 检查项 | 关联需求 | 验证方法 | 通过条件 | 责任角色 |
+|--------|----------|----------|----------|----------|
+| [检查项1] | US-001 | [验证方法] | [通过条件] | [角色] |
+| [检查项2] | US-002 | [验证方法] | [通过条件] | [角色] |
+
+---
+
 ## Example Template (Replace with actual refactoring content)
 
 ### Component: [COMPONENT NAME - e.g., Authentication Service]
