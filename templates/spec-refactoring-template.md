@@ -69,7 +69,12 @@ When creating this spec from code analysis:
 - [业务影响和用户满意度数据]
 
 **Primary User Stories** (EARS Format with Real Context):
-- **As a** [specific user role with real context], **I want to** [specific action], **so that** [tangible benefit]
+- **US-001**: **As a** [specific user role with real context], **I want to** [specific action], **so that** [tangible benefit]
+  - **Real Scenario**: [具体的使用场景和环境]
+  - **Current Pain**: [当前解决方案的痛点]
+  - **Success Metrics**: [如何衡量成功]
+
+- **US-002**: **As a** [specific user role with real context], **I want to** [specific action], **so that** [tangible benefit]
   - **Real Scenario**: [具体的使用场景和环境]
   - **Current Pain**: [当前解决方案的痛点]
   - **Success Metrics**: [如何衡量成功]
@@ -151,6 +156,31 @@ export interface [DataModelName] {
 │ └─────────────┘ └─────────────────────┘ │
 └─────────────────────────────────────────┘
 ```
+
+### Route Structure *(Critical for Interface Stability)*
+
+**Source**: [routing/file/path.ts:line]
+
+```typescript
+// Exact route configuration from source code
+const routes: Routes = [{
+  path: "[base-path]", component: [MainComponent], children: [
+    { path: "[route-pattern-1]", component: [Component1] },
+    { path: "[route-pattern-2]", component: [Component2] },
+    { path: "[route-pattern-3]", component: [Component3] }
+  ]
+}];
+```
+
+**Route Patterns**:
+1. **[Pattern description]**: `[route-template]` ([parameter meaning])
+2. **[Pattern description]**: `[route-template]` ([parameter meaning])
+3. **[Pattern description]**: `[route-template]` ([parameter meaning])
+
+**Route Parameters**:
+- `[parameter]`: [type] - [description]
+- `[parameter]`: [type] - [description]
+- `[parameter]`: [type] - [description] (optional)
 
 **User Interaction Flow**:
 1. **[用户操作1]** → [系统响应1] → [界面变化1]
@@ -302,6 +332,26 @@ export interface [DataModelName] {
 - [ ] Migration strategy planned
 - [ ] Testing requirements specified
 - [ ] Refactoring review checklist passed
+
+---
+
+## 需求引用关联 *(可选但推荐)*
+
+### 与App-Flows的关联
+本规格中的用户需求与技术流程的映射关系：
+
+| 用户需求ID | 需求描述 | 对应App-Flows流程 | 实现优先级 |
+|-----------|----------|-------------------|-----------|
+| **US-001** | [需求简要描述] | [app-flows.md中的流程编号] | High/Medium/Low |
+| **US-002** | [需求简要描述] | [app-flows.md中的流程编号] | High/Medium/Low |
+
+### 与Test-Cases的关联
+需求测试覆盖矩阵：
+
+| 用户需求ID | 测试覆盖 | 验收标准 | 质量门禁 |
+|-----------|----------|----------|----------|
+| **US-001** | [test-cases.md中的测试用例编号] | [具体验收标准] | [通过条件] |
+| **US-002** | [test-cases.md中的测试用例编号] | [具体验收标准] | [通过条件] |
 
 ---
 
