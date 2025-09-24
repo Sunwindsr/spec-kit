@@ -266,6 +266,40 @@ function Check-MigrationStrategy {
     return $true
 }
 
+# Function to check API integration requirements
+function Check-ApiIntegrationRequirements {
+    $specDir = Split-Path -Parent $SpecPath
+    
+    Write-Info "检查API集成测试要求"
+    
+    # Check if API integration tests are required
+    $specContent = Get-Content $SpecPath -Raw
+    if ($specContent -notmatch "API Integration Tests|API接通测试") {
+        Write-Warning "规格中缺少API集成测试要求"
+        return $false
+    }
+    
+    # Check for API test interface requirements
+    if ($specContent -notmatch "API Test Interface|API测试界面") {
+        Write-Warning "规格中缺少API测试界面要求"
+        return $false
+    }
+    
+    # Check for mandatory real data testing
+    if ($specContent -notmatch "真实数据|real data") {
+        Write-Warning "规格中缺少真实数据测试要求"
+        return $false
+    }
+    
+    # Check for comprehensive endpoint coverage
+    if ($specContent -notmatch "端点覆盖|endpoint coverage") {
+        Write-Warning "规格中缺少端点覆盖要求"
+        return $false
+    }
+    
+    return $true
+}
+
 # Function to generate compliance report
 function Generate-ComplianceReport {
     $specDir = Split-Path -Parent $SpecPath
@@ -292,6 +326,7 @@ function Generate-ComplianceReport {
 | 数据完整性 | ✅ 通过 | 数据模型和契约完整 |
 | 测试完整性 | ✅ 通过 | 测试覆盖率达到要求 |
 | 迁移策略 | ✅ 通过 | 迁移和回滚策略完善 |
+| API集成测试 | ✅ 通过 | API接通测试要求已定义 |
 
 ## 详细检查结果
 
@@ -347,6 +382,7 @@ function Main {
         @{ Name = "Check-DataIntegrity"; Function = "Check-DataIntegrity" }
         @{ Name = "Check-TestingCompleteness"; Function = "Check-TestingCompleteness" }
         @{ Name = "Check-MigrationStrategy"; Function = "Check-MigrationStrategy" }
+        @{ Name = "Check-ApiIntegrationRequirements"; Function = "Check-ApiIntegrationRequirements" }
     )
     
     $failedChecks = 0

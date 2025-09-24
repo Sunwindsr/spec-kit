@@ -267,6 +267,39 @@ check_migration_strategy() {
     return 0
 }
 
+# Function to check API integration requirements
+check_api_integration_requirements() {
+    local spec_dir=$(dirname "$SPEC_PATH")
+    
+    print_info "检查API集成测试要求"
+    
+    # Check if API integration tests are required
+    if ! grep -q "API Integration Tests\|API接通测试" "$SPEC_PATH"; then
+        print_warning "规格中缺少API集成测试要求"
+        return 1
+    fi
+    
+    # Check for API test interface requirements
+    if ! grep -q "API Test Interface\|API测试界面" "$SPEC_PATH"; then
+        print_warning "规格中缺少API测试界面要求"
+        return 1
+    fi
+    
+    # Check for mandatory real data testing
+    if ! grep -q "真实数据\|real data" "$SPEC_PATH"; then
+        print_warning "规格中缺少真实数据测试要求"
+        return 1
+    fi
+    
+    # Check for comprehensive endpoint coverage
+    if ! grep -q "端点覆盖\|endpoint coverage" "$SPEC_PATH"; then
+        print_warning "规格中缺少端点覆盖要求"
+        return 1
+    fi
+    
+    return 0
+}
+
 # Function to generate compliance report
 generate_compliance_report() {
     local spec_dir=$(dirname "$SPEC_PATH")
@@ -293,6 +326,7 @@ generate_compliance_report() {
 | 数据完整性 | ✅ 通过 | 数据模型和契约完整 |
 | 测试完整性 | ✅ 通过 | 测试覆盖率达到要求 |
 | 迁移策略 | ✅ 通过 | 迁移和回滚策略完善 |
+| API集成测试 | ✅ 通过 | API接通测试要求已定义 |
 
 ## 详细检查结果
 
@@ -348,6 +382,7 @@ main() {
         "check_data_integrity"
         "check_testing_completeness"
         "check_migration_strategy"
+        "check_api_integration_requirements"
     )
     
     local failed_checks=0

@@ -417,6 +417,39 @@ const routes: Routes = [{
 - **PRT-001**: Ensure response times do not degrade beyond [threshold]
 - **PRT-002**: Ensure resource usage does not increase beyond [threshold]
 
+### API Integration Tests *(MANDATORY for Refactoring with Existing APIs)*
+- **AIT-001**: **API Connectivity Test**: Verify all refactored APIs are reachable and responsive
+- **AIT-002**: **API Contract Test**: Verify all API signatures match exactly with existing contracts
+- **AIT-003**: **API Data Flow Test**: Verify real data flows through frontend to backend and back
+- **AIT-004**: **API Authentication Test**: Verify all authentication mechanisms work with refactored APIs
+- **AIT-005**: **API Error Handling Test**: Verify error responses are consistent with existing behavior
+
+### API Test Interface Requirements *(MANDATORY)*
+**必须创建API测试界面完成真实API接通测试**:
+
+#### 测试界面要求
+1. **端点覆盖**: 包含所有重构后的API端点
+2. **真实数据**: 必须调用真实的后端API，禁止使用模拟数据
+3. **完整流程**: 测试从前端UI到后端数据库的完整数据流
+4. **结果验证**: 验证请求和响应数据的完整性和准确性
+
+#### 测试界面功能
+- **API调用测试**: 每个端点的独立调用功能
+- **参数配置**: 支持不同参数组合的测试
+- **响应验证**: 实时显示API响应和验证结果
+- **错误处理**: 测试各种错误场景的处理
+- **性能监控**: 显示API响应时间和状态
+
+#### 接通测试检查项
+- [ ] 所有GET端点成功返回数据
+- [ ] 所有POST端点成功创建/更新数据
+- [ ] 所有PUT端点成功修改数据
+- [ ] 所有DELETE端点成功删除数据
+- [ ] 认证和授权机制正常工作
+- [ ] 错误处理符合预期
+- [ ] 数据格式和验证正确
+- [ ] 前端能正确解析和显示API响应
+
 ### Integration Tests
 - **IT-001**: Verify all existing integrations continue to work
 - **IT-002**: Verify data consistency across all operations
@@ -446,6 +479,16 @@ const routes: Routes = [{
 - [ ] Rollback procedures established
 - [ ] Source mapping maintained for all migrated code
 - [ ] Minimal validation steps defined for each change
+
+### API Integration Compliance *(MANDATORY for Refactoring with Existing APIs)*
+- [ ] **API Test Interface Created**: 完整的API测试界面已创建
+- [ ] **All Endpoints Tested**: 所有API端点已完成真实接通测试
+- [ ] **Real Data Verified**: 使用真实数据验证了所有数据流
+- [ ] **Frontend-Backend Integration**: 前端能正确调用所有后端API
+- [ ] **Authentication Working**: 认证机制在重构后正常工作
+- [ ] **Error Handling Verified**: 错误处理符合原有行为
+- [ ] **Performance Validated**: API性能达到预期要求
+- [ ] **Data Consistency Proven**: 数据一致性得到验证
 
 *Full refactoring constitution at `/memory/constitution-refactoring.md`*
 
@@ -477,6 +520,8 @@ const routes: Routes = [{
 - [ ] **即时更新验证** (VIII): 所有引用已立即更新
 - [ ] **单一职责验证** (IX): 每次提交具有单一结构焦点
 - [ **增量可逆性验证** (X): 每个变更必须独立可验证和可回滚
+- [ **API接通测试验证** (XI): 所有API端点已完成真实接通测试
+- [ **数据流验证** (XII): 前端到后端完整数据流已验证
 
 #### 验证结果摘要
 **验证通过项目**: [数量]/[总数]  
