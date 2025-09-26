@@ -99,9 +99,18 @@ scripts:
 ### Phase 3: Incremental Implementation (P1/P2)
 *Safe, incremental component refactoring with automated validation*
 - [ ] `RT-[COMP]-REF-[###]`: [Core business logic refactoring with validation]
-- [ ] `RT-[COMP]-REF-[###]`: [Data access layer refactoring with rollback capability]
+- [ ] `RT-[COMP]-REF-[###]`: [Repository layer refactoring with rollback capability - P0 Critical]
 - [ ] `RT-[COMP]-REF-[###]`: [Service layer modernization with phase validation]
 **Validation Gate**: All Phase 3 tasks must pass `specify refactoring validate-phase`
+
+### Phase 3-Repository: Repository Layer Implementation (P0)
+*Repository层必须100%精准还原 - Constitution VI-G*
+- [ ] `RT-[COMP]-REPO-[###]`: [Repository接口精准还原 - 100%行为保持]
+- [ ] `RT-[COMP]-REPO-[###]`: [数据访问模式验证 - 同步/异步/事务完全一致]
+- [ ] `RT-[COMP]-REPO-[###]`: [查询语义保持 - 过滤/排序/分页逻辑完全保持]
+- [ ] `RT-[COMP]-REPO-[###]`: [缓存策略还原 - 缓存机制/失效策略完全保持]
+- [ ] `RT-[COMP]-REPO-[###]`: [性能特征验证 - 响应时间/资源使用必须匹配]
+**Validation Gate**: All Repository tasks must pass `python scripts/validate-repository-layer.py`
 
 ### Phase 4: Validation & Testing (P0/P1)
 *Comprehensive automated behavior preservation and performance validation*
@@ -173,6 +182,18 @@ specify refactoring behavior-preserve --task [TASK_ID] --baseline [ORIGINAL]
 - **Functional Equivalence Testing**: Tasks require comparative testing automation
 - **Data Contract Validation**: Tasks include automated schema integrity checks
 - **Frontend Functional Logic**: Business logic preserved, UI/UX modernization encouraged
+
+**Repository Layer Validation Requirements**:
+```bash
+# Repository层精准还原验证 (Constitution VI-G)
+python scripts/validate-repository-layer.py [source_path] [refactored_path] --output validation_report.json
+```
+- **Repository接口精准还原**: 必须验证所有Repository接口定义100%保持
+- **数据访问模式一致性**: 必须验证同步/异步模式、事务处理、错误处理完全一致
+- **查询语义保持**: 必须验证查询逻辑、过滤条件、排序规则、分页行为保持不变
+- **缓存策略还原**: 必须验证缓存机制、失效策略、缓存键生成逻辑完全保持
+- **性能特征匹配**: 必须验证查询性能、响应时间、资源使用在可接受范围内
+- **前端项目特殊要求**: 必须验证API调用模式、数据加载策略、状态管理完全保持
 
 **Progressive Refactoring Compliance**:
 ```bash
