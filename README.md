@@ -79,6 +79,9 @@ cd my-existing-project
 specify init --here --ai claude --ignore-agent-tools
 ```
 
+#### **Option C: Add Spec Kit to existing project**
+uvx --from git+https://github.com/Sunwindsr/spec-kit.git specify init --here --ai claude --debug
+
 ### 3. Establish project principles
 
 Use the **`/constitution`** command to create your project's governing principles and development guidelines that will guide all subsequent development.
