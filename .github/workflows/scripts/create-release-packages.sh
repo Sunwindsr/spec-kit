@@ -110,6 +110,12 @@ build_variant() {
   fi
   
   [[ -d templates ]] && { mkdir -p "$SPEC_DIR/templates"; find templates -type f -not -path "templates/commands/*" -exec cp --parents {} "$SPEC_DIR"/ \; ; echo "Copied templates -> .specify/templates"; }
+  
+  # Copy .specify root directory files (previously missing)
+  if [[ -d .specify ]]; then
+    find .specify -maxdepth 1 -type f -exec cp {} "$SPEC_DIR/" \; 2>/dev/null || true
+    echo "Copied .specify root files"
+  fi
   # Inject variant into plan-template.md within .specify/templates if present
   local plan_tpl="$base_dir/.specify/templates/plan-template.md"
   if [[ -f "$plan_tpl" ]]; then

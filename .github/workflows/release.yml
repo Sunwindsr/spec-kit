@@ -9,6 +9,7 @@ on:
       - 'templates/**'
       - 'src/**'
       - '.github/workflows/**'
+      - '.specify/**'
   workflow_dispatch:
 
 jobs:
