@@ -1,46 +1,33 @@
 ---
-description: "Refactoring tasks template for behavior-preserving system modernization"
+description: "Practical TDD-based refactoring tasks template for system modernization"
 scripts:
   sh: scripts/bash/update-agent-context.sh __AGENT__
   ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
 ---
 
-# Refactoring Tasks: [SYSTEM NAME]
+# [FEATURE NAME] - Refactoring Development Tasks
 
 **Feature Branch**: `[###-refactoring-name]` | **Date**: [DATE] | **Plan**: [link-to-plan]
 **Input**: Refactoring plan from `/specs/[###-refactoring-name]/plan.md`
 
-## Execution Flow (main)
-```
-1. Load refactoring plan from Input path
-   → If not found: ERROR "No refactoring plan at {path}"
-2. Execute Automated Constitution Compliance Validation
-   → Run `specify refactoring validate-compliance` to ensure plan meets standards
-   → If validation fails: ERROR with specific violation details
-3. Extract refactoring phases and interface preservation requirements
-   → Map each component to refactoring tasks with automated validation
-4. Generate tasks by refactoring phase with automated validation:
-   → Phase 1: Behavior Documentation (baseline tests + reality validation)
-   → Phase 2: Interface Analysis (API contract verification + behavior preservation)
-   → Phase 3: Incremental Implementation (component refactoring + phase validation)
-   → Phase 4: Validation & Testing (behavior preservation + comprehensive automation)
-   → Phase 5: Migration & Rollback (deployment procedures + automated rollback)
-5. Fill task table with specific refactoring activities
-   → Each task must include automated validation commands
-   → Include automated rollback procedures and risk mitigation
-   → Validate task completeness via `specify refactoring validate-tasks`
-6. Apply priority levels based on risk and dependency order:
-   → P0: Critical (interface stability, data integrity, validation gates)
-   → P1: High (core functionality, performance validation, critical migrations)
-   → P2: Medium (non-critical components, automated testing)
-   → P3: Low (nice-to-have improvements, monitoring)
-7. Execute Automated Task Quality Validation:
-   → All tasks include proper validation commands
-   → Task dependencies include validation gate requirements
-   → Rollback procedures are automated and testable
-   → Reality validation requirements are embedded
-8. Return: SUCCESS (refactoring tasks ready for implementation with automated validation)
-```
+## 任务概述
+
+### 重构任务分解策略
+- **优先级定义**: 基于重构复杂度和业务重要性确定优先级
+- **迭代规划**: 按技术层次分阶段实施，每个阶段包含完整的TDD验证流程
+- **质量保证**: 每个任务都包含单元测试、集成测试和行为验证
+
+### 开发优先级
+- **P0**: 核心基础设施 - 项目架构、数据模型、API层
+- **P1**: 核心功能组件 - 主要业务组件、状态管理
+- **P2**: 辅助功能组件 - 共享组件、工具函数
+- **P3**: 优化和部署 - 性能优化、E2E测试、部署配置
+
+### 重构原则
+- **行为保持**: 100%保持原有功能和业务逻辑
+- **技术现代化**: 使用目标技术栈的最佳实践
+- **测试驱动**: 严格遵循RED-GREEN-REFACTOR流程
+- **增量开发**: 每个任务都是独立可交付的
 
 ## Summary
 [Extract from refactoring plan: key components, interfaces, and refactoring approach]
@@ -51,230 +38,722 @@ scripts:
 - **ENCOURAGED TO IMPROVE**: UI layout, styling, interactions, UX patterns, responsiveness, accessibility
 - **TECHNOLOGY STACK BENEFITS**: Leverage new framework capabilities to enhance user experience
 
-## Refactoring Tasks Structure Template
+## 一、核心基础设施开发任务
 
-| Field | Description | Guidelines |
-|:-----|:------------|:-----------|
-| **任务ID** | Unique identifier | Format: `RT-[COMPONENT]-[PHASE]-[NUMBER]` (e.g., `RT-AUTH-DOC-001`) |
-| **任务描述** | Refactoring activity | Include behavior preservation requirements and interface constraints |
-| **用户验收标准** | User acceptance criteria | 必须包含具体的用户场景和可衡量的成功标准 |
-| **前置条件** | Required system state | Include automated validation passes and baseline tests |
-| **输入数据/参数** | Specific refactoring inputs | Include existing component specs and interface contracts |
-| **重构操作** | Refactoring execution steps | Preserve behavior while improving implementation with automated validation |
-| **验证步骤** | Automated behavior preservation tests | Must include `specify refactoring validate` commands + User acceptance tests |
-| **回滚程序** | Automated rollback procedures | Must include `specify refactoring rollback` commands |
-| **优先级** | Risk and impact level | `P0`/`P1`/`P2`/`P3` based on criticality |
-| **依赖关系** | Task dependencies | List prerequisite tasks and order constraints with validation gates |
-| **当前状态** | Implementation status | `待实现`/`进行中`/`已完成`/`阻塞`/`已回滚`/`验证失败` |
+### 1.1 目标技术栈基础架构搭建
 
----
+#### 1.1.1 任务：目标项目基础架构搭建 (P0)
+```markdown
+## 任务：目标项目基础架构搭建
 
-## Refactoring Tasks Table
+**优先级**：P0  
+**预计时间**：4小时  
+**负责人**：前端架构师  
 
-| 任务ID | 任务描述 | 用户验收标准 | 前置条件 | 输入数据/参数 | 重构操作 | 验证步骤 | 回滚程序 | 优先级 | 依赖关系 | 当前状态 |
-|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| `RT-[COMP]-DOC-001` | `[创建现有组件的基线测试]` | `[用户可以正常使用所有功能，测试覆盖率达到90%+]` | `[系统稳定运行 + Reality Validation PASS]` | `[组件规格和接口文档]` | `[编写全面的端到端测试]` | `[specify refactoring validate-baseline]` | `[specify refactoring rollback-baseline]` | `P0` | `无` | `待实现` |
-| `RT-[COMP]-INT-001` | `[验证API契约一致性]` | `[所有API调用行为完全一致，直接替换无感知]` | `[基线测试完成 + API Contract Verification PASS]` | `[提取的API契约]` | `[验证新实现与API契约100%匹配]` | `[specify refactoring validate-api-contract]` | `[specify refactoring rollback-implementation]` | `P0` | `RT-[COMP]-DOC-001` | `待实现` |
-| `RT-[COMP]-REF-001` | `[重构核心组件实现]` | `[用户完成核心操作流程，功能100%保持]` | `[API契约验证完成 + Implementation Validation]` | `[新设计规格]` | `[实现新版本组件，直接调用相同API]` | `[specify refactoring validate-refactoring]` | `[specify refactoring rollback-implementation]` | `P1` | `RT-[COMP]-INT-001` | `待实现` |
-| `RT-[COMP]-VAL-001` | `[性能和负载测试]` | `[系统性能不低于基线，用户体验流畅]` | `[重构完成 + All Validations PASS]` | `[性能基准]` | `[执行性能测试]` | `[specify refactoring validate-performance]` | `[specify refactoring rollback-deployment]` | `P1` | `RT-[COMP]-REF-001` | `待实现` |
+### 任务描述
+搭建目标技术栈的基础项目架构，配置开发环境和构建工具链。
 
----
+### EARS验收标准
+- **Given**: 需要创建现代化的开发环境
+- **When**: 执行项目初始化和配置
+- **Then**: 应该创建完整的项目结构
+- **And**: 所有开发工具应该正常工作
 
-## Refactoring Task Categories (Fill as needed)
+### RED阶段
+1. **编写失败测试**
+   ```typescript
+   describe('Target Project Setup', () => {
+     it('should have correct project structure', () => {
+       // 测试项目结构
+       expect(fs.existsSync('src/App.tsx')).toBeTruthy();
+       expect(fs.existsSync('vite.config.ts')).toBeTruthy();
+       expect(fs.existsSync('tsconfig.json')).toBeTruthy();
+     });
+     
+     it('should build successfully', () => {
+       // 测试构建过程
+       const buildResult = execSync('npm run build', { encoding: 'utf8' });
+       expect(buildResult).toContain('built in');
+     });
+     
+     it('should run tests successfully', () => {
+       // 测试测试环境
+       const testResult = execSync('npm test', { encoding: 'utf8' });
+       expect(testResult).toContain('passed');
+     });
+   });
+   ```
 
-### Phase 1: Behavior Documentation (P0)
-*Establish comprehensive baseline tests with automated validation*
-- [ ] `RT-[COMP]-DOC-[###]`: [Component baseline tests with reality validation]
-- [ ] `RT-[COMP]-DOC-[###]`: [Integration flow documentation with automated verification]
-- [ ] `RT-[COMP]-DOC-[###]`: [Performance benchmark establishment with validation commands]
-**Validation Gate**: All Phase 1 tasks must pass `specify refactoring reality-check`
+### GREEN阶段
+1. **实现功能代码**
+   ```bash
+   # 创建项目
+   [TARGET_INIT_COMMAND]
+   cd [PROJECT_NAME]
+   
+   # 安装依赖
+   [DEPENDENCY_INSTALL_COMMANDS]
+   
+   # 配置构建工具
+   [BUILD_TOOL_CONFIG]
+   
+   # 配置测试环境
+   [TEST_ENV_CONFIG]
+   ```
 
-### Phase 2: Interface Analysis (P0/P1)
-*Verify API contracts and ensure direct replacement compatibility*
-- [ ] `RT-[COMP]-INT-[###]`: [API endpoint verification with exact signature matching]
-- [ ] `RT-[COMP]-INT-[###]`: [Data model validation with source code extraction]
-- [ ] `RT-[COMP]-INT-[###]`: [Component interface verification for direct replacement]
-**Validation Gate**: All Phase 2 tasks must pass `specify refactoring validate-api-contract`
+### REFACTOR阶段
+1. **优化重构**
+   - 优化构建配置
+   - 配置路径别名
+   - 添加环境变量配置
+   - 优化开发服务器配置
 
-### Phase 3: Incremental Implementation (P1/P2)
-*Safe, incremental component refactoring with automated validation*
-- [ ] `RT-[COMP]-REF-[###]`: [Core business logic refactoring with validation]
-- [ ] `RT-[COMP]-REF-[###]`: [Repository layer refactoring with rollback capability - P0 Critical]
-- [ ] `RT-[COMP]-REF-[###]`: [Service layer modernization with phase validation]
-**Validation Gate**: All Phase 3 tasks must pass `specify refactoring validate-phase`
-
-### Phase 3-Repository: Repository Layer Implementation (P0)
-*Repository层必须100%精准还原 - Constitution VI-G*
-- [ ] `RT-[COMP]-REPO-[###]`: [Repository接口精准还原 - 100%行为保持]
-- [ ] `RT-[COMP]-REPO-[###]`: [数据访问模式验证 - 同步/异步/事务完全一致]
-- [ ] `RT-[COMP]-REPO-[###]`: [查询语义保持 - 过滤/排序/分页逻辑完全保持]
-- [ ] `RT-[COMP]-REPO-[###]`: [缓存策略还原 - 缓存机制/失效策略完全保持]
-- [ ] `RT-[COMP]-REPO-[###]`: [性能特征验证 - 响应时间/资源使用必须匹配]
-**Validation Gate**: All Repository tasks must pass `python scripts/validate-repository-layer.py`
-
-### Phase 4: Validation & Testing (P0/P1)
-*Comprehensive automated behavior preservation and performance validation*
-- [ ] `RT-[COMP]-VAL-[###]`: [Behavior preservation regression tests with automation]
-- [ ] `RT-[COMP]-VAL-[###]`: [Integration compatibility tests with continuous validation]
-- [ ] `RT-[COMP]-VAL-[###]`: [Performance and load testing with automated benchmarking]
-**Validation Gate**: All Phase 4 tasks must pass `specify refactoring validate-comprehensive`
-
-### Phase 5: Direct Replacement Deployment (P0)
-*Direct frontend replacement with validation*
-- [ ] `RT-[COMP]-MIG-[###]`: [Final deployment verification with API compatibility check]
-- [ ] `RT-[COMP]-MIG-[###]`: [Production rollout with complete replacement validation]
-- [ ] `RT-[COMP]-MIG-[###]`: [Emergency rollback to original frontend procedure]
-**Validation Gate**: All Phase 5 tasks must pass `specify refactoring validate-deployment`
-
----
-
-## Refactoring Task Generation Rules
-
-### From Refactoring Plan with Automated Validation
-```
-For each component in the refactoring plan:
-  1. Create baseline documentation task (Phase 1)
-     - Must include `specify refactoring reality-check` command
-     - Must achieve ≥80% integration authenticity
-  2. Create API contract verification task (Phase 2)
-     - Must include `specify refactoring validate-api-contract` command
-     - Must validate 100% API compatibility for direct replacement
-  3. Create component refactoring task (Phase 3)
-     - Must include `specify refactoring validate-phase` command
-     - Must implement direct API calls without adapters
-  4. Create validation task (Phase 4)
-     - Must include comprehensive automated testing
-     - Must verify behavior preservation and API consistency
-  5. Create direct replacement deployment task (Phase 5)
-     - Must include deployment validation commands
-     - Must have emergency rollback to original frontend
-
-**Automated Task Validation**:
-- Each task generation triggers validation via `specify refactoring validate-tasks`
-- Tasks without proper validation commands are automatically rejected
-- Task dependencies automatically include validation gate requirements
+### 验收标准
+- [ ] 项目结构正确创建
+- [ ] 开发服务器正常启动
+- [ ] 构建过程成功完成
+- [ ] 测试环境配置正确
+- [ ] 代码格式化工具正常工作
+- [ ] Hook验证Agent集成完成
+- [ ] Task-Testcase关联机制就绪
 ```
 
-### Priority Assignment Guidelines
-- **P0**: Interface stability, data integrity, baseline testing, rollback procedures
-- **P1**: Core functionality refactoring, performance validation, critical migrations
-- **P2**: Non-critical components, UI improvements, code quality enhancements
-- **P3**: Documentation, monitoring, non-essential optimizations
+### 1.2 数据模型和类型定义迁移
 
-### Automated Task Quality Validation
-**Automated Enforcement**: All task quality checks executed via `specify refactoring validate-tasks` command
+#### 1.2.1 任务：数据模型和类型定义迁移 (P0)
+```markdown
+## 任务：数据模型和类型定义迁移
 
-**Reality Validation Integration**:
-```bash
-# Embedded in each task
-specify refactoring reality-check --component [COMPONENT] --task-level
+**优先级**：P0  
+**预计时间**：6小时  
+**负责人**：前端开发工程师  
+
+### 任务描述
+将现有系统的数据模型迁移到目标技术栈的类型定义，确保100%类型匹配。
+
+### EARS验收标准
+- **Given**: 需要迁移数据模型定义
+- **When**: 创建类型定义
+- **Then**: 应该与现有系统完全匹配
+- **And**: 应该通过所有类型检查
+
+### RED阶段
+1. **编写失败测试**
+   ```typescript
+   describe('Data Models Migration', () => {
+     it('should match existing system model structure', () => {
+       // 测试数据模型匹配
+       const existingModel = getExistingModel();
+       const targetModel = createTargetModel();
+       
+       expect(Object.keys(targetModel)).toEqual(Object.keys(existingModel));
+       expect(targetModel.id).toEqual(existingModel.id);
+       expect(targetModel.name).toEqual(existingModel.name);
+     });
+     
+     it('should handle business logic correctly', () => {
+       // 测试业务逻辑保持
+       const result = transformData(mockData);
+       expect(result).toBe(expectedResult);
+     });
+   });
+   ```
+
+### GREEN阶段
+1. **实现功能代码**
+   ```typescript
+   // src/models/[ModelName].ts
+   export interface [ModelName] {
+     id: string;
+     name: string;
+     descriptions?: string;
+     specialNotes?: string;
+     tags: string;
+     createdDate: Date;
+     creatorId: number;
+     // ... 其他属性
+   }
+   ```
+
+### REFACTOR阶段
+1. **优化重构**
+   - 添加类型工具函数
+   - 优化类型继承结构
+   - 添加类型守卫函数
+   - 完善类型文档
+
+### 验收标准
+- [ ] 所有数据模型100%匹配
+- [ ] 类型检查无错误
+- [ ] 与现有测试用例兼容
+- [ ] 业务逻辑正确保持
+- [ ] 类型定义文档完整
+- [ ] Hook Agent验证数据模型一致性
+- [ ] Testcase覆盖所有数据转换场景
 ```
-- **Mock Data Prevention**: Tasks automatically validate no mock data usage
-- **Business Logic Completeness**: Tasks verify complete implementation
-- **Integration Authenticity**: Tasks ensure real API calls and data sources
-
-**Behavior Preservation Requirements**:
-```bash
-# Automated behavior validation per task
-specify refactoring behavior-preserve --task [TASK_ID] --baseline [ORIGINAL]
-```
-- **Automated Interface Diffing**: Tasks include automated interface stability validation
-- **Functional Equivalence Testing**: Tasks require comparative testing automation
-- **Data Contract Validation**: Tasks include automated schema integrity checks
-- **Frontend Functional Logic**: Business logic preserved, UI/UX modernization encouraged
-
-**Repository Layer Validation Requirements**:
-```bash
-# Repository层精准还原验证 (Constitution VI-G)
-python scripts/validate-repository-layer.py [source_path] [refactored_path] --output validation_report.json
-```
-- **Repository接口精准还原**: 必须验证所有Repository接口定义100%保持
-- **数据访问模式一致性**: 必须验证同步/异步模式、事务处理、错误处理完全一致
-- **查询语义保持**: 必须验证查询逻辑、过滤条件、排序规则、分页行为保持不变
-- **缓存策略还原**: 必须验证缓存机制、失效策略、缓存键生成逻辑完全保持
-- **性能特征匹配**: 必须验证查询性能、响应时间、资源使用在可接受范围内
-- **前端项目特殊要求**: 必须验证API调用模式、数据加载策略、状态管理完全保持
-
-**Progressive Refactoring Compliance**:
-```bash
-# Phase sequence validation per task
-specify refactoring validate-phase --task [TASK_ID] --phase [PHASE_NUMBER]
-```
-- **Phase Gate Enforcement**: Tasks automatically validate prerequisite phases complete
-- **Rollback Validation**: Tasks include automated rollback capability verification
-- **Atomic Operation Testing**: Tasks verify each step is independently testable
-
-**Automated Compliance Verification**:
-- ✅ **Reality Check**: Task prevents mock data and ensures business logic completeness
-- ✅ **Behavior Preservation**: Task includes automated interface stability validation
-- ✅ **Progressive Compliance**: Task validates phase sequence and rollback capability
-- ✅ **Data Integrity**: Task includes automated schema and serialization validation
-- ✅ **Methodology Compliance**: Task ensures single responsibility and atomic operations
-
-**Validation Failure Actions**:
-- **Task-Level Reality Fail**: Task cannot be marked complete - fix violations first
-- **Behavior Preservation Fail**: Task requires redesign - revisit interface compatibility
-- **Phase Sequence Violation**: Task blocked - complete prerequisite phases first
-- **Rollback Capability Missing**: Task implementation incomplete - add restore points
-
-*All tasks MUST comply with refactoring constitution at `/memory/constitution-refactoring.md`*
 
 ---
 
-## 需求任务执行映射 *(推荐)*
+## 二、核心工具和服务开发任务
 
-### 用户需求到重构任务的映射
+### 2.1 数据转换工具函数
 
-| 用户需求ID | 需求描述 | 关联任务ID | 任务类型 | 实现优先级 | 验收标准 |
-|-----------|----------|------------|----------|------------|----------|
-| **US-001** | [来自spec.md的需求描述] | RT-SPEC-001, RT-INT-001 | Behavior Preservation | P0 | [验收标准] |
-| **US-002** | [来自spec.md的需求描述] | RT-API-001, RT-TEST-001 | Interface Stability | P1 | [验收标准] |
+#### 2.1.1 任务：数据转换工具函数实现 (P1)
+```markdown
+## 任务：数据转换工具函数实现
 
-### 任务需求溯源矩阵
+**优先级**：P1  
+**预计时间**：4小时  
+**负责人**：前端开发工程师  
 
-| 任务ID | 任务描述 | 支持的用户需求 | 任务类型 | 依赖任务 | 预期结果 |
-|--------|----------|----------------|----------|----------|----------|
-| `RT-SPEC-001` | [任务描述] | US-001 | Documentation | 无 | [预期结果] |
-| `RT-INT-001` | [任务描述] | US-001, US-002 | Integration | RT-SPEC-001 | [预期结果] |
-| `RT-API-001` | [任务描述] | US-002 | API Contract | 无 | [预期结果] |
+### 任务描述
+实现数据转换工具函数，确保与现有系统行为完全一致。
 
-### 质量门禁和验收标准
+### EARS验收标准
+- **Given**: 需要转换数据格式
+- **When**: 调用转换函数
+- **Then**: 应该返回正确的转换结果
+- **And**: 应该保持业务逻辑一致性
 
-| 检查项 | 关联需求 | 验证方法 | 通过条件 | 责任角色 |
-|--------|----------|----------|----------|----------|
-| [检查项1] | US-001 | [验证方法] | [通过条件] | [角色] |
-| [检查项2] | US-002 | [验证方法] | [通过条件] | [角色] |
+### RED阶段
+1. **编写失败测试**
+   ```typescript
+   describe('Data Transformations', () => {
+     it('should transform data correctly', () => {
+       const mockData = {
+         id: 'test-id',
+         name: 'Test Document',
+         tags: '500',
+         createdDate: new Date('2023-01-01'),
+         creatorId: 123,
+       };
+       
+       const result = transformData(mockData);
+       expect(result).toBe(expectedResult);
+     });
+     
+     it('should handle edge cases gracefully', () => {
+       const edgeCaseData = { ...mockData, tags: '0' };
+       const result = transformData(edgeCaseData);
+       expect(result).toBe(expectedEdgeCaseResult);
+     });
+   });
+   ```
+
+### GREEN阶段
+1. **实现功能代码**
+   ```typescript
+   // src/utils/transformations.ts
+   export const transformData = (data: ExistingModel | null): number => {
+     if (!data) return 0;
+     
+     const baseCount = parseInt(data.tags || '0', 10);
+     const businessLogicValue = [BUSINESS_LOGIC_CONSTANT];
+     return baseCount + businessLogicValue;
+   };
+   ```
+
+### REFACTOR阶段
+1. **优化重构**
+   - 添加错误处理
+   - 优化性能
+   - 添加缓存机制
+   - 完善类型定义
+
+### 验收标准
+- [ ] 所有转换函数正常工作
+- [ ] 业务逻辑正确保持
+- [ ] 边界情况处理正确
+- [ ] 性能优化完成
+- [ ] 现有测试用例通过
+- [ ] Hook Agent验证转换逻辑一致性
+- [ ] 独立Testcase验证所有边界情况
+```
+
+### 2.2 状态管理实现
+
+#### 2.2.1 任务：状态管理实现 (P1)
+```markdown
+## 任务：状态管理实现
+
+**优先级**：P1  
+**预计时间**：6小时  
+**负责人**：前端开发工程师  
+
+### 任务描述
+实现基于目标技术栈的状态管理系统，确保行为完全一致。
+
+### EARS验收标准
+- **Given**: 需要管理应用状态
+- **When**: 组件订阅状态变化
+- **Then**: 应该正确更新和同步状态
+- **And**: 异步操作应该正常工作
+
+### RED阶段
+1. **编写失败测试**
+   ```typescript
+   describe('State Management', () => {
+     it('should manage app state correctly', () => {
+       const store = createAppStore();
+       
+       // 测试状态更新
+       store.setAppData(mockAppData);
+       expect(store.appData).toEqual(mockAppData);
+       
+       // 测试异步操作
+       store.fetchAppData('test-id');
+       expect(store.loading).toBe(true);
+     });
+   });
+   ```
+
+### GREEN阶段
+1. **实现功能代码**
+   ```typescript
+   // src/stores/AppStore.ts
+   import { create } from '[STATE_MANAGEMENT_LIB]';
+   import { AppModel } from '@/models';
+   
+   interface AppStore {
+     appData: AppModel | null;
+     loading: boolean;
+     error: string | null;
+     setAppData: (appData: AppModel) => void;
+     fetchAppData: (id: string) => Promise<void>;
+     clearAppData: () => void;
+   }
+   
+   export const useAppStore = create<AppStore>((set, get) => ({
+     appData: null,
+     loading: false,
+     error: null,
+     
+     setAppData: (appData) => set({ appData }),
+     
+     fetchAppData: async (id: string) => {
+       set({ loading: true, error: null });
+       try {
+         const response = await fetch(`/api/data/${id}`);
+         const appData = await response.json();
+         set({ appData, loading: false });
+       } catch (error) {
+         set({ error: error.message, loading: false });
+       }
+     },
+     
+     clearAppData: () => set({ appData: null, error: null })
+   }));
+   ```
+
+### REFACTOR阶段
+1. **优化重构**
+   - 添加状态持久化
+   - 优化性能
+   - 添加状态中间件
+   - 完善错误处理
+
+### 验收标准
+- [ ] 状态管理正常工作
+- [ ] 异步操作正确处理
+- [ ] 组件状态同步正常
+- [ ] 错误处理完善
+- [ ] 性能优化完成
+- [ ] Hook Agent验证状态管理一致性
+- [ ] Testcase覆盖所有状态场景
+```
 
 ---
 
-## Example Template (Replace with actual refactoring content)
+## 三、核心业务组件开发任务
 
-### Component: [COMPONENT NAME - e.g., Authentication Service]
+### 3.1 主要业务组件实现
 
-| 任务ID | 任务描述 | 前置条件 | 输入数据/参数 | 重构操作 | 验证步骤 | 回滚程序 | 优先级 | 依赖关系 | 当前状态 |
-|:---|:---|:---|:---|:---|:---|:---|:---|:---|:---|
-| `RT-AUTH-DOC-001` | `[创建认证服务的基线测试]` | `[认证服务稳定运行]` | `[API文档和测试用例]` | `[编写完整的认证流程测试]` | `[所有测试通过并建立基线]` | `[保留测试代码]` | `P0` | `无` | `待实现` |
-| `RT-AUTH-INT-001` | `[验证认证API契约一致性]` | `[基线测试完成]` | `[现有API接口定义]` | `[验证新实现与API契约100%匹配]` | `[specify refactoring validate-api-contract]` | `[specify refactoring rollback-implementation]` | `P0` | `RT-AUTH-DOC-001` | `待实现` |
+#### 3.1.1 任务：主要业务组件实现 (P1)
+```markdown
+## 任务：主要业务组件实现
+
+**优先级**：P1  
+**预计时间**：8小时  
+**负责人**：前端开发工程师  
+
+### 任务描述
+实现主要的业务组件，包括核心功能，确保与现有系统行为100%一致。
+
+### EARS验收标准
+- **Given**: 用户需要使用核心功能
+- **When**: 组件加载完成
+- **Then**: 应该正确显示和处理业务逻辑
+- **And**: 所有交互功能应该正常工作
+
+### RED阶段
+1. **编写失败测试**
+   ```typescript
+   describe('Main Business Component', () => {
+     let component: MainBusinessComponent;
+     let store: MockAppStore;
+     
+     beforeEach(() => {
+       store = createMockAppStore();
+       render(
+         <AppStoreProvider store={store}>
+           <MainBusinessComponent id="test-id" />
+         </AppStoreProvider>
+       );
+       component = screen.getByTestId('main-business-component');
+     });
+     
+     it('should display business information correctly', () => {
+       expect(screen.getByText('Test Business Item')).toBeInTheDocument();
+       expect(screen.getByText('Business Category')).toBeInTheDocument();
+     });
+     
+     it('should handle core interactions', async () => {
+       const actionButton = screen.getByRole('button', { name: /action/i });
+       await userEvent.click(actionButton);
+       
+       expect(store.performAction).toHaveBeenCalledWith('test-id');
+     });
+   });
+   ```
+
+### GREEN阶段
+1. **实现功能代码**
+   ```typescript
+   // src/components/MainBusinessComponent.tsx
+   import React, { useEffect } from 'react';
+   import { useAppStore } from '@/stores';
+   import { transformData } from '@/utils';
+   
+   interface MainBusinessComponentProps {
+     id: string;
+   }
+   
+   export const MainBusinessComponent: React.FC<MainBusinessComponentProps> = ({ id }) => {
+     const { appData, loading, error, fetchAppData } = useAppStore();
+     
+     useEffect(() => {
+       fetchAppData(id);
+     }, [id]);
+     
+     if (loading) return <div>Loading...</div>;
+     if (error) return <div>Error: {error}</div>;
+     if (!appData) return <div>Data not found</div>;
+     
+     const transformedValue = transformData(appData);
+     
+     return (
+       <div className="main-business-component" data-testid="main-business-component">
+         <div className="business-header">
+           <h1>{appData.name}</h1>
+           <div className="business-meta">
+             <span>Category: {appData.category}</span>
+             <span>Value: {transformedValue}</span>
+           </div>
+         </div>
+         
+         <div className="business-content">
+           {/* Business logic implementation */}
+         </div>
+         
+         <div className="business-actions">
+           <button onClick={() => handleAction(id)}>
+             Action
+           </button>
+         </div>
+       </div>
+     );
+   };
+   ```
+
+### REFACTOR阶段
+1. **优化重构**
+   - 添加错误边界
+   - 优化性能
+   - 添加加载状态
+   - 完善无障碍性
+
+### 验收标准
+- [ ] 业务信息正确显示
+- [ ] 核心功能正常工作
+- [ ] 交互功能正常工作
+- [ ] 数据转换逻辑正确
+- [ ] 性能优化完成
+- [ ] Hook Agent验证组件行为一致性
+- [ ] Testcase覆盖所有用户交互场景
+```
+
+## 四、测试和优化任务
+
+### 4.1 单元测试和集成测试
+
+#### 4.1.1 任务：单元测试和集成测试 (P1)
+```markdown
+## 任务：单元测试和集成测试
+
+**优先级**：P1  
+**预计时间**：8小时  
+**负责人**：测试工程师  
+
+### 任务描述
+编写全面的单元测试和集成测试，确保测试覆盖率达到90%以上。
+
+### EARS验收标准
+- **Given**: 需要验证代码质量
+- **When**: 运行测试套件
+- **Then**: 应该所有测试通过
+- **And**: 测试覆盖率应该达标
+
+### RED阶段
+1. **编写测试用例**
+   ```typescript
+   // src/components/__tests__/MainBusinessComponent.test.tsx
+   describe('MainBusinessComponent', () => {
+     it('should render loading state initially', () => {
+       render(<MainBusinessComponent id="test-id" />);
+       expect(screen.getByText('Loading...')).toBeInTheDocument();
+     });
+     
+     it('should render business information when loaded', async () => {
+       const mockData = createMockBusinessData();
+       mockAppStore.getState().setAppData(mockData);
+       
+       render(<MainBusinessComponent id="test-id" />);
+       
+       await waitFor(() => {
+         expect(screen.getByText(mockData.name)).toBeInTheDocument();
+       });
+     });
+   });
+   ```
+
+### GREEN阶段
+1. **实现测试代码**
+   ```typescript
+   // 继续编写更多测试用例
+   // 配置测试框架
+   // 设置测试覆盖率
+   ```
+
+### REFACTOR阶段
+1. **优化重构**
+   - 优化测试性能
+   - 添加Mock数据
+   - 完善测试工具函数
+   - 优化测试配置
+
+### 验收标准
+- [ ] 所有单元测试通过
+- [ ] 测试覆盖率≥90%
+- [ ] 集成测试通过
+- [ ] E2E测试通过
+- [ ] 性能测试通过
+- [ ] Hook Agent验证测试完整性
+- [ ] Testcase与Task关联100%覆盖
+```
+
+## 五、任务执行计划
+
+### 5.1 时间安排
+
+| 阶段 | 任务 | 预计时间 | 负责人 |
+|------|------|----------|--------|
+| 第一阶段 | 基础设施搭建 | 10小时 | 前端架构师 |
+| 第二阶段 | 工具和服务实现 | 10小时 | 前端开发工程师 |
+| 第三阶段 | 核心组件开发 | 14小时 | 前端开发工程师 |
+| 第四阶段 | 测试和优化 | 16小时 | 测试工程师 |
+| 第五阶段 | 部署配置 | 4小时 | DevOps工程师 |
+
+**总计**: 54小时 (约1.5周)
+
+### 5.2 依赖关系
+
+```
+基础设施搭建 → 工具和服务实现 → 核心组件开发 → 测试和优化 → 部署配置
+```
+
+## 六、任务验收标准
+
+### 6.1 功能验收标准
+- [ ] 所有功能与现有系统100%一致
+- [ ] 用户界面响应正常
+- [ ] 数据转换逻辑正确
+- [ ] 错误处理完善
+
+### 6.2 技术验收标准
+- [ ] 代码质量通过检查
+- [ ] 测试覆盖率≥90%
+- [ ] 性能指标满足要求
+- [ ] 无障碍性合规
+
+### 6.3 业务验收标准
+- [ ] 用户满意度≥85%
+- [ ] 系统稳定性≥99.9%
+- [ ] 移动端兼容性100%
+- [ ] 第三方集成正常
 
 ---
 
-## Execution Status
-*Updated during main() execution with automated validation*
-
-**IMPORTANT**: All status items MUST start as [ ] (pending) and ONLY be marked [x] (completed) after actual execution.
-**VIOLATION**: Pre-completing any status item violates progressive refactoring principles and constitution.
-
-- [ ] Refactoring plan loaded
-- [ ] Automated Constitution Compliance Validation executed
-- [ ] Refactoring tasks generated by phase with validation commands
-- [ ] Priority levels and dependencies assigned with validation gates
-- [ ] Automated Task Quality Validation completed
-- [ ] Behavior preservation requirements documented with automation
-- [ ] All components have complete refactoring coverage with validation
-- [ ] Reality validation requirements embedded in all tasks
-- [ ] Automated rollback procedures integrated into all tasks
-- [ ] Progressive refactoring phase validation established
+**重构任务文档说明**: 本任务文档基于重构需求制定，严格遵循TDD开发流程，确保代码质量和功能完整性。所有任务都包含完整的RED-GREEN-REFACTOR步骤和验收标准。
 
 ---
 
-*Based on Spec-Driven Development v2.1 - Refactoring Methodology*
+## 七、开发指南
+
+### 7.1 技术栈要求
+- **目标框架**: [TARGET_FRAMEWORK] 
+- **状态管理**: [STATE_MANAGEMENT_LIB]
+- **构建工具**: [BUILD_TOOL]
+- **测试框架**: [TESTING_FRAMEWORK]
+- **样式方案**: [STYLING_SOLUTION]
+
+### 7.2 代码规范
+- **TypeScript**: 严格模式，所有类型必须明确定义
+- **组件模式**: 函数组件 + Hooks
+- **样式**: [STYLING_APPROACH]
+- **测试**: [TESTING_APPROACH]
+
+### 7.3 质量保证
+- **测试覆盖率**: ≥90%
+- **类型检查**: 0错误
+- **代码风格**: [LINTING_TOOL]
+- **性能**: [PERFORMANCE_REQUIREMENTS]
+
+### 7.4 任务执行顺序
+```
+1. SETUP-001 → 项目基础架构
+2. MODELS-001 → 数据模型定义
+3. UTILS-001 → 工具函数实现
+4. STORE-001 → 状态管理实现
+5. COMPONENTS-001 → 核心组件开发
+6. TESTS-001 → 测试用例编写
+7. DEPLOY-001 → 部署配置
+```
+
+## 八、验证机制集成
+
+### 8.1 Task-Testcase关联机制
+
+每个Task必须通过以下验证机制：
+
+#### 强验证规则
+- **Task创建时**: 必须关联FR/UserRequirement和至少一个Testcase
+- **Task执行时**: Hook Agent实时监控执行过程
+- **Task完成时**: 所有关联Testcase必须通过验证
+- **自验证禁止**: AI不能验证自己创建的Task
+
+#### 验证流程
+```typescript
+// Task创建验证
+const taskValidation = await hookAgent.validateTaskCreation(task, context);
+if (!taskValidation.isValid) {
+  throw new Error('Task validation failed: ' + taskValidation.errors.map(e => e.message).join(', '));
+}
+
+// Task执行验证
+const executionValidation = await hookAgent.validateTaskExecution(taskId, execution);
+if (!executionValidation.isValid) {
+  await handleValidationFailure(executionValidation);
+}
+
+// Task完成验证
+const completionValidation = await hookAgent.validateTaskCompletion(taskId, results);
+if (!completionValidation.isValid) {
+  throw new Error('Task completion validation failed');
+}
+```
+
+### 8.2 Hook验证Agent配置
+
+#### Agent启用配置
+```yaml
+# .specify/hook-validation-config.yaml
+validation:
+  enabled: true
+  strict_mode: true
+  agents:
+    task_creation: Hook-Validation-Agent-v1
+    task_execution: Hook-Validation-Agent-v1
+    task_completion: Hook-Validation-Agent-v1
+  
+rules:
+  # 强验证规则
+  task_must_have_testcase: true
+  testcase_must_have_expected_result: true
+  independent_validation_required: true
+  complete_verification_required: true
+  
+  # 纠正机制
+  auto_correction: false
+  detailed_suggestions: true
+  failure_escalation: true
+```
+
+### 8.3 验证失败处理机制
+
+#### 失败处理流程
+1. **问题识别**: Hook Agent识别验证失败的具体原因
+2. **根本原因分析**: 分析失败的技术或业务原因
+3. **纠正建议生成**: 提供具体的纠正措施
+4. **重新验证**: 执行纠正后重新验证
+
+#### 纠正建议示例
+```typescript
+interface CorrectionPlan {
+  taskId: string;
+  issues: ValidationIssue[];
+  corrections: CorrectionAction[];
+  verificationSteps: string[];
+}
+
+interface CorrectionAction {
+  type: 'ADD_TESTCASE' | 'MODIFY_IMPLEMENTATION' | 'UPDATE_REQUIREMENTS';
+  description: string;
+  priority: 'HIGH' | 'MEDIUM' | 'LOW';
+  estimatedTime: number;
+}
+```
+
+### 8.4 验证报告生成
+
+#### 自动验证报告
+每个Task完成后生成详细验证报告：
+- **Task信息**: ID、描述、关联的FR/UserRequirement
+- **验证结果**: 总体状态、详细验证项
+- **Testcase结果**: 所有关联Testcase的执行情况
+- **问题分析**: 失败原因和影响范围
+- **纠正建议**: 具体的改进措施
+
+#### 报告格式
+```markdown
+# Task验证报告：[TASK_ID]
+
+## 基本信息
+- **Task ID**: [TASK_ID]
+- **Task描述**: [TASK_DESCRIPTION]
+- **FR ID**: [FR_ID]
+- **UserRequirement ID**: [UR_ID]
+- **验证时间**: [TIMESTAMP]
+- **验证Agent**: [AGENT_NAME]
+
+## 验证结果
+- **总体状态**: ✅ PASS / ❌ FAIL
+- **Testcase数量**: [COUNT]
+- **通过数量**: [COUNT]
+- **失败数量**: [COUNT]
+- **通过率**: [PERCENTAGE]%
+
+## Testcase详情
+| Testcase_ID | 状态 | 预期结果 | 实际结果 | 验证时间 |
+|-------------|------|----------|----------|----------|
+| [TC_ID] | ✅/❌ | [EXPECTED] | [ACTUAL] | [TIME] |
+
+## 问题分析
+[详细的问题分析]
+
+## 纠正建议
+[具体的纠正建议]
+```
+
+---
+
+**重构模板说明**: 本模板已更新为实用的TDD开发模式，去除了理论化的验证命令，专注于实际开发任务和可执行的代码实现。每个任务都包含完整的RED-GREEN-REFACTOR步骤和明确的验收标准。
