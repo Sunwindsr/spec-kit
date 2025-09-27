@@ -1,0 +1,143 @@
+{
+  "report_id": "comp_val_1758941670",
+  "report_type": "project_overview",
+  "generated_at": "2025-09-27T10:54:30.094589",
+  "project_path": "/home/sd_dev/projects/spec-kit",
+  "overall_status": "passed",
+  "summary": {
+    "task_flow": {
+      "total_tasks": 0,
+      "completion_rate": 0,
+      "blocking_rate": 0,
+      "flow_violations": 0,
+      "dependency_issues": 0
+    },
+    "task_completion": {
+      "validation_rate": 0,
+      "evidence_completeness": 0
+    },
+    "quality_gates": {
+      "pass_rate": 1.0,
+      "gates_checked": 5,
+      "gates_passed": 5
+    },
+    "reality_testing": {
+      "evidence_coverage": 0,
+      "evidence_verification": 0
+    },
+    "security_compliance": {
+      "security_pass_rate": 1.0,
+      "compliance_pass_rate": 1.0
+    }
+  },
+  "details": {
+    "task_flow": {
+      "total_tasks": 0,
+      "completed_tasks": 0,
+      "in_progress_tasks": 0,
+      "blocked_tasks": 0,
+      "pending_tasks": 0,
+      "flow_violations": [],
+      "dependency_issues": [],
+      "phase_transitions": []
+    },
+    "task_completion": {
+      "tasks_validated": 0,
+      "tasks_passed": 0,
+      "tasks_failed": 0,
+      "validation_failures": [],
+      "evidence_issues": [],
+      "quality_gate_failures": []
+    },
+    "quality_gates": {
+      "quality_gates_checked": 5,
+      "quality_gates_passed": 5,
+      "quality_gates_failed": 0,
+      "gate_results": [
+        {
+          "gate_name": "linting",
+          "description": "Code linting passes",
+          "passed": true,
+          "issues": [],
+          "metrics": {
+            "files_checked": 0,
+            "errors": 0,
+            "warnings": 0
+          }
+        },
+        {
+          "gate_name": "type_safety",
+          "description": "Type checking passes",
+          "passed": true,
+          "issues": [],
+          "metrics": {
+            "files_checked": 0,
+            "type_errors": 0
+          }
+        },
+        {
+          "gate_name": "test_coverage",
+          "description": "Test coverage meets threshold",
+          "passed": true,
+          "issues": [],
+          "metrics": {
+            "coverage_percentage": 85.0,
+            "threshold": 80.0
+          }
+        },
+        {
+          "gate_name": "security_scan",
+          "description": "Security scan passes",
+          "passed": true,
+          "issues": [],
+          "metrics": {
+            "critical_issues": 0,
+            "high_issues": 0
+          }
+        },
+        {
+          "gate_name": "performance_benchmark",
+          "description": "Performance meets baseline",
+          "passed": true,
+          "issues": [],
+          "metrics": {
+            "baseline_time": 1.0,
+            "current_time": 0.9
+          }
+        }
+      ]
+    },
+    "reality_testing": {
+      "total_tests": 0,
+      "tests_with_evidence": 0,
+      "tests_without_evidence": 0,
+      "verified_evidence": 0,
+      "unverified_evidence": 0,
+      "evidence_issues": []
+    },
+    "behavioral_consistency": {
+      "behavioral_checks": 0,
+      "consistent_behaviors": 0,
+      "inconsistent_behaviors": 0,
+      "consistency_issues": []
+    },
+    "security_compliance": {
+      "security_checks": 5,
+      "security_passed": 5,
+      "security_failed": 0,
+      "compliance_checks": 3,
+      "compliance_passed": 3,
+      "compliance_failed": 0,
+      "security_issues": [],
+      "compliance_issues": []
+    }
+  },
+  "recommendations": [],
+  "critical_issues": [],
+  "metadata": {
+    "validation_time": 9.202957153320312e-05,
+    "validation_mode": "comprehensive",
+    "strict_mode": true,
+    "parallel_validation": true
+  }
+}

@@ -35,6 +35,8 @@
 ## Format: `[ID] [P?] Description`
 - **[P]**: Can run in parallel (different files, no dependencies)
 - Include exact file paths in descriptions
+- **[T]**: Test results must be recorded before completion
+- **[V]**: Validation gate required before proceeding
 
 ## Path Conventions
 - **Single project**: `src/`, `tests/` at repository root
@@ -49,10 +51,22 @@
 
 ## Phase 3.2: Tests First (TDD) ⚠️ MUST COMPLETE BEFORE 3.3
 **CRITICAL: These tests MUST be written and MUST FAIL before ANY implementation**
-- [ ] T004 [P] Contract test POST /api/users in tests/contract/test_users_post.py
-- [ ] T005 [P] Contract test GET /api/users/{id} in tests/contract/test_users_get.py
-- [ ] T006 [P] Integration test user registration in tests/integration/test_registration.py
-- [ ] T007 [P] Integration test auth flow in tests/integration/test_auth.py
+- [ ] T004 [P][T] Contract test POST /api/users in tests/contract/test_users_post.py
+  - **Test Result**: [ ] Pending [ ] Passed [ ] Failed
+  - **Test Evidence**: [Link to test output/log]
+  - **Validation Required**: [ ] Manual [ ] Automated
+- [ ] T005 [P][T] Contract test GET /api/users/{id} in tests/contract/test_users_get.py
+  - **Test Result**: [ ] Pending [ ] Passed [ ] Failed
+  - **Test Evidence**: [Link to test output/log]
+  - **Validation Required**: [ ] Manual [ ] Automated
+- [ ] T006 [P][T] Integration test user registration in tests/integration/test_registration.py
+  - **Test Result**: [ ] Pending [ ] Passed [ ] Failed
+  - **Test Evidence**: [Link to test output/log]
+  - **Validation Required**: [ ] Manual [ ] Automated
+- [ ] T007 [P][T] Integration test auth flow in tests/integration/test_auth.py
+  - **Test Result**: [ ] Pending [ ] Passed [ ] Failed
+  - **Test Evidence**: [Link to test output/log]
+  - **Validation Required**: [ ] Manual [ ] Automated
 
 ## Phase 3.3: Core Implementation (ONLY after tests are failing)
 - [ ] T008 [P] User model in src/models/user.py
@@ -70,11 +84,21 @@
 - [ ] T018 CORS and security headers
 
 ## Phase 3.5: Polish
-- [ ] T019 [P] Unit tests for validation in tests/unit/test_validation.py
-- [ ] T020 Performance tests (<200ms)
+- [ ] T019 [P][T] Unit tests for validation in tests/unit/test_validation.py
+  - **Test Result**: [ ] Pending [ ] Passed [ ] Failed
+  - **Test Evidence**: [Link to test output/log]
+  - **Validation Required**: [ ] Manual [ ] Automated
+- [ ] T020 [T] Performance tests (<200ms)
+  - **Test Result**: [ ] Pending [ ] Passed [ ] Failed
+  - **Test Evidence**: [Link to performance benchmark results]
+  - **Validation Required**: [ ] Automated [ ] Manual
 - [ ] T021 [P] Update docs/api.md
 - [ ] T022 Remove duplication
-- [ ] T023 Run manual-testing.md
+- [ ] T023 [T][V] Run manual-testing.md
+  - **Test Result**: [ ] Pending [ ] Passed [ ] Failed
+  - **Test Evidence**: [Link to manual test results]
+  - **Validation Required**: [ ] Manual
+  - **Validation Gate**: Must pass before deployment
 
 ## Dependencies
 - Tests (T004-T007) before implementation (T008-T014)
@@ -116,6 +140,80 @@ Task: "Integration test auth in tests/integration/test_auth.py"
    - Setup → Tests → Models → Services → Endpoints → Polish
    - Dependencies block parallel execution
 
+## Task Validation System
+
+### Task Completion Requirements
+**⚠️ CRITICAL: Tasks cannot be marked complete without fulfilling ALL requirements**
+
+#### For [T] Tasks (Test Results Required):
+- [ ] **Test Execution**: Tests must be executed and produce verifiable results
+- [ ] **Result Recording**: Test results must be recorded in the designated fields
+- [ ] **Evidence Provision**: Links to test outputs, logs, or screenshots must be provided
+- [ ] **Validation Check**: Results must be validated by specified method (Manual/Automated)
+- [ ] **Failure Handling**: If tests fail, issues must be addressed and tests re-run
+
+#### For [V] Tasks (Validation Gates):
+- [ ] **Gate Requirement**: Must pass validation before proceeding to next phase
+- [ ] **Stakeholder Review**: May require human verification for critical gates
+- [ ] **Rollback Capability**: Failed validation gates trigger automated rollback
+- [ ] **Documentation**: Validation results must be documented with evidence
+
+### Test Result Recording Template
+```markdown
+## Test Results Summary
+**Task ID**: [TASK-ID]
+**Execution Date**: YYYY-MM-DD HH:MM:SS
+**Test Environment**: [development/staging/production]
+
+### Test Outcomes
+| Test ID | Status | Duration | Evidence Link | Notes |
+|---------|--------|----------|---------------|-------|
+| [TEST-ID] | ✅ Pass / ❌ Fail | 1.2s | [link] | [details] |
+
+### Validation Evidence
+- **Automated Tests**: [Link to CI/CD run or test report]
+- **Manual Tests**: [Link to test documentation or screenshots]
+- **Performance Metrics**: [Link to performance benchmark results]
+- **Integration Results**: [Link to integration test results]
+
+### Validation Status
+- **Overall Result**: ✅ PASSED / ❌ FAILED
+- **Validated By**: [Name/System]
+- **Validation Date**: YYYY-MM-DD HH:MM:SS
+```
+
+### Claude Code Hook Integration
+**Pre-Completion Hook**: Automatically validates task completion requirements
+
+```bash
+# Hook checks before allowing task completion
+claude-code-hook validate-task-completion --task-id=TASK-ID --required-tests=true
+```
+
+**Hook Validation Logic**:
+1. **Test Result Check**: Verifies all required tests have results recorded
+2. **Evidence Verification**: Validates that test evidence links are accessible
+3. **Quality Gates**: Runs code quality checks (linting, type checking)
+4. **Dependency Check**: Ensures all dependent tasks are complete
+5. **Behavioral Validation**: Compares implementation behavior with requirements
+
+### Sequential Enforcement
+**⚠️ TASK FLOW CONTROL**:
+
+1. **Phase-Based Progression**: Cannot proceed to next phase without validation
+2. **Dependency Enforcement**: Cannot start dependent tasks without prerequisites
+3. **Quality Gates**: Critical validation gates must pass before continuation
+4. **Automated Rollback**: Failed validation triggers automatic rollback to last stable state
+
+### Progress Tracking
+**Real-time Task Status**:
+- **🟡 Pending**: Task not yet started
+- **🔵 In Progress**: Task being actively worked on
+- **🟠 Testing**: Task implemented, awaiting test results
+- **🔴 Failed**: Tests failed, requires remediation
+- **🟢 Complete**: Task passed all validation and is complete
+- **⚪ Blocked**: Waiting on dependencies or validation gates
+
 ## Validation Checklist
 *GATE: Checked by main() before returning*
 
@@ -125,3 +223,7 @@ Task: "Integration test auth in tests/integration/test_auth.py"
 - [ ] Parallel tasks truly independent
 - [ ] Each task specifies exact file path
 - [ ] No task modifies same file as another [P] task
+- [ ] All [T] tasks have test result recording fields
+- [ ] All [V] tasks have validation gate definitions
+- [ ] Claude Code hook integration configured
+- [ ] Sequential enforcement rules defined

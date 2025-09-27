@@ -1,0 +1,46 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /home/sd_dev/projects/spec-kit/src/specify_cli/enhanced_tdd_validation_system.py --comprehensive"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /home/sd_dev/projects/spec-kit/src/specify_cli/enhanced_tdd_validation_system.py --validate-file-edits --file-path $CLAUDE_PROJECT_DIR/.claude/last-edits.json"
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "test_pass_threshold": 0.95,
+    "code_coverage_threshold": 0.80,
+    "performance_threshold": 1.0,
+    "strict_mode": true,
+    "auto_rollback_enabled": true,
+    "require_evidence": true
+  },
+  "reality_testing": {
+    "enabled": true,
+    "evidence_required": true,
+    "behavioral_validation": true,
+    "performance_metrics": true
+  },
+  "quality_gates": {
+    "linting": {"enabled": true, "critical": true},
+    "type_safety": {"enabled": true, "critical": true},
+    "test_coverage": {"enabled": true, "critical": false, "threshold": 0.80},
+    "security_scan": {"enabled": true, "critical": true},
+    "performance_benchmark": {"enabled": true, "critical": false}
+  }
+}
