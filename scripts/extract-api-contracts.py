@@ -8,7 +8,11 @@ to ensure direct replacement compatibility during refactoring.
 Usage:
     python3 scripts/extract-api-contracts.py --source <source_path> [--output <output_file>]
     python3 scripts/extract-api-contracts.py --source /path/to/angular/project --output api-contracts.md
-    python3 scripts/extract-api-contracts.py --source /path/to/angular/project  # defaults to api-contracts.md
+    python3 scripts/extract-api-contracts.py --source /path/to/angular/project --output-repos repositories.md --output-apis restful-apis.md
+
+Separate Output Mode:
+    --output-repos <path>    Creates frontend repositories template (blank template for AI to populate)
+    --output-apis <path>     Creates backend REST APIs template (blank template for AI to populate)
 
 Requirements:
     - Python 3.8+
@@ -762,6 +766,390 @@ def generate_stats_table(stats: dict) -> str:
     return table
 
 
+def create_repositories_template() -> str:
+    """创建前端Repository模板文件"""
+    return """# Frontend Repository Contracts (前端仓储层契约)
+
+**项目名称**: [项目名称]  
+**重构目标**: Angular → React + TypeScript  
+**源系统路径**: [源代码路径]  
+**提取日期**: [日期]  
+**分析范围**: 前端Repository、Service、状态管理、数据转换逻辑
+
+---
+
+## Phase 0: Repository Interface Analysis - 前端数据访问层契约
+
+### 🔴 Constitution VI-D Compliance: Direct Replacement Principle
+**MANDATORY**: 新React前端必须使用完全相同的Repository接口模式，无需适配层。
+
+## 1. Repository接口分析
+
+### Repository Service Contracts
+**源位置**: [file_path]:[line_number]  
+**业务重要性**: [高/中/低]  
+**重构约束**: [完全保持/可优化]
+
+#### Repository: [RepositoryName]
+**接口定义**:
+```typescript
+// Angular Repository接口示例
+@Injectable({
+  providedIn: 'root'
+})
+export class AppFilesRepository {
+  constructor(private http: HttpClient) {}
+  
+  // 主要方法列表
+  getAppFileById(appIdentityId: number, id: string): Observable<AppFileDTO> {
+    return this.http.get<AppFileDTO>(`${this.baseUrl}/api/FeatureModules/AppFiles/GetAppFileById/${appIdentityId}/${id}`);
+  }
+  
+  // 其他方法...
+}
+```
+
+**方法签名契约**:
+| 方法名 | 参数类型 | 返回类型 | HTTP方法 | API路径 | 重构要求 |
+|--------|----------|----------|----------|---------|----------|
+| [methodName] | [params] | [returnType] | [HTTP method] | [API path] | [保持/优化] |
+
+**数据转换逻辑**:
+```typescript
+// 现有数据转换代码
+transformData(response: any): TargetType {
+  // 转换逻辑必须保持
+}
+```
+
+## 2. State Management Contracts
+
+### BehaviorSubject/Observable模式
+**源位置**: [file_path]:[line_number]  
+**模式类型**: [BehaviorSubject/Subject/ReplaySubject]  
+
+**状态定义**:
+```typescript
+// Angular状态管理模式
+private $data = new BehaviorSubject<DataType>(null);
+data$ = this.$data.asObservable();
+```
+
+**状态转换规则**:
+- [规则1]: [描述] (位置: [file_path]:[line_number])
+- [规则2]: [描述] (位置: [file_path]:[line_number])
+
+## 3. Business Logic Contracts
+
+### 数据验证逻辑
+**源位置**: [file_path]:[line_number]  
+**验证规则**:
+- [验证规则1]: [描述]
+- [验证规则2]: [描述]
+
+### 错误处理模式
+**源位置**: [file_path]:[line_number]  
+**处理方式**:
+```typescript
+// 现有错误处理逻辑
+catchError(error => {
+  // 错误处理必须保持一致
+  return throwError(() => error);
+})
+```
+
+## 4. 数据转换契约
+
+### DTO/VO转换
+**源位置**: [file_path]:[line_number]  
+**转换映射**:
+| 源字段 | 目标字段 | 转换逻辑 | 重构要求 |
+|--------|----------|----------|----------|
+| [field1] | [target1] | [logic] | [保持/优化] |
+
+### 数据格式化
+**源位置**: [file_path]:[line_number]  
+**格式化规则**:
+- [规则1]: [描述]
+- [规则2]: [描述]
+
+## 5. 重构合规性要求
+
+### ✅ Frontend Repository重构合规性
+
+- [ ] **Repository接口保持**: 所有Repository方法签名必须完全一致
+- [ ] **Observable模式保持**: RxJS Observable模式必须保持
+- [ ] **数据转换逻辑保持**: 所有数据转换逻辑必须保持
+- [ ] **错误处理保持**: 错误处理模式必须保持
+- [ ] **状态管理保持**: BehaviorSubject状态管理必须保持
+- [ ] **依赖注入保持**: Angular依赖注入模式在React中对应实现
+
+### ❌ 禁止的操作
+
+- ❌ 修改Repository方法签名
+- ❌ 改变Observable返回类型
+- ❌ 自定义数据转换逻辑
+- ❌ 简化错误处理
+- ❌ 改变状态管理模式
+
+### ✅ 允许的优化
+
+- ✅ 使用React hooks替换Angular依赖注入
+- ✅ 使用zustand或jotai进行状态管理优化
+- ✅ 使用tanstack-query替换HttpClient
+- ✅ 优化TypeScript类型定义
+- ✅ 改进错误消息显示
+
+---
+
+## 6. 技术实现映射
+
+### Angular → React映射表
+| Angular概念 | React对应实现 | 重构要求 |
+|-------------|---------------|----------|
+| @Injectable() | 自定义hook | 功能对等 |
+| HttpClient | fetch/axios | 行为一致 |
+| BehaviorSubject | useState+useEffect | 状态管理 |
+| Observable | Promise/自定义Observable | 异步处理 |
+| catchError | try/catch | 错误处理 |
+
+---
+
+**文档状态**: [草稿/完成/已验证]  
+**最后更新**: [更新日期]  
+**更新人**: [更新者]  
+
+---
+
+*本文档与restful-apis.md和app-flows.md共同构成重构的完整契约文档*
+"""
+
+
+def create_restful_apis_template() -> str:
+    """创建后端REST API模板文件"""
+    return """# Backend REST API Contracts (后端REST接口契约)
+
+**项目名称**: [项目名称]  
+**重构目标**: Angular → React + TypeScript  
+**源系统路径**: [源代码路径]  
+**提取日期**: [日期]  
+**分析范围**: 后端REST API端点、认证、响应格式、错误处理
+
+---
+
+## Phase 0: REST API Contract Analysis - 后端接口契约
+
+### 🔴 Constitution VI-D Compliance: Direct Replacement Principle
+**MANDATORY**: 新React前端必须调用完全相同的后端API，无需适配层。
+
+## 1. API端点分析
+
+### HTTP端点契约
+**源位置**: [file_path]:[line_number]  
+**API类型**: [REST/WebSocket]  
+**重构约束**: [完全保持/可优化]
+
+#### API端点: [EndpointName]
+**接口定义**:
+```typescript
+// Angular HTTP调用示例
+getAppFileById(appIdentityId: number, id: string): Observable<AppFileDTO> {
+  return this.http.get<AppFileDTO>(`${this.baseUrl}/api/FeatureModules/AppFiles/GetAppFileById/${appIdentityId}/${id}`);
+}
+```
+
+**端点契约**:
+| HTTP方法 | URL路径 | 参数类型 | 返回类型 | 认证要求 | 重构要求 |
+|----------|---------|----------|----------|----------|----------|
+| [method] | [path] | [params] | [return] | [auth] | [保持] |
+
+**请求头契约**:
+```typescript
+// 现有请求头配置
+headers: {
+  'Content-Type': 'application/json',
+  'Authorization': `Bearer ${token}`
+}
+```
+
+## 2. 认证与授权契约
+
+### JWT Token处理
+**源位置**: [file_path]:[line_number]  
+**认证流程**:
+1. **Token获取**: [描述]
+2. **Token存储**: [描述] 
+3. **Token刷新**: [描述]
+4. **Token失效**: [描述]
+
+**认证头格式**:
+```typescript
+// 现有认证逻辑
+Authorization: Bearer ${jwtToken}
+```
+
+### 权限检查
+**源位置**: [file_path]:[line_number]  
+**权限规则**:
+- [规则1]: [描述] (位置: [file_path]:[line_number])
+- [规则2]: [描述] (位置: [file_path]:[line_number])
+
+## 3. 请求/响应格式契约
+
+### 请求格式
+**源位置**: [file_path]:[line_number]  
+**Content-Type**: [application/json/application/x-www-form-urlencoded]  
+**编码方式**: [UTF-8/其他]
+
+**请求参数格式**:
+```typescript
+// 现有请求参数结构
+interface RequestParams {
+  // 参数定义必须保持
+}
+```
+
+### 响应格式
+**源位置**: [file_path]:[line_number]  
+**响应结构**:
+```typescript
+// 现有响应结构
+interface ApiResponse<T> {
+  success: boolean;
+  data: T;
+  message?: string;
+  errorCode?: string;
+}
+```
+
+## 4. 错误处理契约
+
+### HTTP状态码处理
+**源位置**: [file_path]:[line_number]  
+**状态码映射**:
+| 状态码 | 含义 | 处理方式 | 重构要求 |
+|--------|------|----------|----------|
+| 200 | 成功 | [处理逻辑] | 保持 |
+| 401 | 未授权 | [处理逻辑] | 保持 |
+| 403 | 禁止访问 | [处理逻辑] | 保持 |
+| 404 | 未找到 | [处理逻辑] | 保持 |
+| 500 | 服务器错误 | [处理逻辑] | 保持 |
+
+**错误响应格式**:
+```typescript
+// 现有错误响应结构
+interface ErrorResponse {
+  success: false;
+  message: string;
+  errorCode?: string;
+  details?: any;
+}
+```
+
+## 5. 数据模型契约
+
+### Request DTOs
+**源位置**: [file_path]:[line_number]  
+**请求模型**:
+```typescript
+// 现有请求数据传输对象
+interface RequestDTO {
+  // 字段定义必须保持
+}
+```
+
+### Response DTOs
+**源位置**: [file_path]:[line_number]  
+**响应模型**:
+```typescript
+// 现有响应数据传输对象
+interface ResponseDTO {
+  // 字段定义必须保持
+}
+```
+
+## 6. API调用模式契约
+
+### HTTP客户端配置
+**源位置**: [file_path]:[line_number]  
+**客户端设置**:
+```typescript
+// 现有HTTP客户端配置
+{
+  timeout: 30000,
+  withCredentials: true,
+  responseType: 'json'
+}
+```
+
+### 拦截器模式
+**源位置**: [file_path]:[line_number]  
+**拦截器逻辑**:
+```typescript
+// 现有拦截器实现
+intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  // 拦截器逻辑必须保持
+}
+```
+
+## 7. 重构合规性要求
+
+### ✅ Backend API重构合规性
+
+- [ ] **API端点保持**: 所有HTTP方法和URL必须完全一致
+- [ ] **认证流程保持**: JWT认证流程必须保持
+- [ ] **数据格式保持**: 请求/响应格式必须保持
+- [ ] **错误处理保持**: HTTP状态码处理必须保持
+- [ ] **超时设置保持**: 网络超时配置必须保持
+- [ ] **拦截器逻辑保持**: 请求拦截器必须保持
+
+### ❌ 禁止的操作
+
+- ❌ 修改API端点URL
+- ❌ 改变HTTP方法
+- ❌ 修改认证头格式
+- ❌ 自定义错误处理
+- ❌ 改变数据格式
+- ❌ 添加适配层
+
+### ✅ 允许的优化
+
+- ✅ 使用fetch/axios替换HttpClient
+- ✅ 优化网络请求配置
+- ✅ 改进错误消息显示
+- ✅ 添加请求重试逻辑
+- ✅ 优化TypeScript类型定义
+
+---
+
+## 8. API性能契约
+
+### 超时设置
+**源位置**: [file_path]:[line_number]  
+**超时配置**:
+- 连接超时: [时间]
+- 读取超时: [时间]
+- 写入超时: [时间]
+
+### 重试机制
+**源位置**: [file_path]:[line_number]  
+**重试规则**:
+- 最大重试次数: [次数]
+- 重试间隔: [时间]
+- 重试条件: [条件]
+
+---
+
+**文档状态**: [草稿/完成/已验证]  
+**最后更新**: [更新日期]  
+**更新人**: [更新者]  
+
+---
+
+*本文档与repositories.md和app-flows.md共同构成重构的完整契约文档*
+"""
+
+
 def main():
     parser = argparse.ArgumentParser(description='Extract API contracts from frontend codebase')
     parser.add_argument('--source', required=True, help='Source code path')
@@ -769,6 +1157,8 @@ def main():
     parser.add_argument('--json', help='Also save JSON data to this file')
     parser.add_argument('--mode', choices=['combined', 'data-models', 'apis', 'backend-apis', 'frontend-apis'], default='combined',
                        help='Extraction mode: combined, data-models-only, apis-only, backend-apis-only, or frontend-apis-only')
+    parser.add_argument('--output-repos', help='Output frontend repositories template file path (creates blank template for AI to populate)')
+    parser.add_argument('--output-apis', help='Output backend REST APIs template file path (creates blank template for AI to populate)')
     
     args = parser.parse_args()
     
@@ -835,6 +1225,19 @@ def main():
     if output_path.name != 'api-contracts.md':
         print(f"⚠️ 建议使用标准文件名: api-contracts.md")
         print(f"   当前文件名: {output_path.name}")
+    
+    # 创建分离的模板文件（如果指定）
+    if args.output_repos:
+        repos_template_path = Path(args.output_repos)
+        repos_template = create_repositories_template()
+        repos_template_path.write_text(repos_template, encoding='utf-8')
+        print(f"✅ Frontend repositories模板已创建: {repos_template_path}")
+    
+    if args.output_apis:
+        apis_template_path = Path(args.output_apis)
+        apis_template = create_restful_apis_template()
+        apis_template_path.write_text(apis_template, encoding='utf-8')
+        print(f"✅ Backend REST APIs模板已创建: {apis_template_path}")
     
     return 0
 
