@@ -1,0 +1,185 @@
+# Hook验证Agent配置文件
+# 基于Claude Code hook机制的验证系统配置
+
+validation:
+  enabled: true
+  strict_mode: true
+  auto_correction: true
+  
+  # Hook Agent配置
+  agent:
+    name: "Hook-Validation-Agent-v1"
+    version: "1.0.0"
+    description: "独立验证Agent，防止AI自验证"
+    
+  # 验证触发点
+  trigger_points:
+    - "task_creation"    # Task创建时触发
+    - "task_execution"    # Task执行时触发  
+    - "task_completion"   # Task完成时触发
+
+# 验证规则
+rules:
+  # Task验证规则
+  task:
+    must_have_testcase: true                    # Task必须关联Testcase
+    must_have_acceptance_criteria: true         # Task必须有验收标准
+    must_have_fr_association: true             # Task必须关联FR
+    must_have_requirement_association: true     # Task必须关联UserRequirement
+    description_must_be_clear: true             # Task描述必须清晰
+    estimated_time_must_be_reasonable: true     # 预估时间必须合理
+    
+  # Testcase验证规则
+  testcase:
+    must_have_expected_result: true            # Testcase必须有Expected Result
+    must_be_achievable: true                   # Testcase必须可实现
+    must_cover_critical_scenarios: true        # 必须覆盖关键场景
+    must_be_independent: true                  # Testcase必须独立
+    
+  # 关联验证规则
+  association:
+    task_fr_required: true                     # Task-FR关联必须存在
+    task_requirement_required: true            # Task-UserRequirement关联必须存在
+    testcase_task_required: true               # Testcase-Task关联必须存在
+    bidirectional_traceability: true           # 双向可追溯性必须存在
+    
+  # 质量验证规则
+  quality:
+    minimum_testcase_coverage: 100             # 最小测试覆盖率
+    minimum_pass_rate: 100                    # 最小通过率
+    code_quality_threshold: 85                 # 代码质量阈值
+    documentation_complete: true               # 文档必须完整
+
+# 纠正机制
+correction:
+  enabled: true
+  max_retries: 3
+  escalation_enabled: true
+  
+  # 自动纠正策略
+  auto_fix:
+    missing_testcases: true                    # 自动修复缺失Testcase
+    missing_associations: true                 # 自动修复缺失关联
+    unclear_descriptions: true                # 自动修复模糊描述
+    
+  # 纠正策略配置
+  strategies:
+    missing_testcases:
+      approach: "HYBRID"                       # 混合策略（自动+手动）
+      priority: "HIGH"
+      estimated_time: 60                       # 估计时间（分钟）
+      
+    missing_associations:
+      approach: "MANUAL"                       # 手动策略
+      priority: "HIGH"
+      estimated_time: 30
+      
+    failed_testcases:
+      approach: "AUTOMATIC"                    # 自动策略
+      priority: "CRITICAL"
+      estimated_time: 90
+      
+    quality_issues:
+      approach: "HYBRID"
+      priority: "MEDIUM"
+      estimated_time: 45
+
+# 报告配置
+reporting:
+  enabled: true
+  auto_generate: true
+  
+  # 报告格式
+  formats:
+    - "markdown"                              # Markdown格式
+    - "json"                                 # JSON格式
+    - "html"                                 # HTML格式
+    
+  # 报告内容
+  include:
+    validation_summary: true                  # 包含验证摘要
+    detailed_issues: true                     # 包含详细问题
+    correction_suggestions: true              # 包含纠正建议
+    metrics: true                            # 包含指标
+    history: true                            # 包含历史记录
+    
+  # 报告保留
+  retention_days: 90                         # 保留90天
+
+# 监控配置
+monitoring:
+  enabled: true
+  real_time: true
+  
+  # 监控指标
+  metrics:
+    - "validation_success_rate"               # 验证成功率
+    - "correction_success_rate"               # 纠正成功率
+    - "average_validation_time"               # 平均验证时间
+    - "issue_resolution_time"                  # 问题解决时间
+    
+  # 告警阈值
+  thresholds:
+    validation_failure_rate: 10               # 验证失败率超过10%告警
+    correction_failure_rate: 20               # 纠正失败率超过20%告警
+    response_time: 5000                       # 响应时间超过5秒告警
+    
+  # 告警方式
+  alerts:
+    console: true                             # 控制台告警
+    log_file: true                            # 日志文件告警
+    integration: true                         # 集成告警
+
+# 集成配置
+integration:
+  # 与specify-cli集成
+  specify_cli:
+    enabled: true
+    auto_validation: true                     # 自动验证
+    
+  # 与git集成
+  git:
+    enabled: true
+    pre_commit_validation: true              # 提交前验证
+    commit_message_validation: true           # 提交消息验证
+    branch_protection: true                   # 分支保护
+    
+  # 与CI/CD集成
+  ci_cd:
+    enabled: true
+    pipeline_validation: true                # 流水线验证
+    quality_gates: true                       # 质量门禁
+    automated_reporting: true                # 自动报告
+    
+  # 与项目管理系统集成
+  project_management:
+    enabled: true
+    task_sync: true                           # 任务同步
+    issue_tracking: true                     # 问题跟踪
+    progress_reporting: true                  # 进度报告
+
+# 环境配置
+environments:
+  development:
+    strict_mode: false                        # 开发环境宽松模式
+    auto_correction: true                     # 启用自动纠正
+    
+  testing:
+    strict_mode: true                         # 测试环境严格模式
+    auto_correction: true                     # 启用自动纠正
+    
+  production:
+    strict_mode: true                         # 生产环境严格模式
+    auto_correction: false                    # 禁用自动纠正（手动审核）
+
+# 调试配置
+debug:
+  enabled: false                              # 默认关闭调试
+  level: "INFO"                               # 日志级别
+  log_validation_details: false               # 记录验证详情
+  log_correction_details: false               # 记录纠正详情
+  
+  # 调试输出
+  output:
+    console: true                             # 控制台输出
+    file: ".specify/logs/validation.log"      # 文件输出
