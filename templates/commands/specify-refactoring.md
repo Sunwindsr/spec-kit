@@ -41,10 +41,13 @@ Given that target system description, do this:
 
 7. **PHASE 0: API CONTRACT EXTRACTION** (MANDATORY - 刚性前提条件):
    ```bash
-   # API Contract First: 后端API契约提取 - 这是直接替换重构的专门阶段
-   python3 scripts/extract-api-contracts.py --source [SOURCE_PROJECT_PATH] --output specs/[BRANCH_NAME]/api-contracts.md
+   # API Contract First: 前后端分离契约提取 - 这是直接替换重构的专门阶段
+   python3 scripts/extract-api-contracts.py --source [SOURCE_PROJECT_PATH] --output-repos specs/[BRANCH_NAME]/repositories.md --output-apis specs/[BRANCH_NAME]/restful-apis.md
    ```
    - **API Validation**: 验证提取的API端点和数据模型完整性和准确性
+   - **Separation of Concerns**: 前端Repository契约和后端REST API契约完全分离
+   - **Frontend Repository Focus**: repositories.md专注于前端Repository接口、状态管理和数据转换
+   - **Backend REST API Focus**: restful-apis.md专注于后端HTTP端点、认证和响应格式
    - **Direct Replacement Focus**: 新前端直接调用相同API，无需适配层或兼容层
    - **Use ONLY Extracted APIs**: 新前端实现必须严格使用提取的API契约和数据模型
    - **Validation Failure**: 如果API契约提取失败，整个重构过程立即终止
@@ -83,6 +86,8 @@ Given that target system description, do this:
    - **Precision Requirements Definition**: 精确的需求定义，为后续验证做准备
 
 11. **Fill all generated documents with concrete content**:
+    - **repositories.md**: Analyze source code to extract frontend Repository interfaces, state management, and data transformation logic
+    - **restful-apis.md**: Analyze source code to extract backend REST API endpoints, authentication, and response formats
     - **data-models.md**: Analyze source code to extract all TypeScript interfaces, data models, and relationships
     - **app-flows.md**: Analyze components, user interactions, business logic flows, and route configurations  
     - **test-cases.md**: Generate comprehensive test cases based on the refactoring requirements

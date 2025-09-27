@@ -180,6 +180,8 @@ src/
 │   ├── legacy-service.js         # Original service
 │   └── refactored-service.js     # New implementation
 └── api-contracts/                # Extracted API contracts
+│   ├── repositories.md           # Frontend Repository contracts
+│   └── restful-apis.md           # Backend REST API contracts
 ```
 
 **Structure Decision**: [PRESERVE existing structure, ADD new components alongside old ones]
@@ -246,11 +248,19 @@ src/
    - Define user requirement mappings from FRD
    - **Include user acceptance criteria** for each flow
 
-   **C. Extract API contracts** → `apis.md`:
-   - Extract all HTTP endpoints and API contracts from source code
-   - Document request/response formats and error handling
-   - Define API compatibility requirements for direct replacement
-   - **Automated extraction**: `python3 scripts/extract-api-contracts.py --source [SOURCE] --output apis.md`
+   **C. Extract API contracts** →分离的契约文档:
+   - **Frontend Repository contracts** → `repositories.md`:
+     - Extract frontend Repository interfaces and state management logic
+     - Document data transformation and validation rules
+     - Define Repository pattern implementation requirements
+     - Focus on frontend-specific concerns and user interactions
+   
+   - **Backend REST API contracts** → `restful-apis.md`:
+     - Extract all HTTP endpoints and API contracts from source code
+     - Document request/response formats and error handling
+     - Define API compatibility requirements for direct replacement
+     - Focus on backend-specific concerns and authentication
+   - **Automated extraction**: `python3 scripts/extract-api-contracts.py --source [SOURCE] --output-repos repositories.md --output-apis restful-apis.md`
 
 3. **Create refactoring test strategy** → `quickstart.md`:
    - Define comprehensive behavior preservation tests

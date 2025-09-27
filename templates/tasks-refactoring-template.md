@@ -192,6 +192,76 @@ scripts:
 - [ ] Testcase覆盖所有数据转换场景
 ```
 
+### 1.3 API契约提取和文档生成
+
+#### 1.3.1 任务：API契约提取和文档生成 (P0)
+```markdown
+## 任务：API契约提取和文档生成
+
+**优先级**：P0  
+**预计时间**：3小时  
+**负责人**：前端架构师  
+
+### 任务描述
+从现有系统中提取API契约，生成分离的repositories.md（前端Repository）和restful-apis.md（后端REST API）文档。
+
+### EARS验收标准
+- **Given**: 需要从现有系统提取API契约
+- **When**: 执行API提取脚本
+- **Then**: 应该生成分离的Repository和REST API文档
+- **And**: 文档应该准确反映现有系统的接口定义
+
+### RED阶段
+1. **编写失败测试**
+   ```typescript
+   describe('API Contract Extraction', () => {
+     it('should generate separated repository and API docs', () => {
+       // 测试文档生成
+       const reposExists = fs.existsSync('specs/repositories.md');
+       const apisExists = fs.existsSync('specs/restful-apis.md');
+       
+       expect(reposExists).toBe(true);
+       expect(apisExists).toBe(true);
+     });
+     
+     it('should contain correct API contract structure', () => {
+       const reposContent = fs.readFileSync('specs/repositories.md', 'utf8');
+       const apisContent = fs.readFileSync('specs/restful-apis.md', 'utf8');
+       
+       expect(reposContent).toContain('Repository');
+       expect(apisContent).toContain('RESTful API');
+     });
+   });
+   ```
+
+### GREEN阶段
+1. **实现功能代码**
+   ```bash
+   # 执行API契约提取
+   python3 scripts/extract-api-contracts.py \
+     --source [SOURCE_PROJECT_PATH] \
+     --output-repos specs/[BRANCH_NAME]/repositories.md \
+     --output-apis specs/[BRANCH_NAME]/restful-apis.md
+   ```
+
+### REFACTOR阶段
+1. **优化重构**
+   - 验证提取的API契约准确性
+   - 确保Repository和REST API文档分离清晰
+   - 添加必要的业务规则说明
+   - 完善文档结构和格式
+
+### 验收标准
+- [ ] 成功生成repositories.md文档
+- [ ] 成功生成restful-apis.md文档
+- [ ] 前端Repository接口提取完整
+- [ ] 后端REST API端点提取完整
+- [ ] 数据模型定义准确
+- [ ] 业务规则文档化完整
+- [ ] Hook Agent验证API契约准确性
+- [ ] Testcase覆盖所有关键API场景
+```
+
 ---
 
 ## 二、核心工具和服务开发任务
@@ -620,13 +690,14 @@ scripts:
 
 ### 7.4 任务执行顺序
 ```
-1. SETUP-001 → 项目基础架构
-2. MODELS-001 → 数据模型定义
-3. UTILS-001 → 工具函数实现
-4. STORE-001 → 状态管理实现
-5. COMPONENTS-001 → 核心组件开发
-6. TESTS-001 → 测试用例编写
-7. DEPLOY-001 → 部署配置
+1. API-EXTRACT-001 → API契约提取（分离生成repositories.md和restful-apis.md）
+2. SETUP-001 → 项目基础架构
+3. MODELS-001 → 数据模型定义
+4. UTILS-001 → 工具函数实现
+5. STORE-001 → 状态管理实现
+6. COMPONENTS-001 → 核心组件开发
+7. TESTS-001 → 测试用例编写
+8. DEPLOY-001 → 部署配置
 ```
 
 ## 八、验证机制集成
