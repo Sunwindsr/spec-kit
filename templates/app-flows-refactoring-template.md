@@ -6,11 +6,53 @@
 **提取日期**: [日期]  
 **分析范围**: [重构涉及的模块/功能范围]
 
+**工具辅助说明**: 本文档使用交互元素发现工具 (`interactive-element-discovery.py`) 进行系统化分析，确保完整捕获所有用户交互和事件处理逻辑。
+
 ---
 
-## 1. 现有系统流程分析 (Current System Flow Analysis)
+## 1. 交互元素发现分析 (Interactive Element Discovery Analysis)
 
-### 1.1 源系统流程提取
+### 1.1 工具执行结果
+
+**发现统计**: 
+- 总交互元素数量: [数量]
+- 关键交互元素 (P0): [数量]  
+- 重要交互元素 (P1): [数量]
+- 一般交互元素 (P2): [数量]
+
+**组件复杂度分析**:
+- 最复杂组件: [组件名称] ([元素数量] 个交互元素)
+- 主要交互类型: [类型] ([百分比]%)
+
+**执行命令**:
+```bash
+python3 .specify/scripts/interactive-element-discovery.py --source [源代码路径] --output interactive-elements.json --format json
+```
+
+### 1.2 关键交互元素清单
+
+基于工具发现的 [数量] 个交互元素，按重要性分类：
+
+#### P0级别 - 关键交互元素
+1. **[元素类型]**: [元素名称]
+   - 位置: [file_path]:[line_number]
+   - 组件: [组件名称]
+   - 用户操作: [用户操作描述]
+   - 系统响应: [系统响应描述]
+   - 交互类别: [navigation/data_manipulation/media_control/ui_interaction]
+
+#### P1级别 - 重要交互元素
+1. **[元素类型]**: [元素名称]
+   - 位置: [file_path]:[line_number]
+   - 组件: [组件名称]
+   - 用户操作: [用户操作描述]
+   - 系统响应: [系统响应描述]
+
+---
+
+## 2. 现有系统流程分析 (Current System Flow Analysis)
+
+### 2.1 基于交互元素的流程提取
 
 #### 流程: [流程名称]
 **源位置**: [file_path]:[line_number]  

@@ -29,9 +29,12 @@ rm -rf sdd-package-base* sdd-*-package-* spec-kit-template-*-"${NEW_VERSION}".zi
 
 rewrite_paths() {
   sed -E \
-    -e 's@(/?)memory/@.specify/memory/@g' \
-    -e 's@(/?)scripts/@.specify/scripts/@g' \
-    -e 's@(/?)templates/@.specify/templates/@g'
+    -e 's@(\.\/|\.\/)?memory/@.specify/memory/@g' \
+    -e 's@(\.\/|\.\/)?scripts/@.specify/scripts/@g' \
+    -e 's@(\.\/|\.\/)?templates/@.specify/templates/@g' \
+    -e 's@^memory/@.specify/memory/@g' \
+    -e 's@^scripts/@.specify/scripts/@g' \
+    -e 's@^templates/@.specify/templates/@g'
 }
 
 generate_commands() {

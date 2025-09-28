@@ -6,9 +6,42 @@
 **提取日期**: [日期]  
 **分析范围**: [源系统模块/功能范围]
 
+**工具辅助说明**: 本文档采用工具辅助方式进行分析，使用结构化脚本工具帮助识别和提取API契约信息，确保分析结果的准确性和完整性。
+
 ---
 
-## 1. 现有系统接口分析 (Current System Interface Analysis)
+## 1. 工具辅助的API分析 (Tool-Assisted API Analysis)
+
+### 1.1 API发现工具执行
+
+**推荐工具**: 
+- API契约提取脚本: `extract-api-contracts.py`
+- 交互元素发现工具: `interactive-element-discovery.py`
+- 服务依赖分析工具: `analyze-service-dependencies.py`
+
+**执行步骤**:
+```bash
+# 1. 运行API契约提取工具
+python3 .specify/scripts/extract-api-contracts.py --source [源代码路径] --output api-analysis.json
+
+# 2. 运行交互元素发现工具
+python3 .specify/scripts/interactive-element-discovery.py --source [源代码路径] --output interactive-elements.json
+
+# 3. 基于工具输出进行人工分析和验证
+```
+
+### 1.2 工具输出解读
+
+**关键发现**: [基于工具输出的重要发现]
+- API端点数量: [数量]
+- 外部服务依赖: [数量]
+- 数据流复杂度: [高/中/低]
+
+**风险识别**: [基于工具分析识别的重构风险点]
+
+---
+
+## 2. 现有系统接口分析 (Current System Interface Analysis)
 
 **宪法要求**: Constitution II - Interface Stability (NON-NEGOTIABLE) + Constitution VI-E - Direct Replacement Refactoring
 
