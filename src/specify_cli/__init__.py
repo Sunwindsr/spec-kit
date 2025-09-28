@@ -468,11 +468,20 @@ def download_template_from_github(ai_assistant: str, download_dir: Path, *, scri
     
     # Find the template asset for the specified AI assistant
     assets = release_data.get("assets", [])
-    pattern = f"spec-kit-template-{ai_assistant}-{script_type}"
+    pattern = f"spec-kit-template-{ai_assistant}-{script_type}-"
     matching_assets = [
         asset for asset in assets
-        if pattern in asset["name"] and asset["name"].endswith(".zip")
+        if asset["name"].startswith(pattern) and asset["name"].endswith(".zip")
     ]
+    
+    # Enhanced pattern matching for better asset discovery
+    if not matching_assets:
+        # Try alternative pattern for different naming conventions
+        alt_pattern = f"spec-kit-template-{ai_assistant}-{script_type}."
+        matching_assets = [
+            asset for asset in assets
+            if asset["name"].startswith(alt_pattern) and asset["name"].endswith(".zip")
+        ]
 
     asset = matching_assets[0] if matching_assets else None
 
