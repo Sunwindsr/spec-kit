@@ -482,6 +482,15 @@ def download_template_from_github(ai_assistant: str, download_dir: Path, *, scri
             asset for asset in assets
             if asset["name"].startswith(alt_pattern) and asset["name"].endswith(".zip")
         ]
+    
+    # Final fallback - try to find any asset with the assistant name
+    if not matching_assets:
+        fallback_assets = [
+            asset for asset in assets
+            if ai_assistant in asset["name"] and asset["name"].endswith(".zip")
+        ]
+        if fallback_assets:
+            matching_assets = fallback_assets[:1]  # Take the first match
 
     asset = matching_assets[0] if matching_assets else None
 
