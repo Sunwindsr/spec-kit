@@ -8,6 +8,10 @@
     <strong>An effort to allow organizations to focus on product scenarios rather than writing undifferentiated code with the help of Spec-Driven Development.</strong>
 </p>
 
+## Recent Updates
+- Fixed script path generation issues in template packages  
+- Enhanced release asset pattern matching for better compatibility
+
 [![Release](https://github.com/Sunwindsr/spec-kit/actions/workflows/release.yml/badge.svg)](https://github.com/Sunwindsr/spec-kit/actions/workflows/release.yml)
 
 ---
